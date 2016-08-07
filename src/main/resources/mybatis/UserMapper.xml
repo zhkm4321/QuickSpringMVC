@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.pwcong.ssm.dao.UserMapper">
+
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+	<insert id="add" parameterType="UserVo">
+		INSERT INTO
+		User(userId,username,password,portraitUri,token,createdAt,updatedAt)
+		VALUES
+		(#{user.userId},#{user.username},#{user.password},#{user.portraitUri},#{user.token},#{user.createdAt},#{user.updatedAt})
+	</insert>
+
+	<delete id="deleteByUsername" parameterType="java.lang.String">
+		DELETE FROM User
+		WHERE username=#{username}
+	</delete>
+
+	<select id="findByUsername" parameterType="java.lang.String"
+		resultType="User">
+		SELECT *
+		FROM User
+		WHERE
+		username=#{username}
+	</select>
+	
+	<update id="update" parameterType="UserVo">
+	
+		update User
+		set password=#{user.password},portraitUri={user.portraitUri},token=#{user.token},updatedAt=#{user.updatedAt}
+		where userId=#{user.userId}
+	
+	</update>
+
+
+
+</mapper>
