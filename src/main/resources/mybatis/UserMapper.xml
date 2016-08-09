@@ -10,28 +10,28 @@
 
 	<insert id="add" parameterType="UserVo">
 		INSERT INTO
-		User(userId,username,password,portraitUri,token,createdAt,updatedAt)
+		User(token,userId,password,portraitUri,createdAt,updatedAt)
 		VALUES
-		(#{user.userId},#{user.username},#{user.password},#{user.portraitUri},#{user.token},#{user.createdAt},#{user.updatedAt})
+		(#{user.token},#{user.userId},#{user.password},#{user.portraitUri},#{user.createdAt},#{user.updatedAt})
 	</insert>
 
-	<delete id="deleteByUsername" parameterType="java.lang.String">
+	<delete id="deleteByUserId" parameterType="java.lang.String">
 		DELETE FROM User
-		WHERE username=#{username}
+		WHERE userId=#{userId}
 	</delete>
 
-	<select id="findByUsername" parameterType="java.lang.String"
+	<select id="findByUserId" parameterType="java.lang.String"
 		resultType="User">
 		SELECT *
 		FROM User
 		WHERE
-		username=#{username}
+		userId=#{userId}
 	</select>
 	
 	<update id="update" parameterType="UserVo">
 	
 		update User
-		set password=#{user.password},portraitUri={user.portraitUri},token=#{user.token},updatedAt=#{user.updatedAt}
+		set password=#{user.password},portraitUri={user.portraitUri},updatedAt=#{user.updatedAt}
 		where userId=#{user.userId}
 	
 	</update>

@@ -23,7 +23,8 @@ public class UserServiceImpl implements UserService{
 	public User login(User user) throws Exception {
 		
 		User _user=null;
-		_user=userMapper.findByUsername(user.getUsername());
+		_user=userMapper.findByUserId(user.getUserId());
+		
 		if(_user==null){
 			throw new Exception("用户不存在");
 		}
@@ -38,17 +39,16 @@ public class UserServiceImpl implements UserService{
 
 	public User register(User user) throws Exception {
 		
-		if(StringUtil.isNullOrEmpty(user.getPassword())||StringUtil.isNullOrEmpty(user.getUsername())){
+		if(StringUtil.isNullOrEmpty(user.getPassword())||StringUtil.isNullOrEmpty(user.getUserId())){
 			throw new Exception("注册失败，用户名或密码不能为空");
 		}
 		
 		
-		User _user=userMapper.findByUsername(user.getUsername());
+		User _user=userMapper.findByUserId(user.getUserId());
 		if(_user!=null){
 			throw new Exception("用户已存在");
 		}
 		
-		user.setUserId(UuidUtil.uuid());
 		user.setPortraitUri(Constants.DEFAULT_POSTRAITURI);
 		user.setToken(UuidUtil.uuid());
 		user.setCreatedAt(DateUtil.time());
