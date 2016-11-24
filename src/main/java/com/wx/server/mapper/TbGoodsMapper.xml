@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.server.dao.TbGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.wx.server.entity.TbGoods">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
+    <result column="goods_spe" jdbcType="VARCHAR" property="goodsSpe" />
+    <result column="goods_price" jdbcType="REAL" property="goodsPrice" />
+    <result column="goods_num" jdbcType="VARCHAR" property="goodsNum" />
+    <result column="add_time" jdbcType="VARCHAR" property="addTime" />
+    <result column="ctg_id" jdbcType="INTEGER" property="ctgId" />
+    <result column="is_recommend" jdbcType="INTEGER" property="isRecommend" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.wx.server.entity.TbGoods">
+    <result column="goods_detail" jdbcType="LONGVARCHAR" property="goodsDetail" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    goods_id, goods_name, goods_img, goods_spe, goods_price, goods_num, add_time, ctg_id, 
+    is_recommend, status, type
+  </sql>
+  <sql id="Blob_Column_List">
+    goods_detail
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.wx.server.entity.TbGoodsExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.wx.server.entity.TbGoodsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="page != null">
+      limit #{page.begin} , #{page.length}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wx.server.entity.TbGoodsExample">
+    delete from tb_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wx.server.entity.TbGoods">
+    insert into tb_goods (goods_id, goods_name, goods_img, 
+      goods_spe, goods_price, goods_num, 
+      add_time, ctg_id, is_recommend, 
+      status, type, goods_detail
+      )
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, 
+      #{goodsSpe,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=REAL}, #{goodsNum,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=VARCHAR}, #{ctgId,jdbcType=INTEGER}, #{isRecommend,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{goodsDetail,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wx.server.entity.TbGoods">
+    insert into tb_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsImg != null">
+        goods_img,
+      </if>
+      <if test="goodsSpe != null">
+        goods_spe,
+      </if>
+      <if test="goodsPrice != null">
+        goods_price,
+      </if>
+      <if test="goodsNum != null">
+        goods_num,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="ctgId != null">
+        ctg_id,
+      </if>
+      <if test="isRecommend != null">
+        is_recommend,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="goodsDetail != null">
+        goods_detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null">
+        #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSpe != null">
+        #{goodsSpe,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=REAL},
+      </if>
+      <if test="goodsNum != null">
+        #{goodsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="ctgId != null">
+        #{ctgId,jdbcType=INTEGER},
+      </if>
+      <if test="isRecommend != null">
+        #{isRecommend,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDetail != null">
+        #{goodsDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_goods
+    <set>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsName != null">
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsImg != null">
+        goods_img = #{record.goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsSpe != null">
+        goods_spe = #{record.goodsSpe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsPrice != null">
+        goods_price = #{record.goodsPrice,jdbcType=REAL},
+      </if>
+      <if test="record.goodsNum != null">
+        goods_num = #{record.goodsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctgId != null">
+        ctg_id = #{record.ctgId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isRecommend != null">
+        is_recommend = #{record.isRecommend,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsDetail != null">
+        goods_detail = #{record.goodsDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_goods
+    set goods_id = #{record.goodsId,jdbcType=INTEGER},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_img = #{record.goodsImg,jdbcType=VARCHAR},
+      goods_spe = #{record.goodsSpe,jdbcType=VARCHAR},
+      goods_price = #{record.goodsPrice,jdbcType=REAL},
+      goods_num = #{record.goodsNum,jdbcType=VARCHAR},
+      add_time = #{record.addTime,jdbcType=VARCHAR},
+      ctg_id = #{record.ctgId,jdbcType=INTEGER},
+      is_recommend = #{record.isRecommend,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      goods_detail = #{record.goodsDetail,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_goods
+    set goods_id = #{record.goodsId,jdbcType=INTEGER},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_img = #{record.goodsImg,jdbcType=VARCHAR},
+      goods_spe = #{record.goodsSpe,jdbcType=VARCHAR},
+      goods_price = #{record.goodsPrice,jdbcType=REAL},
+      goods_num = #{record.goodsNum,jdbcType=VARCHAR},
+      add_time = #{record.addTime,jdbcType=VARCHAR},
+      ctg_id = #{record.ctgId,jdbcType=INTEGER},
+      is_recommend = #{record.isRecommend,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wx.server.entity.TbGoods">
+    update tb_goods
+    <set>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null">
+        goods_img = #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSpe != null">
+        goods_spe = #{goodsSpe,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        goods_price = #{goodsPrice,jdbcType=REAL},
+      </if>
+      <if test="goodsNum != null">
+        goods_num = #{goodsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="ctgId != null">
+        ctg_id = #{ctgId,jdbcType=INTEGER},
+      </if>
+      <if test="isRecommend != null">
+        is_recommend = #{isRecommend,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDetail != null">
+        goods_detail = #{goodsDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wx.server.entity.TbGoods">
+    update tb_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_img = #{goodsImg,jdbcType=VARCHAR},
+      goods_spe = #{goodsSpe,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=REAL},
+      goods_num = #{goodsNum,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=VARCHAR},
+      ctg_id = #{ctgId,jdbcType=INTEGER},
+      is_recommend = #{isRecommend,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      goods_detail = #{goodsDetail,jdbcType=LONGVARCHAR}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbGoods">
+    update tb_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_img = #{goodsImg,jdbcType=VARCHAR},
+      goods_spe = #{goodsSpe,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=REAL},
+      goods_num = #{goodsNum,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=VARCHAR},
+      ctg_id = #{ctgId,jdbcType=INTEGER},
+      is_recommend = #{isRecommend,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+</mapper>

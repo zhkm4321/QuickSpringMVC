@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!--数据库驱动 -->
+	<classPathEntry location="D:/Develop/jar/mysql-connector-5.1.8.jar" />
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<!-- 分页插件 -->
+		<plugin type="com.wx.server.mybatis.plugin.MySQLPaginationPlugin" />
+		
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!--数据库链接地址账号密码 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost/ssh_db" userId="root" password="root">
+		</jdbcConnection>
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<!--生成Model类存放位置 -->
+		<javaModelGenerator targetPackage="com.wx.server.entity"
+			targetProject="wxserver">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!--生成映射文件存放位置 -->
+		<sqlMapGenerator targetPackage="com.wx.server.mapper"
+			targetProject="wxserver">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!--生成Dao类存放位置 -->
+		<javaClientGenerator targetPackage="com.wx.server.dao"
+			type="XMLMAPPER" targetProject="wxserver">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<!--生成对应表及类名 -->
+		<!-- 收件地址 -->
+		<table tableName="tb_address" domainObjectName="TbAddress"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+			
+		<!-- 广告 -->	
+		<table tableName="tb_banner" domainObjectName="TbBanner"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 微信底部菜单 -->
+		<table tableName="tb_button" domainObjectName="TbButton"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 购物车 -->
+		<table tableName="tb_cart" domainObjectName="TbCart"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 商品分类 -->
+		<table tableName="tb_category" domainObjectName="TbCategory"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 优惠券 -->
+		<table tableName="tb_coupons" domainObjectName="TbCoupons"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+			
+		<!-- 优惠券 -->
+		<table tableName="tb_freight" domainObjectName="TbFreight"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+			
+		<!-- 商品 -->
+		<table tableName="tb_goods" domainObjectName="TbGoods"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 订单 -->
+		<table tableName="tb_order" domainObjectName="TbOrder"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 用户 -->
+		<table tableName="tb_user" domainObjectName="TbUser"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+	</context>
+</generatorConfiguration>

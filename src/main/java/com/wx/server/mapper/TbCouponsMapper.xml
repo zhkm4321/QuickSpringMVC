@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.server.dao.TbCouponsMapper">
+  <resultMap id="BaseResultMap" type="com.wx.server.entity.TbCoupons">
+    <id column="cps_id" jdbcType="INTEGER" property="cpsId" />
+    <result column="cps_name" jdbcType="VARCHAR" property="cpsName" />
+    <result column="cps_code" jdbcType="VARCHAR" property="cpsCode" />
+    <result column="cps_price" jdbcType="REAL" property="cpsPrice" />
+    <result column="cps_time" jdbcType="VARCHAR" property="cpsTime" />
+    <result column="cps_level" jdbcType="INTEGER" property="cpsLevel" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cps_id, cps_name, cps_code, cps_price, cps_time, cps_level, user_id, status
+  </sql>
+  <select id="selectByExample" parameterType="com.wx.server.entity.TbCouponsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_coupons
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="page != null">
+      limit #{page.begin} , #{page.length}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_coupons
+    where cps_id = #{cpsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_coupons
+    where cps_id = #{cpsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wx.server.entity.TbCouponsExample">
+    delete from tb_coupons
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wx.server.entity.TbCoupons">
+    insert into tb_coupons (cps_id, cps_name, cps_code, 
+      cps_price, cps_time, cps_level, 
+      user_id, status)
+    values (#{cpsId,jdbcType=INTEGER}, #{cpsName,jdbcType=VARCHAR}, #{cpsCode,jdbcType=VARCHAR}, 
+      #{cpsPrice,jdbcType=REAL}, #{cpsTime,jdbcType=VARCHAR}, #{cpsLevel,jdbcType=INTEGER}, 
+      #{userId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wx.server.entity.TbCoupons">
+    insert into tb_coupons
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cpsId != null">
+        cps_id,
+      </if>
+      <if test="cpsName != null">
+        cps_name,
+      </if>
+      <if test="cpsCode != null">
+        cps_code,
+      </if>
+      <if test="cpsPrice != null">
+        cps_price,
+      </if>
+      <if test="cpsTime != null">
+        cps_time,
+      </if>
+      <if test="cpsLevel != null">
+        cps_level,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cpsId != null">
+        #{cpsId,jdbcType=INTEGER},
+      </if>
+      <if test="cpsName != null">
+        #{cpsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpsCode != null">
+        #{cpsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cpsPrice != null">
+        #{cpsPrice,jdbcType=REAL},
+      </if>
+      <if test="cpsTime != null">
+        #{cpsTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cpsLevel != null">
+        #{cpsLevel,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_coupons
+    <set>
+      <if test="record.cpsId != null">
+        cps_id = #{record.cpsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cpsName != null">
+        cps_name = #{record.cpsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cpsCode != null">
+        cps_code = #{record.cpsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cpsPrice != null">
+        cps_price = #{record.cpsPrice,jdbcType=REAL},
+      </if>
+      <if test="record.cpsTime != null">
+        cps_time = #{record.cpsTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cpsLevel != null">
+        cps_level = #{record.cpsLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_coupons
+    set cps_id = #{record.cpsId,jdbcType=INTEGER},
+      cps_name = #{record.cpsName,jdbcType=VARCHAR},
+      cps_code = #{record.cpsCode,jdbcType=VARCHAR},
+      cps_price = #{record.cpsPrice,jdbcType=REAL},
+      cps_time = #{record.cpsTime,jdbcType=VARCHAR},
+      cps_level = #{record.cpsLevel,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wx.server.entity.TbCoupons">
+    update tb_coupons
+    <set>
+      <if test="cpsName != null">
+        cps_name = #{cpsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpsCode != null">
+        cps_code = #{cpsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cpsPrice != null">
+        cps_price = #{cpsPrice,jdbcType=REAL},
+      </if>
+      <if test="cpsTime != null">
+        cps_time = #{cpsTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cpsLevel != null">
+        cps_level = #{cpsLevel,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cps_id = #{cpsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbCoupons">
+    update tb_coupons
+    set cps_name = #{cpsName,jdbcType=VARCHAR},
+      cps_code = #{cpsCode,jdbcType=VARCHAR},
+      cps_price = #{cpsPrice,jdbcType=REAL},
+      cps_time = #{cpsTime,jdbcType=VARCHAR},
+      cps_level = #{cpsLevel,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where cps_id = #{cpsId,jdbcType=INTEGER}
+  </update>
+</mapper>
