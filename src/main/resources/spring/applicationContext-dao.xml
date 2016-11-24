@@ -13,16 +13,7 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-
-
 	<context:property-placeholder location="classpath:database/db.properties" />
-
-	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"> 
-		<property name="driverClass" value="${driverClass}" /> <property name="jdbcUrl" 
-		value="${jdbcUrl}" /> <property name="user" value="${user}" /> <property 
-		name="password" value="${password}" /> <property name="maxPoolSize" value="${maxPoolSize}" 
-		/> <property name="minPoolSize" value="${minPoolSize}" /> <property name="maxIdleTime" 
-		value="${maxIdleTime}" /> </bean> -->
 
 	<!-- 使用Druid连接池 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource "
@@ -70,12 +61,16 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="configLocation" value="classpath:mybatis/Config.xml" />
 		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations">  
+            <list>  
+                <value>classpath:com/wx/server/mapper/*.xml</value>  
+            </list>  
+        </property>  
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="me.pwcong.ssm.dao" />
+		<property name="basePackage" value="com.wx.server.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-
 	</bean>
 
 </beans>

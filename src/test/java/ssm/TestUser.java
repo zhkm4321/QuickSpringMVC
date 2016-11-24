@@ -3,48 +3,41 @@ package ssm;
 import org.junit.Test;
 
 import com.google.gson.Gson;
-
-import me.pwcong.ssm.entity.User;
-import me.pwcong.ssm.utils.DigestCoder;
-import me.pwcong.ssm.utils.HttpClientUtil;
-
-
+import com.wx.server.entity.TbUser;
+import com.wx.server.utils.DigestCoder;
+import com.wx.server.utils.HttpClientUtil;
 
 public class TestUser {
 
 	static Gson gson;
-	static{
-		gson=new Gson();
+	static {
+		gson = new Gson();
+	}
+
+	@Test
+	public void Test01() {
+
+		TbUser user = new TbUser();
+		user.setOppenId("1111111111");
+		user.setUsername("我是郑航");
+		user.setPassword(DigestCoder.MD5Encode("123456"));
+
+		String postJsonEntity = HttpClientUtil.postJsonEntity("http://localhost:8080/wxserver/user/register.action",
+				user);
+		System.out.println(postJsonEntity);
+
 	}
 
 	//@Test
-	public void Test01(){
+	public void Test03() {
 
-		User user=new User();
-		user.setUserId("test0001");
+		TbUser user = new TbUser();
+		user.setUserId(23523);
 		user.setPassword(DigestCoder.MD5Encode("123456"));
-
-		String postJsonEntity = HttpClientUtil.postJsonEntity("http://localhost:8080/simplechat/user/register.action", user);
-		System.out.println(postJsonEntity);
-
-
-
-
-	}
-
-
-
-	@Test
-	public void Test03(){
-
-
-		User user=new User();
-		user.setUserId("test0001");
-		user.setPassword(DigestCoder.MD5Encode("123456"));
-		String postJsonEntity = HttpClientUtil.postJsonEntity("http://localhost:8080/QuickSpringMVC/user/login.action", user);
+		String postJsonEntity = HttpClientUtil.postJsonEntity("http://localhost:8080/wxserver/user/login.action",
+				user);
 		System.out.println(postJsonEntity);
 
 	}
-
 
 }
