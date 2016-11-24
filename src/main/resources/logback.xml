@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<property name="LOG_HOME" value="/logs" />
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{80} - %msg%n</Pattern>
@@ -10,7 +11,7 @@
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>/ssm/logs.%d{yyyy-MM-dd}.log
+			<FileNamePattern>/wxserver/logs.%d{yyyy-MM-dd}.log
 			</FileNamePattern>
 			<MaxHistory>30</MaxHistory>
 		</rollingPolicy>
