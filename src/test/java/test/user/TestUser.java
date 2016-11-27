@@ -1,18 +1,13 @@
-package ssm;
+package test.user;
 
 import org.junit.Test;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.wx.server.entity.TbUser;
 import com.wx.server.utils.DigestCoder;
 import com.wx.server.utils.HttpClientUtil;
 
 public class TestUser {
-
-	static Gson gson;
-	static {
-		gson = new Gson();
-	}
 
 	@Test
 	public void Test01() {

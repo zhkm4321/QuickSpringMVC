@@ -1,4 +1,4 @@
-package com.wx.server.web;
+package com.wx.server.web.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
