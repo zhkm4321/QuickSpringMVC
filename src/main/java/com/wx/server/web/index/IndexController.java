@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
-import com.wx.server.base.BaseController;
 import com.wx.server.service.TbUserService;
 
 @Controller
-public class IndexController extends BaseController {
+public class IndexController {
 
 	@Autowired
 	TbUserService userService;

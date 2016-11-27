@@ -171,7 +171,7 @@ canvas {
 	border-top: 1px solid #e8e8e8;
 }
 
-.imgcode {
+.captcha {
 	width: 95px;
 	position: absolute;
 	right: 0;

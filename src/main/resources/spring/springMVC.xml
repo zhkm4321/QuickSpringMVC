@@ -18,6 +18,17 @@
 	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
 	
 	<mvc:resources mapping="/res/**" location="/res/" />
+	
+	<mvc:interceptors>
+		<!-- 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->
+		<bean id="contextPathInterceptor" class="com.wx.server.interceptor.ContextPathInterceptor"/>
+		<!--<mvc:interceptor>
+			  <mvc:mapping path="/test/number.do"/>
+			定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的
+			<bean class="com.host.app.web.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+		-->
+	</mvc:interceptors>
 
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 		<property name="favorPathExtension" value="true"></property><!-- 这里是是否启用扩展名支持 -->
