@@ -8,4 +8,5 @@
 + Ehcache
 + logback 1.1.3
 + Druid 1.0.23
-
++ Shiro 1.2.4
++ freemarker 2.3.23

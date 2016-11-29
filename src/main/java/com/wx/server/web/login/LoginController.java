@@ -1,6 +1,8 @@
 package com.wx.server.web.login;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,17 +12,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.wx.server.base.BaseConstans;
 import com.wx.server.base.WxKaptchaExtend;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.BadCaptchaException;
 import com.wx.server.service.TbUserService;
-import com.wx.server.vo.UserWebVo;
 
 @Controller
 public class LoginController extends WxKaptchaExtend {
@@ -53,35 +54,44 @@ public class LoginController extends WxKaptchaExtend {
 	}
 
 	@RequestMapping(value = "/login/login.do", method = RequestMethod.POST)
-	public @ResponseBody UserWebVo login(@RequestBody TbUser user) {
-
+	@ResponseBody
+	public String login(HttpServletRequest request, TbUser user) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			TbUser login = userService.login(user);
-			return new UserWebVo(BaseConstans.OK, "登录成功", login);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new UserWebVo(BaseConstans.ERROR, "登录失败", null);
 		}
+		return JSON.toJSONString(result);
 	}
 
 	@RequestMapping(value = "/login/register.do", method = RequestMethod.POST)
-	public String register(HttpServletRequest req, TbUser user, String password1) {
+	@ResponseBody
+	public String register(HttpServletRequest request, TbUser user, String password1) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			if (validCaptcha(req)) {
+			if (validCaptcha(request)) {
 				if (!user.getPassword().equals(password1)) {
-					return "redirect:/register.html?error=3";
+					BaseConstans.wrapError("两次输入密码 不一致", result);
+				} else {
+					TbUser exist = userService.findTbUserByUsername(user.getUsername());
+					if (null == exist) {
+						userService.register(user);
+						BaseConstans.wrapSuccess(null, result);
+					} else {
+						BaseConstans.wrapError("用户名已存在", result);
+					}
 				}
-				TbUser register = userService.register(user);
-				return "redirect:/login.html";
 			} else {
-				return "redirect:/register.html?error=2";
+				BaseConstans.wrapError("验证码不正确，请重新输入", result);
 			}
 		} catch (BadCaptchaException e) {
-			return "redirect:/register.html?error=1";
+			BaseConstans.wrapError("验证码不能为空", result);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "数据一场";
+			BaseConstans.wrapError("程序内部异常", result);
 		}
+		return JSON.toJSONString(result);
 
 	}
 }

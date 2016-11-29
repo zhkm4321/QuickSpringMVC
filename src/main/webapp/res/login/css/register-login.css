@@ -184,7 +184,7 @@ canvas {
 	margin-top: 18px;
 }
 
-#button {
+.login-btn,.register-btn {
 	width: 100%;
 	background: #0f88eb;
 	box-shadow: none;
@@ -198,7 +198,7 @@ canvas {
 	font-family: 'Microsoft Yahei';
 }
 
-#button:hover {
+.login-btn:hover,.register-btn:hover {
 	background: #80c3f7;
 }
 
