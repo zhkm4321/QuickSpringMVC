@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.wx.server.base.BaseConstans;
 import com.wx.server.base.WxKaptchaExtend;
 import com.wx.server.entity.TbUser;
-import com.wx.server.exception.BadCaptchaException;
+import com.wx.server.exception.IncorrectCaptchaException;
 import com.wx.server.service.TbUserService;
 
 @Controller
@@ -53,19 +55,40 @@ public class LoginController extends WxKaptchaExtend {
 		super.captcha(req, resp);
 	}
 
-	@RequestMapping(value = "/login/login.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/login.json", method = RequestMethod.POST)
 	@ResponseBody
 	public String login(HttpServletRequest request, TbUser user) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			TbUser login = userService.login(user);
-		} catch (Exception e) {
-			e.printStackTrace();
+		// String username = request.getParameter("username");
+		// String password = request.getParameter("password");
+		// System.out.println(username);
+		// System.out.println(password);
+		// UsernamePasswordToken token = new UsernamePasswordToken(username,
+		// password);
+		// token.setRememberMe(true);
+		// Subject subject = SecurityUtils.getSubject();
+
+		Object errorClassName = request.getAttribute("shiroLoginFailure");
+		String authticationError = null;
+		if (UnknownAccountException.class.equals(errorClassName.getClass())) {
+			authticationError = "用户名或密码错误";
+		} else if (IncorrectCredentialsException.class.equals(errorClassName.getClass())) {
+			authticationError = "用户名或密码错误";
+		} else if (IncorrectCaptchaException.class.equals(errorClassName.getClass())) {
+			authticationError = "验证码错误";
+		} else if (errorClassName != null) {
+			authticationError = "未知错误：" + errorClassName;
+		}
+		if (null != authticationError) {
+			result.put(BaseConstans.FLAG, BaseConstans.FAILE);
+			result.put("error", authticationError);
+		} else {
+			result.put(BaseConstans.FLAG, BaseConstans.SUCCESS);
 		}
 		return JSON.toJSONString(result);
 	}
 
-	@RequestMapping(value = "/login/register.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/register.json", method = RequestMethod.POST)
 	@ResponseBody
 	public String register(HttpServletRequest request, TbUser user, String password1) {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -85,7 +108,7 @@ public class LoginController extends WxKaptchaExtend {
 			} else {
 				BaseConstans.wrapError("验证码不正确，请重新输入", result);
 			}
-		} catch (BadCaptchaException e) {
+		} catch (IncorrectCaptchaException e) {
 			BaseConstans.wrapError("验证码不能为空", result);
 		} catch (Exception e) {
 			e.printStackTrace();

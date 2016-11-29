@@ -9,8 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.servlet.KaptchaExtend;
-import com.wx.server.exception.BadCaptchaException;
-import com.wx.server.utils.StringUtil;
+import com.wx.server.utils.CaptchaUtils;
 
 public abstract class WxKaptchaExtend extends KaptchaExtend {
 
@@ -56,14 +55,6 @@ public abstract class WxKaptchaExtend extends KaptchaExtend {
 	 * @return
 	 */
 	public boolean validCaptcha(HttpServletRequest request) {
-		String captcha = request.getParameter("captcha");
-		if (!StringUtil.isNullOrEmpty(captcha)) {
-			if (captcha.equals(getGeneratedKey(request))) {
-				return true;
-			}
-		} else {
-			throw new BadCaptchaException("null captcha");
-		}
-		return false;
+		return CaptchaUtils.validCaptcha(request);
 	}
 }

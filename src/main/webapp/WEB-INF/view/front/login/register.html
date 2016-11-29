@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>注册 - 知乎 - Thousands Find</title>
-	<link rel="stylesheet" type="text/css" href="res/login/css/register-login.css">
+	<link rel="stylesheet" type="text/css" href="${res}/login/css/register-login.css">
 </head>
 <body>
 <div id="box"></div>
@@ -21,7 +21,7 @@
 				<div class="slide-bar slide-bar1"></div>				
 			</div>
 		</div>
-		<form method="POST" action="${cp}/login/register.do">
+		<form id="reg_form" method="POST" action="${cp}/register.json">
 		<div class="login form">
 			<div class="group">
 				<div class="group-ipt email">
@@ -51,11 +51,12 @@
 	<p>Copyright © 2016 chezaix.com Inc. All rights reserved.</p>
 </div>
 
-<script src='res/login/javascript/particles.js' type="text/javascript"></script>
-<script src='res/login/javascript/background.js' type="text/javascript"></script>
-<script src='res/login/javascript/jquery.min.js' type="text/javascript"></script>
-<script src='res/login/javascript/layer/layer.js' type="text/javascript"></script>
-<script src='res/login/javascript/index.js' type="text/javascript"></script>
+<script src='${res}/login/javascript/particles.js' type="text/javascript"></script>
+<script src='${res}/login/javascript/background.js' type="text/javascript"></script>
+<script src='${res}/login/javascript/jquery.min.js' type="text/javascript"></script>
+<script src='${res}/login/javascript/jquery.form.js' type="text/javascript"></script>
+<script src='${res}/login/javascript/layer/layer.js' type="text/javascript"></script>
+<script src='${res}/login/javascript/index.js' type="text/javascript"></script>
 <script>
 	$('.captcha').hover(function(){
 		layer.tips("看不清？点击更换", '.verify', {
@@ -68,28 +69,23 @@
 		$(this).attr('src','${cp}/captcha.jpg?id=' + Math.random());
 	})
 
-	$(".login-btn").click(function(){
-		var email = $("#email").val();
-		var password = $("#password").val();
-		var verify = $("#verify").val();
-		// $.ajax({
-		// url: 'http://www.zrong.me/home/index/userLogin',
-		// type: 'post',
-		// jsonp: 'jsonpcallback',
-  //       jsonpCallback: "flightHandler",
-		// async: false,
-		// data: {
-		// 	'email':email,
-		// 	'password':password,
-		// 	'verify':verify
-		// },
-		// success: function(data){
-		// 	info = data.status;
-		// 	layer.msg(info);
-		// }
-		// })
-
-	})
+	$(".register-btn").click(function(){
+		var ajax_option={
+				success:loginSuccess,
+				error:loginFaile
+			}
+			$('#reg_form').ajaxSubmit(ajax_option);
+		});
+		function loginSuccess(data){
+			ajaxHandle(data,function(result){
+				redirect("${cp}/login");
+			},function(result){
+				alert(result.error)
+			})
+		}
+		function loginFaile(){
+			alert("网络异常")
+		}
 	$("#remember-me").click(function(){
 		var n = document.getElementById("remember-me").checked;
 		if(n){

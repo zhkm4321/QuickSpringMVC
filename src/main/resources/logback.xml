@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
 	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
-	<property name="LOG_HOME" value="/logs" />
+	<property name="LOG_HOME" value="D:/dev/applogs/wxserver/" />
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{80} - %msg%n</Pattern>
@@ -11,7 +11,7 @@
 	<appender name="file"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>/logs/wxserver/logs.%d{yyyy-MM-dd}.log
+			<FileNamePattern>${LOG_HOME}wxserver.%d{yyyy-MM-dd}.log
 			</FileNamePattern>
 			<MaxHistory>30</MaxHistory>
 		</rollingPolicy>
@@ -20,14 +20,20 @@
 		</encoder>
 	</appender>
 	
+	<logger name="ch.qos.logback" additivity="false">
+		<level value="ERROR" />
+		<appender-ref ref="file" />
+		<appender-ref ref="console" />
+	</logger>
+
 	<logger name="org.springframework" additivity="false">
-		<level value="INFO" />
+		<level value="ERROR" />
 		<appender-ref ref="file" />
 		<appender-ref ref="console" />
 	</logger>
 	
 	<logger name="org.mybatis.spring" additivity="false">
-		<level value="INFO" />
+		<level value="ERROR" />
 		<appender-ref ref="file" />
 		<appender-ref ref="console" />
 	</logger>

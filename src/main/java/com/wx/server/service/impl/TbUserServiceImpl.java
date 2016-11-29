@@ -1,14 +1,24 @@
 package com.wx.server.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wx.server.conf.Constants;
+import com.wx.server.dao.TbPermissionMapper;
+import com.wx.server.dao.TbRoleMapper;
 import com.wx.server.dao.TbUserMapper;
+import com.wx.server.dao.TbUserRoleMapper;
+import com.wx.server.entity.TbPermission;
+import com.wx.server.entity.TbPermissionExample;
+import com.wx.server.entity.TbRole;
+import com.wx.server.entity.TbRoleExample;
 import com.wx.server.entity.TbUser;
 import com.wx.server.entity.TbUserExample;
+import com.wx.server.entity.TbUserRole;
+import com.wx.server.entity.TbUserRoleExample;
 import com.wx.server.exception.DuplicateException;
 import com.wx.server.service.TbUserService;
 import com.wx.server.utils.DateUtil;
@@ -19,6 +29,15 @@ public class TbUserServiceImpl implements TbUserService {
 
 	@Autowired
 	TbUserMapper userMapper;
+
+	@Autowired
+	TbUserRoleMapper userRoleMapper;
+
+	@Autowired
+	TbRoleMapper roleMapper;
+
+	@Autowired
+	TbPermissionMapper permissionMapper;
 
 	@Override
 	public TbUser findTbUserByUsername(String username) {
@@ -78,6 +97,49 @@ public class TbUserServiceImpl implements TbUserService {
 	public TbUser updateUser(TbUser user) throws Exception {
 		userMapper.updateByPrimaryKey(user);
 		return user;
+	}
+
+	@Override
+	public List<TbPermission> findUserPermission(TbUser user) {
+		List<TbRole> role = findUserRole(user);
+		List<Integer> roleIds = new ArrayList<Integer>();
+		for (TbRole tbRole : role) {
+			roleIds.add(tbRole.getId());
+		}
+		TbPermissionExample example = new TbPermissionExample();
+		TbPermissionExample.Criteria criteria = example.createCriteria();
+		criteria.andRoleIdIn(roleIds);
+		return permissionMapper.selectByExample(example);
+	}
+
+	@Override
+	public List<TbRole> findUserRole(TbUser user) {
+		// 先查询关系
+		TbUserRoleExample userRoleExample = new TbUserRoleExample();
+		TbUserRoleExample.Criteria userRoleCriteria = userRoleExample.createCriteria();
+		userRoleCriteria.andUserIdEqualTo(user.getUserId());
+		List<TbUserRole> userRoles = userRoleMapper.selectByExample(userRoleExample);
+		List<Integer> roleIds = new ArrayList<Integer>();
+		for (TbUserRole tbUserRole : userRoles) {
+			roleIds.add(tbUserRole.getRoleId());
+		}
+		// 根据关系查询role
+		TbRoleExample roleExample = new TbRoleExample();
+		TbRoleExample.Criteria roleCriteria = roleExample.createCriteria();
+		roleCriteria.andIdIn(roleIds);
+		return roleMapper.selectByExample(roleExample);
+	}
+
+	@Override
+	public List<TbPermission> findUserPermissionByName(String username) {
+		TbUser user = findTbUserByUsername(username);
+		return findUserPermission(user);
+	}
+
+	@Override
+	public List<TbRole> findUserRoleByName(String username) {
+		TbUser user = findTbUserByUsername(username);
+		return findUserRole(user);
 	}
 
 }

@@ -1,72 +1,43 @@
 package com.wx.server.entity;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+public class TbRole {
+    private Integer id;
 
-public class TbRole implements Serializable {
+    private String value;
 
-	private static final long serialVersionUID = -4987248128309954399L;
+    private String name;
 
-	private Integer id;
-	private String name;
-	private Set<Permission> permissionSet = new HashSet<Permission>();
+    private Integer valid;
 
-	public TbRole() {
-		super();
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	// --------------------------------------------------------------------------------
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TbRole other = (TbRole) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    public void setValue(String value) {
+        this.value = value == null ? null : value.trim();
+    }
 
-	// --------------------------------------------------------------------------------
+    public String getName() {
+        return name;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getValid() {
+        return valid;
+    }
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<Permission> getPermissionSet() {
-		return permissionSet;
-	}
-
-	public void setPermissionSet(Set<Permission> permissionSet) {
-		this.permissionSet = permissionSet;
-	}
-
+    public void setValid(Integer valid) {
+        this.valid = valid;
+    }
 }

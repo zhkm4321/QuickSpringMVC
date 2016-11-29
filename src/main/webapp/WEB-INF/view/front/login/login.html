@@ -21,7 +21,7 @@
 				<div class="slide-bar"></div>				
 			</div>
 		</div>
-		<form id="login_form" method="POST" action="${cp}/login/login.do">
+		<form id="login_form" method="POST" action="${cp}/login.json">
 		<div class="login form">
 			<div class="group">
 				<div class="group-ipt username">
@@ -74,12 +74,26 @@
 	});
 	$("#login-btn").click(function(){
 		var ajax_option={
-			success:loginSuccess()
+			success:loginSuccess,
+			error:loginFaile
 		}
 		$('#login_form').ajaxSubmit(ajax_option);
 	});
-	function loginSuccess(){
-		
+	function loginSuccess(data){
+		ajaxHandle(data,function(result){
+			layer.open({
+				content:"登录成功",
+				end:function(){
+					redirect("${cp}/user");
+				}
+			});
+		},function(result){
+			reloadCaptcha("${cp}");
+			layer.msg(result.error);
+		})
+	}
+	function loginFaile(){
+		alert("网络异常")
 	}
 	$("#remember-me").click(function(){
 		var n = document.getElementById("remember-me").checked;

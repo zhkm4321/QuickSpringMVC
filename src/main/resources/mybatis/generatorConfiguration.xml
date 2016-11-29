@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 	<!--数据库驱动 -->
-	<classPathEntry location="D:/Develop/jar/mysql-connector-5.1.8.jar" />
+	<classPathEntry location="D:/dev/repo/maven/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar" />
 	<context id="DB2Tables" targetRuntime="MyBatis3">
 		<!-- 分页插件 -->
 		<plugin type="com.wx.server.mybatis.plugin.MySQLPaginationPlugin" />
@@ -14,7 +14,7 @@
 		</commentGenerator>
 		<!--数据库链接地址账号密码 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://localhost/ssh_db" userId="root" password="root">
+			connectionURL="jdbc:mysql://localhost/db_smvcm" userId="root" password="root">
 		</jdbcConnection>
 		<javaTypeResolver>
 			<property name="forceBigDecimals" value="false" />
@@ -90,8 +90,56 @@
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false"></table>
 		
+		<!-- 技师 -->
+		<table tableName="tb_technician" domainObjectName="TbTechnician"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 资质 -->
+		<table tableName="tb_aptitude" domainObjectName="TbAptitude"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 身份证 -->
+		<table tableName="tb_identification" domainObjectName="TbIdentification"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 文件 -->
+		<table tableName="tb_file" domainObjectName="TbFile"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 文件 -->
+		<table tableName="tb_message" domainObjectName="TbMessage"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>	
+		
 		<!-- 用户 -->
 		<table tableName="tb_user" domainObjectName="TbUser"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 用户角色关系-->
+		<table tableName="tb_user_role" domainObjectName="TbUserRole"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 角色对应权限 -->
+		<table tableName="tb_permission" domainObjectName="TbPermission"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false"></table>
+		
+		<!-- 角色 -->
+		<table tableName="tb_role" domainObjectName="TbRole"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false"></table>
