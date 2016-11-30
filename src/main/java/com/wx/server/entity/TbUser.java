@@ -1,6 +1,9 @@
 package com.wx.server.entity;
 
-public class TbUser {
+import java.io.Serializable;
+import java.util.Date;
+
+public class TbUser implements Serializable {
     private Integer userId;
 
     private String oppenId;
@@ -13,17 +16,19 @@ public class TbUser {
 
     private String headImg;
 
-    private String addTime;
-
     private Integer areaId;
 
     private String areaName;
 
     private Integer status;
 
-    private String memberTime;
+    private Date createTime;
+
+    private Date memberTime;
 
     private Integer type;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getUserId() {
         return userId;
@@ -73,14 +78,6 @@ public class TbUser {
         this.headImg = headImg == null ? null : headImg.trim();
     }
 
-    public String getAddTime() {
-        return addTime;
-    }
-
-    public void setAddTime(String addTime) {
-        this.addTime = addTime == null ? null : addTime.trim();
-    }
-
     public Integer getAreaId() {
         return areaId;
     }
@@ -105,12 +102,20 @@ public class TbUser {
         this.status = status;
     }
 
-    public String getMemberTime() {
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getMemberTime() {
         return memberTime;
     }
 
-    public void setMemberTime(String memberTime) {
-        this.memberTime = memberTime == null ? null : memberTime.trim();
+    public void setMemberTime(Date memberTime) {
+        this.memberTime = memberTime;
     }
 
     public Integer getType() {

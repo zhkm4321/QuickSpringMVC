@@ -115,63 +115,63 @@ public class TbFreightExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andFgtIdIsNull() {
-            addCriterion("fgt_id is null");
+        public Criteria andIdIsNull() {
+            addCriterion("id is null");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdIsNotNull() {
-            addCriterion("fgt_id is not null");
+        public Criteria andIdIsNotNull() {
+            addCriterion("id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdEqualTo(Integer value) {
-            addCriterion("fgt_id =", value, "fgtId");
+        public Criteria andIdEqualTo(Integer value) {
+            addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdNotEqualTo(Integer value) {
-            addCriterion("fgt_id <>", value, "fgtId");
+        public Criteria andIdNotEqualTo(Integer value) {
+            addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdGreaterThan(Integer value) {
-            addCriterion("fgt_id >", value, "fgtId");
+        public Criteria andIdGreaterThan(Integer value) {
+            addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("fgt_id >=", value, "fgtId");
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdLessThan(Integer value) {
-            addCriterion("fgt_id <", value, "fgtId");
+        public Criteria andIdLessThan(Integer value) {
+            addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdLessThanOrEqualTo(Integer value) {
-            addCriterion("fgt_id <=", value, "fgtId");
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
+            addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdIn(List<Integer> values) {
-            addCriterion("fgt_id in", values, "fgtId");
+        public Criteria andIdIn(List<Integer> values) {
+            addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdNotIn(List<Integer> values) {
-            addCriterion("fgt_id not in", values, "fgtId");
+        public Criteria andIdNotIn(List<Integer> values) {
+            addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdBetween(Integer value1, Integer value2) {
-            addCriterion("fgt_id between", value1, value2, "fgtId");
+        public Criteria andIdBetween(Integer value1, Integer value2) {
+            addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andFgtIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("fgt_id not between", value1, value2, "fgtId");
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
 

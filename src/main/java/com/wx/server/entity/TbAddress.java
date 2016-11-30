@@ -1,7 +1,9 @@
 package com.wx.server.entity;
 
-public class TbAddress {
-    private Integer addrId;
+import java.io.Serializable;
+
+public class TbAddress implements Serializable {
+    private Integer id;
 
     private String addrUser;
 
@@ -19,12 +21,14 @@ public class TbAddress {
 
     private String area;
 
-    public Integer getAddrId() {
-        return addrId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setAddrId(Integer addrId) {
-        this.addrId = addrId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getAddrUser() {

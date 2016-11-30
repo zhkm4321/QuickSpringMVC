@@ -104,17 +104,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbPermission">
-    insert into tb_permission (id, value, name, 
-      role_id, valid)
-    values (#{id,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{roleId,jdbcType=INTEGER}, #{valid,jdbcType=INTEGER})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_permission (value, name, role_id, 
+      valid)
+    values (#{value,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, 
+      #{valid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbPermission">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="value != null">
         value,
       </if>
@@ -129,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="value != null">
         #{value,jdbcType=VARCHAR},
       </if>

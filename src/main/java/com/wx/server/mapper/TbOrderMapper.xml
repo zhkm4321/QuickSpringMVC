@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wx.server.dao.TbOrderMapper">
   <resultMap id="BaseResultMap" type="com.wx.server.entity.TbOrder">
-    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
     <result column="goods_spe" jdbcType="VARCHAR" property="goodsSpe" />
     <result column="goods_price" jdbcType="VARCHAR" property="goodsPrice" />
@@ -82,8 +82,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    order_id, goods_id, goods_spe, goods_price, goods_num, goods_total, goods_total_num, 
-    addr_name, receive, cps_id, cps_name, cps_price, status, note, add_time, user_id
+    id, goods_id, goods_spe, goods_price, goods_num, goods_total, goods_total_num, addr_name, 
+    receive, cps_id, cps_name, cps_price, status, note, add_time, user_id
   </sql>
   <sql id="Blob_Column_List">
     goods_name, goods_img
@@ -129,11 +129,11 @@
     ,
     <include refid="Blob_Column_List" />
     from tb_order
-    where order_id = #{orderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_order
-    where order_id = #{orderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.wx.server.entity.TbOrderExample">
     delete from tb_order
@@ -142,27 +142,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbOrderWithBLOBs">
-    insert into tb_order (order_id, goods_id, goods_spe, 
-      goods_price, goods_num, goods_total, 
-      goods_total_num, addr_name, receive, 
-      cps_id, cps_name, cps_price, 
-      status, note, add_time, 
-      user_id, goods_name, goods_img
-      )
-    values (#{orderId,jdbcType=INTEGER}, #{goodsId,jdbcType=VARCHAR}, #{goodsSpe,jdbcType=VARCHAR}, 
-      #{goodsPrice,jdbcType=VARCHAR}, #{goodsNum,jdbcType=VARCHAR}, #{goodsTotal,jdbcType=REAL}, 
-      #{goodsTotalNum,jdbcType=INTEGER}, #{addrName,jdbcType=VARCHAR}, #{receive,jdbcType=VARCHAR}, 
-      #{cpsId,jdbcType=INTEGER}, #{cpsName,jdbcType=VARCHAR}, #{cpsPrice,jdbcType=REAL}, 
-      #{status,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, 
-      #{userId,jdbcType=VARCHAR}, #{goodsName,jdbcType=LONGVARCHAR}, #{goodsImg,jdbcType=LONGVARCHAR}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order (goods_id, goods_spe, goods_price, 
+      goods_num, goods_total, goods_total_num, 
+      addr_name, receive, cps_id, 
+      cps_name, cps_price, status, 
+      note, add_time, user_id, 
+      goods_name, goods_img)
+    values (#{goodsId,jdbcType=VARCHAR}, #{goodsSpe,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=VARCHAR}, 
+      #{goodsNum,jdbcType=VARCHAR}, #{goodsTotal,jdbcType=REAL}, #{goodsTotalNum,jdbcType=INTEGER}, 
+      #{addrName,jdbcType=VARCHAR}, #{receive,jdbcType=VARCHAR}, #{cpsId,jdbcType=INTEGER}, 
+      #{cpsName,jdbcType=VARCHAR}, #{cpsPrice,jdbcType=REAL}, #{status,jdbcType=INTEGER}, 
+      #{note,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{goodsName,jdbcType=LONGVARCHAR}, #{goodsImg,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbOrderWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="orderId != null">
-        order_id,
-      </if>
       <if test="goodsId != null">
         goods_id,
       </if>
@@ -216,9 +217,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="orderId != null">
-        #{orderId,jdbcType=INTEGER},
-      </if>
       <if test="goodsId != null">
         #{goodsId,jdbcType=VARCHAR},
       </if>
@@ -275,8 +273,8 @@
   <update id="updateByExampleSelective" parameterType="map">
     update tb_order
     <set>
-      <if test="record.orderId != null">
-        order_id = #{record.orderId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.goodsId != null">
         goods_id = #{record.goodsId,jdbcType=VARCHAR},
@@ -336,7 +334,7 @@
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_order
-    set order_id = #{record.orderId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
       goods_id = #{record.goodsId,jdbcType=VARCHAR},
       goods_spe = #{record.goodsSpe,jdbcType=VARCHAR},
       goods_price = #{record.goodsPrice,jdbcType=VARCHAR},
@@ -360,7 +358,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update tb_order
-    set order_id = #{record.orderId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
       goods_id = #{record.goodsId,jdbcType=VARCHAR},
       goods_spe = #{record.goodsSpe,jdbcType=VARCHAR},
       goods_price = #{record.goodsPrice,jdbcType=VARCHAR},
@@ -435,7 +433,7 @@
         goods_img = #{goodsImg,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where order_id = #{orderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wx.server.entity.TbOrderWithBLOBs">
     update tb_order
@@ -456,7 +454,7 @@
       user_id = #{userId,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=LONGVARCHAR},
       goods_img = #{goodsImg,jdbcType=LONGVARCHAR}
-    where order_id = #{orderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbOrder">
     update tb_order
@@ -475,6 +473,6 @@
       note = #{note,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR}
-    where order_id = #{orderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

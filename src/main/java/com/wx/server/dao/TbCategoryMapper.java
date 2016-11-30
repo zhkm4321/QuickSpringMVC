@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface TbCategoryMapper {
     int deleteByExample(TbCategoryExample example);
 
-    int deleteByPrimaryKey(Integer ctgId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(TbCategory record);
 
@@ -16,7 +16,7 @@ public interface TbCategoryMapper {
 
     List<TbCategory> selectByExample(TbCategoryExample example);
 
-    TbCategory selectByPrimaryKey(Integer ctgId);
+    TbCategory selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") TbCategory record, @Param("example") TbCategoryExample example);
 

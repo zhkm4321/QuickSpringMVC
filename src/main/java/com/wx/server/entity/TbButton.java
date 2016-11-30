@@ -1,6 +1,8 @@
 package com.wx.server.entity;
 
-public class TbButton {
+import java.io.Serializable;
+
+public class TbButton implements Serializable {
     private String id;
 
     private String name;
@@ -16,6 +18,8 @@ public class TbButton {
     private Integer sort;
 
     private Integer level;
+
+    private static final long serialVersionUID = 1L;
 
     public String getId() {
         return id;

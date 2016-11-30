@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface TbCouponsMapper {
     int deleteByExample(TbCouponsExample example);
 
-    int deleteByPrimaryKey(Integer cpsId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(TbCoupons record);
 
@@ -16,7 +16,7 @@ public interface TbCouponsMapper {
 
     List<TbCoupons> selectByExample(TbCouponsExample example);
 
-    TbCoupons selectByPrimaryKey(Integer cpsId);
+    TbCoupons selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") TbCoupons record, @Param("example") TbCouponsExample example);
 

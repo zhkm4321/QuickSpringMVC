@@ -1,9 +1,13 @@
 package com.wx.server.entity;
 
-public class TbOrderWithBLOBs extends TbOrder {
+import java.io.Serializable;
+
+public class TbOrderWithBLOBs extends TbOrder implements Serializable {
     private String goodsName;
 
     private String goodsImg;
+
+    private static final long serialVersionUID = 1L;
 
     public String getGoodsName() {
         return goodsName;

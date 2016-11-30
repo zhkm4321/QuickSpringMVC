@@ -2,7 +2,6 @@ package test.user;
 
 import org.junit.Test;
 
-import com.alibaba.fastjson.JSON;
 import com.wx.server.entity.TbUser;
 import com.wx.server.utils.DigestCoder;
 import com.wx.server.utils.HttpClientUtil;
@@ -23,14 +22,13 @@ public class TestUser {
 
 	}
 
-	//@Test
+	// @Test
 	public void Test03() {
 
 		TbUser user = new TbUser();
 		user.setUserId(23523);
 		user.setPassword(DigestCoder.MD5Encode("123456"));
-		String postJsonEntity = HttpClientUtil.postJsonEntity("http://localhost:8080/wxserver/user/login.action",
-				user);
+		String postJsonEntity = HttpClientUtil.postJsonEntity("http://localhost:8080/wxserver/user/login.action", user);
 		System.out.println(postJsonEntity);
 
 	}

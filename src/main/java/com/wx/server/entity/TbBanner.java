@@ -1,7 +1,9 @@
 package com.wx.server.entity;
 
-public class TbBanner {
-    private Integer banId;
+import java.io.Serializable;
+
+public class TbBanner implements Serializable {
+    private Integer id;
 
     private String banImg;
 
@@ -13,12 +15,14 @@ public class TbBanner {
 
     private Integer status;
 
-    public Integer getBanId() {
-        return banId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setBanId(Integer banId) {
-        this.banId = banId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getBanImg() {

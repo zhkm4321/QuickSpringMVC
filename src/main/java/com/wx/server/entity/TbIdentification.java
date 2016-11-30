@@ -1,6 +1,8 @@
 package com.wx.server.entity;
 
-public class TbIdentification {
+import java.io.Serializable;
+
+public class TbIdentification implements Serializable {
     private Integer id;
 
     private Integer userId;
@@ -8,6 +10,8 @@ public class TbIdentification {
     private Integer type;
 
     private Integer fileId;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

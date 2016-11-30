@@ -104,17 +104,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbMessage">
-    insert into tb_message (id, user_id, message, 
-      create_time, read)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{read,jdbcType=INTEGER})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_message (user_id, message, create_time, 
+      read)
+    values (#{userId,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{read,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbMessage">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_message
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="userId != null">
         user_id,
       </if>
@@ -129,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>

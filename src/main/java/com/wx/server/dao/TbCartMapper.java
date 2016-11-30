@@ -10,7 +10,7 @@ public interface TbCartMapper {
 
     int deleteByExample(TbCartExample example);
 
-    int deleteByPrimaryKey(Integer cartId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(TbCart record);
 
@@ -18,7 +18,7 @@ public interface TbCartMapper {
 
     List<TbCart> selectByExample(TbCartExample example);
 
-    TbCart selectByPrimaryKey(Integer cartId);
+    TbCart selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") TbCart record, @Param("example") TbCartExample example);
 

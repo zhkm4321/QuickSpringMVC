@@ -11,11 +11,13 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.wx.server.entity.TbPermission;
@@ -24,14 +26,11 @@ import com.wx.server.entity.TbUser;
 import com.wx.server.service.TbUserService;
 
 public class TbUserRealm extends AuthorizingRealm {
+
+	private static Logger log = LoggerFactory.getLogger(TbUserRealm.class);
+
 	@Autowired
 	private TbUserService userService;
-
-	private CredentialsMatcher credentialsMatcher;
-
-	public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
-		this.credentialsMatcher = credentialsMatcher;
-	}
 
 	/**
 	 * 授权操作
@@ -72,18 +71,20 @@ public class TbUserRealm extends AuthorizingRealm {
 
 		String username = (String) token.getPrincipal();
 		TbUser user = userService.findTbUserByUsername(username);
+		// 用户状态判断，返回不同的异常
 		if (user == null) {
 			// 木有找到用户
 			throw new UnknownAccountException("没有找到该账号");
 		}
-		if (-1 != user.getStatus()) {// 帐号锁定
+		if (-1 == user.getStatus()) {// 帐号锁定
 			throw new LockedAccountException();
 		}
 
 		/**
 		 * 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
 		 */
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(),
+				ByteSource.Util.bytes(user.getUserId().toString()), getName());
 
 		return info;
 	}

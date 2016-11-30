@@ -103,17 +103,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbAptitude">
-    insert into tb_aptitude (id, user_id, aptitude_name, 
-      file_id)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{aptitudeName,jdbcType=VARCHAR}, 
-      #{fileId,jdbcType=INTEGER})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_aptitude (user_id, aptitude_name, file_id
+      )
+    values (#{userId,jdbcType=INTEGER}, #{aptitudeName,jdbcType=VARCHAR}, #{fileId,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbAptitude">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_aptitude
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="userId != null">
         user_id,
       </if>
@@ -125,9 +128,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>

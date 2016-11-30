@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wx.server.dao.TbAddressMapper">
   <resultMap id="BaseResultMap" type="com.wx.server.entity.TbAddress">
-    <id column="addr_id" jdbcType="INTEGER" property="addrId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="addr_user" jdbcType="VARCHAR" property="addrUser" />
     <result column="addr_name" jdbcType="VARCHAR" property="addrName" />
     <result column="addr_tel" jdbcType="VARCHAR" property="addrTel" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    addr_id, addr_user, addr_name, addr_tel, user_id, sort, city, province, area
+    id, addr_user, addr_name, addr_tel, user_id, sort, city, province, area
   </sql>
   <select id="selectByExample" parameterType="com.wx.server.entity.TbAddressExample" resultMap="BaseResultMap">
     select
@@ -95,11 +95,11 @@
     select 
     <include refid="Base_Column_List" />
     from tb_address
-    where addr_id = #{addrId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_address
-    where addr_id = #{addrId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.wx.server.entity.TbAddressExample">
     delete from tb_address
@@ -108,21 +108,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbAddress">
-    insert into tb_address (addr_id, addr_user, addr_name, 
-      addr_tel, user_id, sort, 
-      city, province, area
-      )
-    values (#{addrId,jdbcType=INTEGER}, #{addrUser,jdbcType=VARCHAR}, #{addrName,jdbcType=VARCHAR}, 
-      #{addrTel,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_address (addr_user, addr_name, addr_tel, 
+      user_id, sort, city, 
+      province, area)
+    values (#{addrUser,jdbcType=VARCHAR}, #{addrName,jdbcType=VARCHAR}, #{addrTel,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbAddress">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_address
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="addrId != null">
-        addr_id,
-      </if>
       <if test="addrUser != null">
         addr_user,
       </if>
@@ -149,9 +150,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="addrId != null">
-        #{addrId,jdbcType=INTEGER},
-      </if>
       <if test="addrUser != null">
         #{addrUser,jdbcType=VARCHAR},
       </if>
@@ -181,8 +179,8 @@
   <update id="updateByExampleSelective" parameterType="map">
     update tb_address
     <set>
-      <if test="record.addrId != null">
-        addr_id = #{record.addrId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.addrUser != null">
         addr_user = #{record.addrUser,jdbcType=VARCHAR},
@@ -215,7 +213,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update tb_address
-    set addr_id = #{record.addrId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
       addr_user = #{record.addrUser,jdbcType=VARCHAR},
       addr_name = #{record.addrName,jdbcType=VARCHAR},
       addr_tel = #{record.addrTel,jdbcType=VARCHAR},
@@ -256,7 +254,7 @@
         area = #{area,jdbcType=VARCHAR},
       </if>
     </set>
-    where addr_id = #{addrId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbAddress">
     update tb_address
@@ -268,6 +266,6 @@
       city = #{city,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       area = #{area,jdbcType=VARCHAR}
-    where addr_id = #{addrId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

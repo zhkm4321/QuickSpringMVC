@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 public interface TbOrderMapper {
     int deleteByExample(TbOrderExample example);
 
-    int deleteByPrimaryKey(Integer orderId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(TbOrderWithBLOBs record);
 
@@ -19,7 +19,7 @@ public interface TbOrderMapper {
 
     List<TbOrder> selectByExample(TbOrderExample example);
 
-    TbOrderWithBLOBs selectByPrimaryKey(Integer orderId);
+    TbOrderWithBLOBs selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") TbOrderWithBLOBs record, @Param("example") TbOrderExample example);
 

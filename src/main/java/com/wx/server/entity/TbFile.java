@@ -1,8 +1,9 @@
 package com.wx.server.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbFile {
+public class TbFile implements Serializable {
     private Integer id;
 
     private Integer userId;
@@ -14,6 +15,8 @@ public class TbFile {
     private Date createTime;
 
     private Integer type;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

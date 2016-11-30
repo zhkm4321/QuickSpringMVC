@@ -110,7 +110,7 @@
 			<artifactId>mybatis-generator-core</artifactId>
 			<version>${mybatis-generator-core-version}</version>
 			<type>jar</type>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

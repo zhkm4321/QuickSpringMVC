@@ -115,63 +115,63 @@ public class TbCartExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andCartIdIsNull() {
-            addCriterion("cart_id is null");
+        public Criteria andIdIsNull() {
+            addCriterion("id is null");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdIsNotNull() {
-            addCriterion("cart_id is not null");
+        public Criteria andIdIsNotNull() {
+            addCriterion("id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdEqualTo(Integer value) {
-            addCriterion("cart_id =", value, "cartId");
+        public Criteria andIdEqualTo(Integer value) {
+            addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdNotEqualTo(Integer value) {
-            addCriterion("cart_id <>", value, "cartId");
+        public Criteria andIdNotEqualTo(Integer value) {
+            addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdGreaterThan(Integer value) {
-            addCriterion("cart_id >", value, "cartId");
+        public Criteria andIdGreaterThan(Integer value) {
+            addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("cart_id >=", value, "cartId");
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdLessThan(Integer value) {
-            addCriterion("cart_id <", value, "cartId");
+        public Criteria andIdLessThan(Integer value) {
+            addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdLessThanOrEqualTo(Integer value) {
-            addCriterion("cart_id <=", value, "cartId");
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
+            addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdIn(List<Integer> values) {
-            addCriterion("cart_id in", values, "cartId");
+        public Criteria andIdIn(List<Integer> values) {
+            addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdNotIn(List<Integer> values) {
-            addCriterion("cart_id not in", values, "cartId");
+        public Criteria andIdNotIn(List<Integer> values) {
+            addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdBetween(Integer value1, Integer value2) {
-            addCriterion("cart_id between", value1, value2, "cartId");
+        public Criteria andIdBetween(Integer value1, Integer value2) {
+            addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCartIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("cart_id not between", value1, value2, "cartId");
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
 

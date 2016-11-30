@@ -1,7 +1,9 @@
 package com.wx.server.entity;
 
-public class TbGoods {
-    private Integer goodsId;
+import java.io.Serializable;
+
+public class TbGoods implements Serializable {
+    private Integer id;
 
     private String goodsName;
 
@@ -25,12 +27,14 @@ public class TbGoods {
 
     private String goodsDetail;
 
-    public Integer getGoodsId() {
-        return goodsId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setGoodsId(Integer goodsId) {
-        this.goodsId = goodsId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getGoodsName() {

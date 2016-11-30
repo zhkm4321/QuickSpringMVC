@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface TbBannerMapper {
     int deleteByExample(TbBannerExample example);
 
-    int deleteByPrimaryKey(Integer banId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(TbBanner record);
 
@@ -16,7 +16,7 @@ public interface TbBannerMapper {
 
     List<TbBanner> selectByExample(TbBannerExample example);
 
-    TbBanner selectByPrimaryKey(Integer banId);
+    TbBanner selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") TbBanner record, @Param("example") TbBannerExample example);
 

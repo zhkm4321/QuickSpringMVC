@@ -1,18 +1,22 @@
 package com.wx.server.entity;
 
-public class TbFreight {
-    private Integer fgtId;
+import java.io.Serializable;
+
+public class TbFreight implements Serializable {
+    private Integer id;
 
     private Float fgtPrice;
 
     private Float freePrice;
 
-    public Integer getFgtId() {
-        return fgtId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setFgtId(Integer fgtId) {
-        this.fgtId = fgtId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Float getFgtPrice() {

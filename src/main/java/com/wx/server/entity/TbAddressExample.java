@@ -115,63 +115,63 @@ public class TbAddressExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andAddrIdIsNull() {
-            addCriterion("addr_id is null");
+        public Criteria andIdIsNull() {
+            addCriterion("id is null");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdIsNotNull() {
-            addCriterion("addr_id is not null");
+        public Criteria andIdIsNotNull() {
+            addCriterion("id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdEqualTo(Integer value) {
-            addCriterion("addr_id =", value, "addrId");
+        public Criteria andIdEqualTo(Integer value) {
+            addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdNotEqualTo(Integer value) {
-            addCriterion("addr_id <>", value, "addrId");
+        public Criteria andIdNotEqualTo(Integer value) {
+            addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdGreaterThan(Integer value) {
-            addCriterion("addr_id >", value, "addrId");
+        public Criteria andIdGreaterThan(Integer value) {
+            addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("addr_id >=", value, "addrId");
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdLessThan(Integer value) {
-            addCriterion("addr_id <", value, "addrId");
+        public Criteria andIdLessThan(Integer value) {
+            addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdLessThanOrEqualTo(Integer value) {
-            addCriterion("addr_id <=", value, "addrId");
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
+            addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdIn(List<Integer> values) {
-            addCriterion("addr_id in", values, "addrId");
+        public Criteria andIdIn(List<Integer> values) {
+            addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdNotIn(List<Integer> values) {
-            addCriterion("addr_id not in", values, "addrId");
+        public Criteria andIdNotIn(List<Integer> values) {
+            addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdBetween(Integer value1, Integer value2) {
-            addCriterion("addr_id between", value1, value2, "addrId");
+        public Criteria andIdBetween(Integer value1, Integer value2) {
+            addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andAddrIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("addr_id not between", value1, value2, "addrId");
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
 

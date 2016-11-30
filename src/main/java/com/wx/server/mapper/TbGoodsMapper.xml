@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wx.server.dao.TbGoodsMapper">
   <resultMap id="BaseResultMap" type="com.wx.server.entity.TbGoods">
-    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
     <result column="goods_spe" jdbcType="VARCHAR" property="goodsSpe" />
@@ -76,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    goods_id, goods_name, goods_img, goods_spe, goods_price, goods_num, add_time, ctg_id, 
-    is_recommend, status, type
+    id, goods_name, goods_img, goods_spe, goods_price, goods_num, add_time, ctg_id, is_recommend, 
+    status, type
   </sql>
   <sql id="Blob_Column_List">
     goods_detail
@@ -123,11 +123,11 @@
     ,
     <include refid="Blob_Column_List" />
     from tb_goods
-    where goods_id = #{goodsId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_goods
-    where goods_id = #{goodsId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.wx.server.entity.TbGoodsExample">
     delete from tb_goods
@@ -136,23 +136,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbGoods">
-    insert into tb_goods (goods_id, goods_name, goods_img, 
-      goods_spe, goods_price, goods_num, 
-      add_time, ctg_id, is_recommend, 
-      status, type, goods_detail
-      )
-    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, 
-      #{goodsSpe,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=REAL}, #{goodsNum,jdbcType=VARCHAR}, 
-      #{addTime,jdbcType=VARCHAR}, #{ctgId,jdbcType=INTEGER}, #{isRecommend,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{goodsDetail,jdbcType=LONGVARCHAR}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_goods (goods_name, goods_img, goods_spe, 
+      goods_price, goods_num, add_time, 
+      ctg_id, is_recommend, status, 
+      type, goods_detail)
+    values (#{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, #{goodsSpe,jdbcType=VARCHAR}, 
+      #{goodsPrice,jdbcType=REAL}, #{goodsNum,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, 
+      #{ctgId,jdbcType=INTEGER}, #{isRecommend,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{goodsDetail,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbGoods">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_goods
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="goodsId != null">
-        goods_id,
-      </if>
       <if test="goodsName != null">
         goods_name,
       </if>
@@ -188,9 +189,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="goodsId != null">
-        #{goodsId,jdbcType=INTEGER},
-      </if>
       <if test="goodsName != null">
         #{goodsName,jdbcType=VARCHAR},
       </if>
@@ -229,8 +227,8 @@
   <update id="updateByExampleSelective" parameterType="map">
     update tb_goods
     <set>
-      <if test="record.goodsId != null">
-        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.goodsName != null">
         goods_name = #{record.goodsName,jdbcType=VARCHAR},
@@ -272,7 +270,7 @@
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_goods
-    set goods_id = #{record.goodsId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       goods_img = #{record.goodsImg,jdbcType=VARCHAR},
       goods_spe = #{record.goodsSpe,jdbcType=VARCHAR},
@@ -290,7 +288,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update tb_goods
-    set goods_id = #{record.goodsId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       goods_img = #{record.goodsImg,jdbcType=VARCHAR},
       goods_spe = #{record.goodsSpe,jdbcType=VARCHAR},
@@ -342,7 +340,7 @@
         goods_detail = #{goodsDetail,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where goods_id = #{goodsId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wx.server.entity.TbGoods">
     update tb_goods
@@ -357,7 +355,7 @@
       status = #{status,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       goods_detail = #{goodsDetail,jdbcType=LONGVARCHAR}
-    where goods_id = #{goodsId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbGoods">
     update tb_goods
@@ -371,6 +369,6 @@
       is_recommend = #{isRecommend,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER}
-    where goods_id = #{goodsId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

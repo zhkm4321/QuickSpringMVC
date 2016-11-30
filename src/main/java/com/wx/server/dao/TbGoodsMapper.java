@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface TbGoodsMapper {
     int deleteByExample(TbGoodsExample example);
 
-    int deleteByPrimaryKey(Integer goodsId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(TbGoods record);
 
@@ -18,7 +18,7 @@ public interface TbGoodsMapper {
 
     List<TbGoods> selectByExample(TbGoodsExample example);
 
-    TbGoods selectByPrimaryKey(Integer goodsId);
+    TbGoods selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") TbGoods record, @Param("example") TbGoodsExample example);
 

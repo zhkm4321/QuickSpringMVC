@@ -25,7 +25,7 @@
 		<div class="login form">
 			<div class="group">
 				<div class="group-ipt email">
-					<input type="text" name="username" id="username" class="ipt" placeholder="设置您的用户名" required>
+					<input type="text" name="username" id="username" class="ipt" placeholder="真实手机号" required>
 				</div>
 				<div class="group-ipt password">
 					<input type="password" name="password" id="password" class="ipt" placeholder="设置登录密码" required>
@@ -80,11 +80,13 @@
 			ajaxHandle(data,function(result){
 				redirect("${cp}/login");
 			},function(result){
-				alert(result.error)
+				reloadCaptcha("${cp}");
+				layer.msg(result.message);
 			})
 		}
 		function loginFaile(){
-			alert("网络异常")
+			reloadCaptcha("${cp}");
+			layer.msg("网络异常")
 		}
 	$("#remember-me").click(function(){
 		var n = document.getElementById("remember-me").checked;

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wx.server.dao.TbFreightMapper">
   <resultMap id="BaseResultMap" type="com.wx.server.entity.TbFreight">
-    <id column="fgt_id" jdbcType="INTEGER" property="fgtId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="fgt_price" jdbcType="REAL" property="fgtPrice" />
     <result column="free_price" jdbcType="REAL" property="freePrice" />
   </resultMap>
@@ -65,7 +65,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    fgt_id, fgt_price, free_price
+    id, fgt_price, free_price
   </sql>
   <select id="selectByExample" parameterType="com.wx.server.entity.TbFreightExample" resultMap="BaseResultMap">
     select
@@ -89,11 +89,11 @@
     select 
     <include refid="Base_Column_List" />
     from tb_freight
-    where fgt_id = #{fgtId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_freight
-    where fgt_id = #{fgtId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.wx.server.entity.TbFreightExample">
     delete from tb_freight
@@ -102,17 +102,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbFreight">
-    insert into tb_freight (fgt_id, fgt_price, free_price
-      )
-    values (#{fgtId,jdbcType=INTEGER}, #{fgtPrice,jdbcType=REAL}, #{freePrice,jdbcType=REAL}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_freight (fgt_price, free_price)
+    values (#{fgtPrice,jdbcType=REAL}, #{freePrice,jdbcType=REAL})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbFreight">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_freight
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fgtId != null">
-        fgt_id,
-      </if>
       <if test="fgtPrice != null">
         fgt_price,
       </if>
@@ -121,9 +122,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fgtId != null">
-        #{fgtId,jdbcType=INTEGER},
-      </if>
       <if test="fgtPrice != null">
         #{fgtPrice,jdbcType=REAL},
       </if>
@@ -135,8 +133,8 @@
   <update id="updateByExampleSelective" parameterType="map">
     update tb_freight
     <set>
-      <if test="record.fgtId != null">
-        fgt_id = #{record.fgtId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.fgtPrice != null">
         fgt_price = #{record.fgtPrice,jdbcType=REAL},
@@ -151,7 +149,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update tb_freight
-    set fgt_id = #{record.fgtId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
       fgt_price = #{record.fgtPrice,jdbcType=REAL},
       free_price = #{record.freePrice,jdbcType=REAL}
     <if test="_parameter != null">
@@ -168,12 +166,12 @@
         free_price = #{freePrice,jdbcType=REAL},
       </if>
     </set>
-    where fgt_id = #{fgtId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbFreight">
     update tb_freight
     set fgt_price = #{fgtPrice,jdbcType=REAL},
       free_price = #{freePrice,jdbcType=REAL}
-    where fgt_id = #{fgtId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

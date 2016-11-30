@@ -115,63 +115,63 @@ public class TbCouponsExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andCpsIdIsNull() {
-            addCriterion("cps_id is null");
+        public Criteria andIdIsNull() {
+            addCriterion("id is null");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdIsNotNull() {
-            addCriterion("cps_id is not null");
+        public Criteria andIdIsNotNull() {
+            addCriterion("id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdEqualTo(Integer value) {
-            addCriterion("cps_id =", value, "cpsId");
+        public Criteria andIdEqualTo(Integer value) {
+            addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdNotEqualTo(Integer value) {
-            addCriterion("cps_id <>", value, "cpsId");
+        public Criteria andIdNotEqualTo(Integer value) {
+            addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdGreaterThan(Integer value) {
-            addCriterion("cps_id >", value, "cpsId");
+        public Criteria andIdGreaterThan(Integer value) {
+            addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("cps_id >=", value, "cpsId");
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdLessThan(Integer value) {
-            addCriterion("cps_id <", value, "cpsId");
+        public Criteria andIdLessThan(Integer value) {
+            addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdLessThanOrEqualTo(Integer value) {
-            addCriterion("cps_id <=", value, "cpsId");
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
+            addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdIn(List<Integer> values) {
-            addCriterion("cps_id in", values, "cpsId");
+        public Criteria andIdIn(List<Integer> values) {
+            addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdNotIn(List<Integer> values) {
-            addCriterion("cps_id not in", values, "cpsId");
+        public Criteria andIdNotIn(List<Integer> values) {
+            addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdBetween(Integer value1, Integer value2) {
-            addCriterion("cps_id between", value1, value2, "cpsId");
+        public Criteria andIdBetween(Integer value1, Integer value2) {
+            addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andCpsIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("cps_id not between", value1, value2, "cpsId");
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
 

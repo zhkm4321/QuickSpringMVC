@@ -7,6 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.wx.server.base.BaseConstans;
+import com.wx.server.entity.TbUser;
+import com.wx.server.shiro.utils.TbUserUtils;
 
 public class EvnInterceptor extends HandlerInterceptorAdapter {
 
@@ -22,6 +24,10 @@ public class EvnInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		String cp = request.getSession().getServletContext().getContextPath();
 		if (null != modelAndView) {
+			TbUser curUser = TbUserUtils.currentUser();
+			if (null != curUser) {
+				modelAndView.addObject(BaseConstans.USER_KEY, curUser);
+			}
 			modelAndView.addObject(BaseConstans.CTX_PATH, cp);
 			modelAndView.addObject(BaseConstans.RES, cp + "/res");
 			Long stime = (Long) request.getAttribute("start_time");

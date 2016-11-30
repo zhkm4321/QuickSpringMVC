@@ -8,11 +8,11 @@
     <result column="realname" jdbcType="VARCHAR" property="realname" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="head_img" jdbcType="VARCHAR" property="headImg" />
-    <result column="add_time" jdbcType="VARCHAR" property="addTime" />
     <result column="area_id" jdbcType="INTEGER" property="areaId" />
     <result column="area_name" jdbcType="VARCHAR" property="areaName" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="member_time" jdbcType="VARCHAR" property="memberTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="member_time" jdbcType="TIMESTAMP" property="memberTime" />
     <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -74,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    user_id, oppen_id, username, realname, password, head_img, add_time, area_id, area_name, 
-    status, member_time, type
+    user_id, oppen_id, username, realname, password, head_img, area_id, area_name, status, 
+    create_time, member_time, type
   </sql>
   <select id="selectByExample" parameterType="com.wx.server.entity.TbUserExample" resultMap="BaseResultMap">
     select
@@ -112,23 +112,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbUser">
-    insert into tb_user (user_id, oppen_id, username, 
-      realname, password, head_img, 
-      add_time, area_id, area_name, 
-      status, member_time, type
-      )
-    values (#{userId,jdbcType=INTEGER}, #{oppenId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{realname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, 
-      #{addTime,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, #{areaName,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{memberTime,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}
-      )
+    <selectKey keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_user (oppen_id, username, realname, 
+      password, head_img, area_id, 
+      area_name, status, create_time, 
+      member_time, type)
+    values (#{oppenId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, 
+      #{areaName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{memberTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbUser">
+    <selectKey keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
-      </if>
       <if test="oppenId != null">
         oppen_id,
       </if>
@@ -144,9 +145,6 @@
       <if test="headImg != null">
         head_img,
       </if>
-      <if test="addTime != null">
-        add_time,
-      </if>
       <if test="areaId != null">
         area_id,
       </if>
@@ -156,6 +154,9 @@
       <if test="status != null">
         status,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
       <if test="memberTime != null">
         member_time,
       </if>
@@ -164,9 +165,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
-      </if>
       <if test="oppenId != null">
         #{oppenId,jdbcType=VARCHAR},
       </if>
@@ -182,9 +180,6 @@
       <if test="headImg != null">
         #{headImg,jdbcType=VARCHAR},
       </if>
-      <if test="addTime != null">
-        #{addTime,jdbcType=VARCHAR},
-      </if>
       <if test="areaId != null">
         #{areaId,jdbcType=INTEGER},
       </if>
@@ -194,8 +189,11 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="memberTime != null">
-        #{memberTime,jdbcType=VARCHAR},
+        #{memberTime,jdbcType=TIMESTAMP},
       </if>
       <if test="type != null">
         #{type,jdbcType=INTEGER},
@@ -223,9 +221,6 @@
       <if test="record.headImg != null">
         head_img = #{record.headImg,jdbcType=VARCHAR},
       </if>
-      <if test="record.addTime != null">
-        add_time = #{record.addTime,jdbcType=VARCHAR},
-      </if>
       <if test="record.areaId != null">
         area_id = #{record.areaId,jdbcType=INTEGER},
       </if>
@@ -235,8 +230,11 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.memberTime != null">
-        member_time = #{record.memberTime,jdbcType=VARCHAR},
+        member_time = #{record.memberTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.type != null">
         type = #{record.type,jdbcType=INTEGER},
@@ -254,11 +252,11 @@
       realname = #{record.realname,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       head_img = #{record.headImg,jdbcType=VARCHAR},
-      add_time = #{record.addTime,jdbcType=VARCHAR},
       area_id = #{record.areaId,jdbcType=INTEGER},
       area_name = #{record.areaName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
-      member_time = #{record.memberTime,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      member_time = #{record.memberTime,jdbcType=TIMESTAMP},
       type = #{record.type,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -282,9 +280,6 @@
       <if test="headImg != null">
         head_img = #{headImg,jdbcType=VARCHAR},
       </if>
-      <if test="addTime != null">
-        add_time = #{addTime,jdbcType=VARCHAR},
-      </if>
       <if test="areaId != null">
         area_id = #{areaId,jdbcType=INTEGER},
       </if>
@@ -294,8 +289,11 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="memberTime != null">
-        member_time = #{memberTime,jdbcType=VARCHAR},
+        member_time = #{memberTime,jdbcType=TIMESTAMP},
       </if>
       <if test="type != null">
         type = #{type,jdbcType=INTEGER},
@@ -310,11 +308,11 @@
       realname = #{realname,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       head_img = #{headImg,jdbcType=VARCHAR},
-      add_time = #{addTime,jdbcType=VARCHAR},
       area_id = #{areaId,jdbcType=INTEGER},
       area_name = #{areaName,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      member_time = #{memberTime,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      member_time = #{memberTime,jdbcType=TIMESTAMP},
       type = #{type,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>

@@ -1,6 +1,8 @@
 package com.wx.server.entity;
 
-public class TbPermission {
+import java.io.Serializable;
+
+public class TbPermission implements Serializable {
     private Integer id;
 
     private String value;
@@ -10,6 +12,8 @@ public class TbPermission {
     private Integer roleId;
 
     private Integer valid;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

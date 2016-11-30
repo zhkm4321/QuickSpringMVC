@@ -3,6 +3,7 @@ package com.wx.server.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,11 +86,14 @@ public class TbUserServiceImpl implements TbUserService {
 
 		user.setHeadImg(Constants.DEFAULT_POSTRAITURI);
 		user.setStatus(0);
-		user.setAddTime(DateUtil.getDateStr());
-		user.setMemberTime(DateUtil.getDateStr());
+		user.setCreateTime(DateUtil.time());
 
+		String paswd = user.getPassword();
+		user.setPassword(null);
 		userMapper.insert(user);
-
+		String passwordMd5 = new Md5Hash(paswd, user.getUserId().toString()).toString();
+		user.setPassword(passwordMd5);
+		userMapper.updateByPrimaryKey(user);
 		return user;
 	}
 

@@ -1,9 +1,13 @@
 package com.wx.server.entity;
 
-public class TbTechnician {
+import java.io.Serializable;
+
+public class TbTechnician implements Serializable {
     private Integer id;
 
     private Integer userId;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

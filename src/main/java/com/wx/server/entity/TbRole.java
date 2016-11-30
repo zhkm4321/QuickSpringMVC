@@ -1,6 +1,8 @@
 package com.wx.server.entity;
 
-public class TbRole {
+import java.io.Serializable;
+
+public class TbRole implements Serializable {
     private Integer id;
 
     private String value;
@@ -8,6 +10,8 @@ public class TbRole {
     private String name;
 
     private Integer valid;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

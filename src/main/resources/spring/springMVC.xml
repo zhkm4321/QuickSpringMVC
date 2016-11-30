@@ -54,7 +54,7 @@
 		<property name="favorPathExtension" value="true"></property><!-- 这里是是否启用扩展名支持 -->
 		<property name="ignoreAcceptHeader" value="true"></property><!-- 这里是否忽略掉accept header -->
 		<property name="mediaTypes">
-			<map>  
+			<map>
 				<entry key="xml" value="application/xml"/>  
 				<entry key="json" value="application/json"/>  
 				<entry key="xls" value="application/vnd.ms-excel"/>  

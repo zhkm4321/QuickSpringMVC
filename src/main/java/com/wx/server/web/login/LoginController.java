@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,15 +26,25 @@ import com.wx.server.base.WxKaptchaExtend;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
 import com.wx.server.service.TbUserService;
+import com.wx.server.shiro.utils.TbUserUtils;
 
 @Controller
 public class LoginController extends WxKaptchaExtend {
+
+	private static Logger log = LoggerFactory.getLogger(LoginController.class);
+
 	@Autowired
 	TbUserService userService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpSession session, ModelMap mav) {
 		addCaptcha(session, mav);
+		// 注销后返回登录页
+		TbUser user = TbUserUtils.currentUser();
+		if (null != user) {
+			TbUserUtils.logout();
+			return "redirect:/login";
+		}
 		return "/login/login";
 	}
 
@@ -55,35 +67,33 @@ public class LoginController extends WxKaptchaExtend {
 		super.captcha(req, resp);
 	}
 
+	@RequestMapping(value = "/login.json", method = RequestMethod.GET)
+	public String loginPage(HttpSession session, ModelMap mav) {
+		return "redirect:/login";
+	}
+
 	@RequestMapping(value = "/login.json", method = RequestMethod.POST)
 	@ResponseBody
 	public String login(HttpServletRequest request, TbUser user) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		// String username = request.getParameter("username");
-		// String password = request.getParameter("password");
-		// System.out.println(username);
-		// System.out.println(password);
-		// UsernamePasswordToken token = new UsernamePasswordToken(username,
-		// password);
-		// token.setRememberMe(true);
-		// Subject subject = SecurityUtils.getSubject();
 
 		Object errorClassName = request.getAttribute("shiroLoginFailure");
 		String authticationError = null;
-		if (UnknownAccountException.class.equals(errorClassName.getClass())) {
-			authticationError = "用户名或密码错误";
-		} else if (IncorrectCredentialsException.class.equals(errorClassName.getClass())) {
-			authticationError = "用户名或密码错误";
-		} else if (IncorrectCaptchaException.class.equals(errorClassName.getClass())) {
-			authticationError = "验证码错误";
-		} else if (errorClassName != null) {
-			authticationError = "未知错误：" + errorClassName;
+		if (null != errorClassName) {
+			if (UnknownAccountException.class.equals(errorClassName.getClass())) {
+				authticationError = "用户名或密码错误";
+			} else if (IncorrectCredentialsException.class.equals(errorClassName.getClass())) {
+				authticationError = "用户名或密码错误";
+			} else if (IncorrectCaptchaException.class.equals(errorClassName.getClass())) {
+				authticationError = "验证码错误";
+			} else if (errorClassName != null) {
+				authticationError = "未知错误：" + errorClassName;
+			}
 		}
 		if (null != authticationError) {
-			result.put(BaseConstans.FLAG, BaseConstans.FAILE);
-			result.put("error", authticationError);
+			BaseConstans.wrapError(authticationError, result);
 		} else {
-			result.put(BaseConstans.FLAG, BaseConstans.SUCCESS);
+			BaseConstans.wrapSuccess(true, result);
 		}
 		return JSON.toJSONString(result);
 	}
@@ -95,7 +105,7 @@ public class LoginController extends WxKaptchaExtend {
 		try {
 			if (validCaptcha(request)) {
 				if (!user.getPassword().equals(password1)) {
-					BaseConstans.wrapError("两次输入密码 不一致", result);
+					BaseConstans.wrapError("两次输入密码不一致", result);
 				} else {
 					TbUser exist = userService.findTbUserByUsername(user.getUsername());
 					if (null == exist) {

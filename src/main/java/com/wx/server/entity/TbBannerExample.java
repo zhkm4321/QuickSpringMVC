@@ -115,63 +115,63 @@ public class TbBannerExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andBanIdIsNull() {
-            addCriterion("ban_id is null");
+        public Criteria andIdIsNull() {
+            addCriterion("id is null");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdIsNotNull() {
-            addCriterion("ban_id is not null");
+        public Criteria andIdIsNotNull() {
+            addCriterion("id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdEqualTo(Integer value) {
-            addCriterion("ban_id =", value, "banId");
+        public Criteria andIdEqualTo(Integer value) {
+            addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdNotEqualTo(Integer value) {
-            addCriterion("ban_id <>", value, "banId");
+        public Criteria andIdNotEqualTo(Integer value) {
+            addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdGreaterThan(Integer value) {
-            addCriterion("ban_id >", value, "banId");
+        public Criteria andIdGreaterThan(Integer value) {
+            addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("ban_id >=", value, "banId");
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdLessThan(Integer value) {
-            addCriterion("ban_id <", value, "banId");
+        public Criteria andIdLessThan(Integer value) {
+            addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdLessThanOrEqualTo(Integer value) {
-            addCriterion("ban_id <=", value, "banId");
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
+            addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdIn(List<Integer> values) {
-            addCriterion("ban_id in", values, "banId");
+        public Criteria andIdIn(List<Integer> values) {
+            addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdNotIn(List<Integer> values) {
-            addCriterion("ban_id not in", values, "banId");
+        public Criteria andIdNotIn(List<Integer> values) {
+            addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdBetween(Integer value1, Integer value2) {
-            addCriterion("ban_id between", value1, value2, "banId");
+        public Criteria andIdBetween(Integer value1, Integer value2) {
+            addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andBanIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("ban_id not between", value1, value2, "banId");
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
 

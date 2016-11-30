@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wx.server.dao.TbCartMapper">
   <resultMap id="BaseResultMap" type="com.wx.server.entity.TbCart">
-    <id column="cart_id" jdbcType="INTEGER" property="cartId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    cart_id, goods_id, goods_name, goods_img, goods_spe, goods_price, goods_num, goods_total, 
+    id, goods_id, goods_name, goods_img, goods_spe, goods_price, goods_num, goods_total, 
     user_id
   </sql>
   <select id="selectByExample" parameterType="com.wx.server.entity.TbCartExample" resultMap="BaseResultMap">
@@ -96,11 +96,11 @@
     select 
     <include refid="Base_Column_List" />
     from tb_cart
-    where cart_id = #{cartId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_cart
-    where cart_id = #{cartId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.wx.server.entity.TbCartExample">
     delete from tb_cart
@@ -109,21 +109,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wx.server.entity.TbCart">
-    insert into tb_cart (cart_id, goods_id, goods_name, 
-      goods_img, goods_spe, goods_price, 
-      goods_num, goods_total, user_id
-      )
-    values (#{cartId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, 
-      #{goodsImg,jdbcType=VARCHAR}, #{goodsSpe,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=REAL}, 
-      #{goodsNum,jdbcType=INTEGER}, #{goodsTotal,jdbcType=REAL}, #{userId,jdbcType=VARCHAR}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_cart (goods_id, goods_name, goods_img, 
+      goods_spe, goods_price, goods_num, 
+      goods_total, user_id)
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, 
+      #{goodsSpe,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=REAL}, #{goodsNum,jdbcType=INTEGER}, 
+      #{goodsTotal,jdbcType=REAL}, #{userId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.server.entity.TbCart">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_cart
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cartId != null">
-        cart_id,
-      </if>
       <if test="goodsId != null">
         goods_id,
       </if>
@@ -150,9 +151,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cartId != null">
-        #{cartId,jdbcType=INTEGER},
-      </if>
       <if test="goodsId != null">
         #{goodsId,jdbcType=INTEGER},
       </if>
@@ -188,8 +186,8 @@
   <update id="updateByExampleSelective" parameterType="map">
     update tb_cart
     <set>
-      <if test="record.cartId != null">
-        cart_id = #{record.cartId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.goodsId != null">
         goods_id = #{record.goodsId,jdbcType=INTEGER},
@@ -222,7 +220,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update tb_cart
-    set cart_id = #{record.cartId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
       goods_id = #{record.goodsId,jdbcType=INTEGER},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       goods_img = #{record.goodsImg,jdbcType=VARCHAR},
@@ -263,7 +261,7 @@
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
     </set>
-    where cart_id = #{cartId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbCart">
     update tb_cart
@@ -275,6 +273,6 @@
       goods_num = #{goodsNum,jdbcType=INTEGER},
       goods_total = #{goodsTotal,jdbcType=REAL},
       user_id = #{userId,jdbcType=VARCHAR}
-    where cart_id = #{cartId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

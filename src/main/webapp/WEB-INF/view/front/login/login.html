@@ -25,7 +25,7 @@
 		<div class="login form">
 			<div class="group">
 				<div class="group-ipt username">
-					<input type="text" name="username" id="username" class="ipt" placeholder="输入您的用户名" required>
+					<input type="text" name="username" id="username" class="ipt" placeholder="输入您的手机号" required>
 				</div>
 				<div class="group-ipt password">
 					<input type="password" name="password" id="password" class="ipt" placeholder="输入您的登录密码" required>
@@ -41,7 +41,8 @@
 		</div>
 
 		<div class="remember clearfix">
-			<label class="remember-me"><span class="icon"><span class="zt"></span></span><input type="checkbox" name="remember-me" id="remember-me" class="remember-mecheck" checked>记住我</label>
+			<input id="rememberme" name="rememberme" type="hidden" />
+			<label class="remember-me"><span class="icon"><span class="zt" style="display: none;"></span></span><input type="checkbox" name="remember-me" id="remember-me" class="remember-mecheck">记住我一周</label>
 			<label class="forgot-password">
 				<a href="#">忘记密码？</a>
 			</label>
@@ -89,17 +90,20 @@
 			});
 		},function(result){
 			reloadCaptcha("${cp}");
-			layer.msg(result.error);
+			layer.msg(result.message);
 		})
 	}
 	function loginFaile(){
-		alert("网络异常")
+		reloadCaptcha("${cp}");
+		layer.msg("网络异常")
 	}
 	$("#remember-me").click(function(){
 		var n = document.getElementById("remember-me").checked;
-		if(n){
+		if(!!n){
+			$("#rememberme").val(true);
 			$(".zt").show();
 		}else{
+			$("#rememberme").val(false);
 			$(".zt").hide();
 		}
 	});

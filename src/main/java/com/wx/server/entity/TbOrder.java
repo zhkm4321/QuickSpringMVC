@@ -1,7 +1,9 @@
 package com.wx.server.entity;
 
-public class TbOrder {
-    private Integer orderId;
+import java.io.Serializable;
+
+public class TbOrder implements Serializable {
+    private Integer id;
 
     private String goodsId;
 
@@ -33,12 +35,14 @@ public class TbOrder {
 
     private String userId;
 
-    public Integer getOrderId() {
-        return orderId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getGoodsId() {

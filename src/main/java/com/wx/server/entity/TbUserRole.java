@@ -1,11 +1,15 @@
 package com.wx.server.entity;
 
-public class TbUserRole {
+import java.io.Serializable;
+
+public class TbUserRole implements Serializable {
     private Integer id;
 
     private Integer userId;
 
     private Integer roleId;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

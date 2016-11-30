@@ -1,8 +1,9 @@
 package com.wx.server.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TbMessage {
+public class TbMessage implements Serializable {
     private Integer id;
 
     private Integer userId;
@@ -12,6 +13,8 @@ public class TbMessage {
     private Date createTime;
 
     private Integer read;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

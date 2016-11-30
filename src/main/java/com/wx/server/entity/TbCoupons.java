@@ -1,7 +1,9 @@
 package com.wx.server.entity;
 
-public class TbCoupons {
-    private Integer cpsId;
+import java.io.Serializable;
+
+public class TbCoupons implements Serializable {
+    private Integer id;
 
     private String cpsName;
 
@@ -17,12 +19,14 @@ public class TbCoupons {
 
     private Integer status;
 
-    public Integer getCpsId() {
-        return cpsId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setCpsId(Integer cpsId) {
-        this.cpsId = cpsId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCpsName() {

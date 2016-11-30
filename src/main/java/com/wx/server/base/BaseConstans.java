@@ -20,6 +20,10 @@ public class BaseConstans {
 	public static final String RES = "res";
 
 	public static final String START_TIME = "stime";
+	/**
+	 * 当前登录用户存放在model中的key
+	 */
+	public static final String USER_KEY = "user";
 
 	public static void wrapError(String message, ModelMap map) {
 		map.put(FLAG, FAILE);

@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface TbFreightMapper {
     int deleteByExample(TbFreightExample example);
 
-    int deleteByPrimaryKey(Integer fgtId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(TbFreight record);
 
@@ -16,7 +16,7 @@ public interface TbFreightMapper {
 
     List<TbFreight> selectByExample(TbFreightExample example);
 
-    TbFreight selectByPrimaryKey(Integer fgtId);
+    TbFreight selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") TbFreight record, @Param("example") TbFreightExample example);
 

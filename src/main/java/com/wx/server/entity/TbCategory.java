@@ -1,7 +1,11 @@
 package com.wx.server.entity;
 
-public class TbCategory {
-    private Integer ctgId;
+import java.io.Serializable;
+
+public class TbCategory implements Serializable {
+    private Integer id;
+
+    private Integer pid;
 
     private String ctgName;
 
@@ -11,12 +15,22 @@ public class TbCategory {
 
     private Integer sort;
 
-    public Integer getCtgId() {
-        return ctgId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setCtgId(Integer ctgId) {
-        this.ctgId = ctgId;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 
     public String getCtgName() {

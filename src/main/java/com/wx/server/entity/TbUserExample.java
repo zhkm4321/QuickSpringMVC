@@ -2,6 +2,7 @@ package com.wx.server.entity;
 
 import com.wx.server.vo.page.Page;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TbUserExample {
@@ -525,76 +526,6 @@ public class TbUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andAddTimeIsNull() {
-            addCriterion("add_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeIsNotNull() {
-            addCriterion("add_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeEqualTo(String value) {
-            addCriterion("add_time =", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeNotEqualTo(String value) {
-            addCriterion("add_time <>", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeGreaterThan(String value) {
-            addCriterion("add_time >", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeGreaterThanOrEqualTo(String value) {
-            addCriterion("add_time >=", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeLessThan(String value) {
-            addCriterion("add_time <", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeLessThanOrEqualTo(String value) {
-            addCriterion("add_time <=", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeLike(String value) {
-            addCriterion("add_time like", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeNotLike(String value) {
-            addCriterion("add_time not like", value, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeIn(List<String> values) {
-            addCriterion("add_time in", values, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeNotIn(List<String> values) {
-            addCriterion("add_time not in", values, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeBetween(String value1, String value2) {
-            addCriterion("add_time between", value1, value2, "addTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddTimeNotBetween(String value1, String value2) {
-            addCriterion("add_time not between", value1, value2, "addTime");
-            return (Criteria) this;
-        }
-
         public Criteria andAreaIdIsNull() {
             addCriterion("area_id is null");
             return (Criteria) this;
@@ -785,6 +716,66 @@ public class TbUserExample {
             return (Criteria) this;
         }
 
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
         public Criteria andMemberTimeIsNull() {
             addCriterion("member_time is null");
             return (Criteria) this;
@@ -795,62 +786,52 @@ public class TbUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeEqualTo(String value) {
+        public Criteria andMemberTimeEqualTo(Date value) {
             addCriterion("member_time =", value, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeNotEqualTo(String value) {
+        public Criteria andMemberTimeNotEqualTo(Date value) {
             addCriterion("member_time <>", value, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeGreaterThan(String value) {
+        public Criteria andMemberTimeGreaterThan(Date value) {
             addCriterion("member_time >", value, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeGreaterThanOrEqualTo(String value) {
+        public Criteria andMemberTimeGreaterThanOrEqualTo(Date value) {
             addCriterion("member_time >=", value, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeLessThan(String value) {
+        public Criteria andMemberTimeLessThan(Date value) {
             addCriterion("member_time <", value, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeLessThanOrEqualTo(String value) {
+        public Criteria andMemberTimeLessThanOrEqualTo(Date value) {
             addCriterion("member_time <=", value, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeLike(String value) {
-            addCriterion("member_time like", value, "memberTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andMemberTimeNotLike(String value) {
-            addCriterion("member_time not like", value, "memberTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andMemberTimeIn(List<String> values) {
+        public Criteria andMemberTimeIn(List<Date> values) {
             addCriterion("member_time in", values, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeNotIn(List<String> values) {
+        public Criteria andMemberTimeNotIn(List<Date> values) {
             addCriterion("member_time not in", values, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeBetween(String value1, String value2) {
+        public Criteria andMemberTimeBetween(Date value1, Date value2) {
             addCriterion("member_time between", value1, value2, "memberTime");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTimeNotBetween(String value1, String value2) {
+        public Criteria andMemberTimeNotBetween(Date value1, Date value2) {
             addCriterion("member_time not between", value1, value2, "memberTime");
             return (Criteria) this;
         }

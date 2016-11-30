@@ -1,7 +1,9 @@
 package com.wx.server.entity;
 
-public class TbCart {
-    private Integer cartId;
+import java.io.Serializable;
+
+public class TbCart implements Serializable {
+    private Integer id;
 
     private Integer goodsId;
 
@@ -19,12 +21,14 @@ public class TbCart {
 
     private String userId;
 
-    public Integer getCartId() {
-        return cartId;
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setCartId(Integer cartId) {
-        this.cartId = cartId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getGoodsId() {
