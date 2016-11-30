@@ -12,12 +12,13 @@
 + freemarker 2.3.23
 
 记住密码一周时间设置位置
+```xml
 <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 	<constructor-arg value="rememberMe" />
 	<property name="httpOnly" value="true" />
 	<property name="maxAge" value="604800" /><!-- 60*60*24*7天 -->
 </bean>
-
+```
 会话管理器5分钟用户不操作session自动失效
 <bean id="sessionManager"
 	class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
