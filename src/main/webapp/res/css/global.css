@@ -7,7 +7,7 @@
 }
 
 .global_navs .cell:before, .global_navs:after, .global_navs:before {
-	border-color: #D9DBDA
+	border-color: #D9DBDA;
 }
 
 body, html {
@@ -16,11 +16,11 @@ body, html {
 }
 
 .page, body {
-	background-color: #FBF9FE
+	background-color: #FBF9FE;
 }
 
 .container {
-	overflow: hidden
+	overflow: hidden;
 }
 
 .page {
@@ -29,17 +29,17 @@ body, html {
 }
 
 .hd {
-	padding: 2em 0
+	padding: 2em 0;
 }
 
 .page_desc {
 	text-align: center;
 	color: #888;
-	font-size: 14px
+	font-size: 14px;
 }
 
 .bd.spacing {
-	padding: 0 15px
+	padding: 0 15px;
 }
 
 .page_title {
@@ -47,35 +47,35 @@ body, html {
 	font-size: 34px;
 	color: #3CC51F;
 	font-weight: 400;
-	margin: 0 15%
+	margin: 0 15%;
 }
 
 .page.button .page_title, .page.cell .page_title {
-	color: #225FBA
+	color: #225FBA;
 }
 
 .global_navs {
-	background-color: transparent
+	background-color: transparent;
 }
 
 .page.article, .page.dialog, .page.icons, .page.msg, .page.toast {
-	background-color: #FFF
+	background-color: #FFF;
 }
 
 .global_navs .cell {
 	padding-top: .5em;
-	padding-bottom: .5em
+	padding-bottom: .5em;
 }
 
 .global_navs .icon_nav {
 	width: 28px;
 	height: 28px;
 	display: block;
-	margin-right: .7em
+	margin-right: .7em;
 }
 
 .page.button .bd {
-	padding: 0 15px
+	padding: 0 15px;
 }
 
 .page.button .button_sp_area {
@@ -84,7 +84,7 @@ body, html {
 	margin: 0 auto;
 	text-align: justify;
 	text-justify: distribute-all-lines;
-	font-size: 0
+	font-size: 0;
 }
 
 .page.button .button_sp_area:after {
@@ -95,63 +95,63 @@ body, html {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	content: "."
+	content: ".";
 }
 
 .page.cell .bd {
-	padding-bottom: 30px
+	padding-bottom: 30px;
 }
 
 .page.dialog .bd, .page.toast .bd {
-	padding: 120px 15px 0
+	padding: 120px 15px 0;
 }
 
 .page.msg .weui_msg {
-	padding-top: 30px
+	padding-top: 30px;
 }
 
 .page.article .page_title {
-	color: #DE7C23
+	color: #DE7C23;
 }
 
 .page.icons {
-	text-align: center
+	text-align: center;
 }
 
 .page.icons .page_title {
-	color: #3E24BD
+	color: #3E24BD;
 }
 
 .page.icons .bd {
 	padding: 30px 0;
-	text-align: center
+	text-align: center;
 }
 
 .page.icons .icon_sp_area {
 	padding: 10px 20px;
-	text-align: left
+	text-align: left;
 }
 
 .page.icons i {
-	margin: 0 5px 10px
+	margin: 0 5px 10px;
 }
 
 @
 -webkit-keyframes slideIn {
 	from {-webkit-transform: translate3d(100%, 0, 0);
-	transform: translate3d(100%, 0, 0)
+	transform: translate3d(100%, 0, 0);
 }
 
 to {
 	-webkit-transform: translate3d(0, 0, 0);
-	transform: translate3d(0, 0, 0)
+	transform: translate3d(0, 0, 0);
 }
 
 }
 @
 keyframes slideIn {
 	from {-webkit-transform: translate3d(100%, 0, 0);
-	transform: translate3d(100%, 0, 0)
+	transform: translate3d(100%, 0, 0);
 }
 
 to {

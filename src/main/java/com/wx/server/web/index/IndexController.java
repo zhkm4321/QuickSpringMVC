@@ -1,9 +1,12 @@
 package com.wx.server.web.index;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.wx.server.service.TbUserService;
+import com.wx.server.web.base.WxKaptchaExtend;
 
 @Controller
-public class IndexController {
+public class IndexController extends WxKaptchaExtend {
 
 	@Autowired
 	TbUserService userService;
@@ -42,5 +46,13 @@ public class IndexController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", true);
 		return JSON.toJSONString(result);
+	}
+
+	/**
+	 * captcha
+	 */
+	@RequestMapping(value = "/captcha.jpg", method = RequestMethod.GET)
+	public void captcha(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		super.captcha(req, resp);
 	}
 }

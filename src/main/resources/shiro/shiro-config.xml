@@ -83,12 +83,17 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/login=anon
+				/login.json=captcha,authc
+				/logout=logout
 				/register=anon
 				/captcha.jpg=anon
-				/login.json=captcha,authc
+				<!-- 后台 -->
+				/wxbackstage=anon
+				/wxbackstage/signup=anon
+				/wxbackstage/signup.json=captcha,authc
+				/wxbackstage/logout=logout
+				/wxbackstage/**=authc,perms["admin:manage"]<!-- 后台页面 -->
 				/user/**=user
-				/admin/**=authc,perms[admin:manage]
-				/logout=logout
 				/=user
 			</value>
 		</property>

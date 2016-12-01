@@ -37,17 +37,17 @@ public class TbUserRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		// String username = (String) getAvailablePrincipal(principals);
-		String username = (String) principals.getPrimaryPrincipal();
+		// 获取登录信息
+		TbUser user = (TbUser) principals.getPrimaryPrincipal();
 
-		List<TbRole> roleList = userService.findUserRoleByName(username);
+		List<TbRole> roleList = userService.findUserRoleByUsername(user.getUsername());
 		// 角色字的集合
 		Set<String> roles = new HashSet<String>();
 		for (Iterator<TbRole> it = roleList.iterator(); it.hasNext();) {
 			TbRole role = (TbRole) it.next();
 			roles.add(role.getValue());
 		}
-		List<TbPermission> permissionList = userService.findUserPermissionByName(username);
+		List<TbPermission> permissionList = userService.findUserPermissionByUsername(user.getUsername());
 		// 权限字的集合
 		Set<String> permissions = new HashSet<String>();
 		for (Iterator<TbPermission> it = permissionList.iterator(); it.hasNext();) {

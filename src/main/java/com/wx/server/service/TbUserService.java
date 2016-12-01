@@ -20,7 +20,7 @@ public interface TbUserService {
 
 	public List<TbRole> findUserRole(TbUser user);
 
-	public List<TbPermission> findUserPermissionByName(String username);
+	public List<TbPermission> findUserPermissionByUsername(String username);
 
-	public List<TbRole> findUserRoleByName(String username);
+	public List<TbRole> findUserRoleByUsername(String username);
 }

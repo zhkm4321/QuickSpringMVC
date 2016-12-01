@@ -17,13 +17,30 @@ public class BaseConstans {
 
 	public static final String CTX_PATH = "cp";
 
+	/**
+	 * 前台资源路径s
+	 */
 	public static final String RES = "res";
+	/**
+	 * 后台资源路径s
+	 */
+	public static final String SYSRES = "sysres";
 
 	public static final String START_TIME = "stime";
 	/**
 	 * 当前登录用户存放在model中的key
 	 */
 	public static final String USER_KEY = "user";
+
+	/**
+	 * 前台模板路径
+	 */
+	public static final String FRONT_TPL_DIR = "/front";
+
+	/**
+	 * 后台模板路径
+	 */
+	public static final String BACKSTAGE_TPL_DIR = "/admin";
 
 	public static void wrapError(String message, ModelMap map) {
 		map.put(FLAG, FAILE);

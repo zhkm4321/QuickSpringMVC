@@ -41,17 +41,17 @@ canvas {
 }
 
 .cent-box {
-	width: 300px;
-	height: 440px;
-	vertical-align: middle;
-	white-space: normal;
-	margin: 0 auto;
-	position: absolute;
-	z-index: 2;
-	left: 50%;
-	top: 50%;
-	margin-left: -150px;
-	margin-top: -220px;
+	width: 400px;
+    height: 440px;
+    vertical-align: middle;
+    white-space: normal;
+    margin: 40px auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -200px;
+    margin-left: -200px;
+    z-index: 2;
 }
 
 .register-box {
@@ -139,7 +139,7 @@ canvas {
 	float: none;
 	margin: auto;
 	text-align: left;
-	width: 300px;
+	width: 100%;
 }
 
 .form .group {

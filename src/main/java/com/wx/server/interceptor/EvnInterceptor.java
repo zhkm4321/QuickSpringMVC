@@ -35,5 +35,4 @@ public class EvnInterceptor extends HandlerInterceptorAdapter {
 		}
 		super.postHandle(request, response, handler, modelAndView);
 	}
-
 }

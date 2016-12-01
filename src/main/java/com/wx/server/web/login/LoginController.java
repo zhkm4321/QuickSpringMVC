@@ -1,12 +1,9 @@
 package com.wx.server.web.login;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -22,11 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.wx.server.base.BaseConstans;
-import com.wx.server.base.WxKaptchaExtend;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
 import com.wx.server.service.TbUserService;
 import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.web.base.WxKaptchaExtend;
 
 @Controller
 public class LoginController extends WxKaptchaExtend {
@@ -59,14 +56,6 @@ public class LoginController extends WxKaptchaExtend {
 		return "/login/register";
 	}
 
-	/**
-	 * captcha
-	 */
-	@RequestMapping(value = "/captcha.jpg", method = RequestMethod.GET)
-	public void captcha(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		super.captcha(req, resp);
-	}
-
 	@RequestMapping(value = "/login.json", method = RequestMethod.GET)
 	public String loginPage(HttpSession session, ModelMap mav) {
 		return "redirect:/login";
@@ -96,6 +85,29 @@ public class LoginController extends WxKaptchaExtend {
 			BaseConstans.wrapSuccess(true, result);
 		}
 		return JSON.toJSONString(result);
+	}
+
+	@RequestMapping(value = "/logout.json", method = RequestMethod.GET)
+	@ResponseBody
+	public String logout(HttpSession session, ModelMap mav) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			TbUserUtils.logout();
+			BaseConstans.wrapSuccess("注销成功", result);
+		} catch (Exception e) {
+			BaseConstans.wrapError("注销失败", result);
+		}
+		return JSON.toJSONString(result);
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutAndRedirect(String returnUrl, HttpSession session, ModelMap mav) {
+		try {
+			TbUserUtils.logout();
+		} catch (Exception e) {
+			BaseConstans.wrapError("注销失败", mav);
+		}
+		return "redirect:/login";
 	}
 
 	@RequestMapping(value = "/register.json", method = RequestMethod.POST)

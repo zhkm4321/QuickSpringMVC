@@ -135,13 +135,13 @@ public class TbUserServiceImpl implements TbUserService {
 	}
 
 	@Override
-	public List<TbPermission> findUserPermissionByName(String username) {
+	public List<TbPermission> findUserPermissionByUsername(String username) {
 		TbUser user = findTbUserByUsername(username);
 		return findUserPermission(user);
 	}
 
 	@Override
-	public List<TbRole> findUserRoleByName(String username) {
+	public List<TbRole> findUserRoleByUsername(String username) {
 		TbUser user = findTbUserByUsername(username);
 		return findUserRole(user);
 	}
