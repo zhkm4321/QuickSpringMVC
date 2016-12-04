@@ -6,15 +6,15 @@ import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbUser;
 
-public interface TbUserService {
+public interface UserService {
 
-	public TbUser findTbUserByUsername(String username);
+	public TbUser findUserByUsername(String username);
 
 	public TbUser login(TbUser user) throws Exception;
 
 	public TbUser register(TbUser user) throws Exception;
 
-	public TbUser updateUser(TbUser user) throws Exception;
+	public TbUser update(TbUser user) throws Exception;
 
 	public List<TbPermission> findUserPermission(TbUser user);
 

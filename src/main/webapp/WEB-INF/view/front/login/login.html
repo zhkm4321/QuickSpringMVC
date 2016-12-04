@@ -21,7 +21,7 @@
 				<div class="slide-bar"></div>				
 			</div>
 		</div>
-		<form id="login_form" method="POST" action="${cp}/login.json">
+		<form id="login_form" method="POST" action="${cp}/login">
 		<div class="login form">
 			<div class="group">
 				<div class="group-ipt username">
@@ -75,6 +75,7 @@
 	});
 	$("#login-btn").click(function(){
 		var ajax_option={
+			dataType:"json",
 			success:loginSuccess,
 			error:loginFaile
 		}
@@ -82,12 +83,7 @@
 	});
 	function loginSuccess(data){
 		ajaxHandle(data,function(result){
-			layer.open({
-				content:"登录成功",
-				end:function(){
-					redirect("${cp}/");
-				}
-			});
+			redirect("${cp}/");
 		},function(result){
 			reloadCaptcha("${cp}");
 			layer.msg(result.message);

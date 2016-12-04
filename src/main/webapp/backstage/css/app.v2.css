@@ -1434,6 +1434,7 @@ textarea.form-control {
 	width: 90px;
 	height: 40px;
 	margin-left: 10px;
+	cursor: pointer;
 }
 .radio, .checkbox {
 	display:block;

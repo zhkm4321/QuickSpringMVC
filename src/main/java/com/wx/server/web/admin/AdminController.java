@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,24 +21,33 @@ import com.alibaba.fastjson.JSON;
 import com.wx.server.base.BaseConstans;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
-import com.wx.server.service.TbUserService;
+import com.wx.server.service.UserService;
 import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.utils.TplPathUtils;
 import com.wx.server.web.base.WxKaptchaExtend;
 
 @Controller
 @RequestMapping(value = "/wxbackstage")
 public class AdminController extends WxKaptchaExtend {
 
-	@Autowired
-	TbUserService userService;
+	private static Logger log = LoggerFactory.getLogger(AdminController.class);
 
-	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup2(HttpSession session, ModelMap mav) {
+	@Autowired
+	UserService userService;
+
+	@RequestMapping(value = "/signin", method = RequestMethod.GET)
+	public String signup(HttpSession session, ModelMap mav) {
 		addCaptcha(session, mav);
-		return "/signup";
+		// 注销后返回登录页
+		TbUser user = TbUserUtils.currentUser();
+		if (null != user) {
+			TbUserUtils.logout();
+			return "redirect:/wxbackstage/signin";
+		}
+		return TplPathUtils.getBackstageTpl("/signin");
 	}
 
-	@RequestMapping(value = "/signup.json", method = RequestMethod.POST)
+	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	@ResponseBody
 	public String login(HttpServletRequest request, TbUser user) {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -74,6 +85,14 @@ public class AdminController extends WxKaptchaExtend {
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(HttpSession session, ModelMap mav) {
-		return "/index";
+
+		return TplPathUtils.getBackstageTpl("/index");
+	}
+
+	@RequestMapping(value = "/error/noright", method = RequestMethod.GET)
+	public String noRightVisit(HttpServletRequest request, ModelMap mav) {
+		log.info("来自{}的用户尝试访问无权限的页面", request.getRemoteHost());
+		mav.put("message", "您没有权限访问此页面");
+		return TplPathUtils.getBackstageTpl("/error/noright");
 	}
 }

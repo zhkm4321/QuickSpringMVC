@@ -71,8 +71,7 @@
 		<property name="contentNegotiationManager" ref="contentNegotiationManager" />
 		<property name="viewResolvers">
 			<list>
-				<ref bean="frontViewResolver" />
-				<ref bean="adminViewResolver" />
+				<ref bean="viewResolver" />
 				<ref bean="jspViewResolver" />
 			</list>
 		</property>

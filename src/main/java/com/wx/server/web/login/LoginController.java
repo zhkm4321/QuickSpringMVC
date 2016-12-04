@@ -21,8 +21,9 @@ import com.alibaba.fastjson.JSON;
 import com.wx.server.base.BaseConstans;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
-import com.wx.server.service.TbUserService;
+import com.wx.server.service.UserService;
 import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.utils.TplPathUtils;
 import com.wx.server.web.base.WxKaptchaExtend;
 
 @Controller
@@ -31,7 +32,7 @@ public class LoginController extends WxKaptchaExtend {
 	private static Logger log = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
-	TbUserService userService;
+	UserService userService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpSession session, ModelMap mav) {
@@ -42,26 +43,10 @@ public class LoginController extends WxKaptchaExtend {
 			TbUserUtils.logout();
 			return "redirect:/login";
 		}
-		return "/login/login";
+		return TplPathUtils.getFrontTpl("/login/login");
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register(Integer error, HttpSession session, ModelMap mav) {
-		if (null != error && error == 1) {
-			mav.put("message", "请填写验证码");
-		} else if (null != error && error == 2) {
-			mav.put("message", "验证码填写错误");
-		}
-		addCaptcha(session, mav);
-		return "/login/register";
-	}
-
-	@RequestMapping(value = "/login.json", method = RequestMethod.GET)
-	public String loginPage(HttpSession session, ModelMap mav) {
-		return "redirect:/login";
-	}
-
-	@RequestMapping(value = "/login.json", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public String login(HttpServletRequest request, TbUser user) {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -87,7 +72,7 @@ public class LoginController extends WxKaptchaExtend {
 		return JSON.toJSONString(result);
 	}
 
-	@RequestMapping(value = "/logout.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	@ResponseBody
 	public String logout(HttpSession session, ModelMap mav) {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -100,17 +85,18 @@ public class LoginController extends WxKaptchaExtend {
 		return JSON.toJSONString(result);
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logoutAndRedirect(String returnUrl, HttpSession session, ModelMap mav) {
-		try {
-			TbUserUtils.logout();
-		} catch (Exception e) {
-			BaseConstans.wrapError("注销失败", mav);
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String register(Integer error, HttpSession session, ModelMap mav) {
+		if (null != error && error == 1) {
+			mav.put("message", "请填写验证码");
+		} else if (null != error && error == 2) {
+			mav.put("message", "验证码填写错误");
 		}
-		return "redirect:/login";
+		addCaptcha(session, mav);
+		return TplPathUtils.getFrontTpl("/login/register");
 	}
 
-	@RequestMapping(value = "/register.json", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
 	public String register(HttpServletRequest request, TbUser user, String password1) {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -119,7 +105,7 @@ public class LoginController extends WxKaptchaExtend {
 				if (!user.getPassword().equals(password1)) {
 					BaseConstans.wrapError("两次输入密码不一致", result);
 				} else {
-					TbUser exist = userService.findTbUserByUsername(user.getUsername());
+					TbUser exist = userService.findUserByUsername(user.getUsername());
 					if (null == exist) {
 						userService.register(user);
 						BaseConstans.wrapSuccess(null, result);

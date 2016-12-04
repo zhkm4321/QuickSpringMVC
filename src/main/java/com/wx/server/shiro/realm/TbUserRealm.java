@@ -16,6 +16,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbUser;
-import com.wx.server.service.TbUserService;
+import com.wx.server.service.UserService;
 
 public class TbUserRealm extends AuthorizingRealm {
 
 	private static Logger log = LoggerFactory.getLogger(TbUserRealm.class);
 
 	@Autowired
-	private TbUserService userService;
+	private UserService userService;
 
 	/**
 	 * 授权操作
@@ -43,16 +44,20 @@ public class TbUserRealm extends AuthorizingRealm {
 		List<TbRole> roleList = userService.findUserRoleByUsername(user.getUsername());
 		// 角色字的集合
 		Set<String> roles = new HashSet<String>();
-		for (Iterator<TbRole> it = roleList.iterator(); it.hasNext();) {
-			TbRole role = (TbRole) it.next();
-			roles.add(role.getValue());
+		if (!CollectionUtils.isEmpty(roleList)) {
+			for (Iterator<TbRole> it = roleList.iterator(); it.hasNext();) {
+				TbRole role = (TbRole) it.next();
+				roles.add(role.getValue());
+			}
 		}
 		List<TbPermission> permissionList = userService.findUserPermissionByUsername(user.getUsername());
 		// 权限字的集合
 		Set<String> permissions = new HashSet<String>();
-		for (Iterator<TbPermission> it = permissionList.iterator(); it.hasNext();) {
-			TbPermission per = (TbPermission) it.next();
-			permissions.add(per.getValue());
+		if (!CollectionUtils.isEmpty(permissionList)) {
+			for (Iterator<TbPermission> it = permissionList.iterator(); it.hasNext();) {
+				TbPermission per = (TbPermission) it.next();
+				permissions.add(per.getValue());
+			}
 		}
 
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -70,7 +75,7 @@ public class TbUserRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
 		String username = (String) token.getPrincipal();
-		TbUser user = userService.findTbUserByUsername(username);
+		TbUser user = userService.findUserByUsername(username);
 		// 用户状态判断，返回不同的异常
 		if (user == null) {
 			// 木有找到用户

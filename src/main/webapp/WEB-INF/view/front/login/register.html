@@ -21,7 +21,7 @@
 				<div class="slide-bar slide-bar1"></div>				
 			</div>
 		</div>
-		<form id="reg_form" method="POST" action="${cp}/register.json">
+		<form id="reg_form" method="POST" action="${cp}/register">
 		<div class="login form">
 			<div class="group">
 				<div class="group-ipt email">
@@ -71,6 +71,7 @@
 
 	$(".register-btn").click(function(){
 		var ajax_option={
+				dataType:"json",
 				success:loginSuccess,
 				error:loginFaile
 			}
