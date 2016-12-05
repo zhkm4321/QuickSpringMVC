@@ -102,11 +102,14 @@
 				/logout=logout
 				/register=anon
 				/captcha.jpg=anon
+				/topic/index=anon
+				/topic/detail=anon
+				/topic/publish=user
 				<!-- 后台 -->
 				/wxbackstage/signin=captcha,adminAuthc
 				/wxbackstage/logout=logout
 				/wxbackstage/error/**=adminUser
-				/wxbackstage/**=adminUser,perms["admin_manager"]<!-- 后台页面 -->
+				/wxbackstage/**=adminUser,perms["admin:manager"]<!-- 后台页面 -->
 				/=user
 			</value>
 		</property>

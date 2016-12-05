@@ -13,8 +13,19 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<context:property-placeholder
-		location="classpath:freemarker/freemarker.properties" />
+	<bean id="properties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:freemarker/freemarker.properties</value>
+			</list>
+		</property>
+		<qualifier value="main" />
+	</bean>
+	
+	<bean id="propertyUtils" class="com.wx.server.utils.PropertyUtils">
+		<property name="properties" ref="properties" />
+	</bean>
 	
 	<!-- 定义FreeMarker视图解析器与属性配置 -->
 	<bean id="viewResolver"
@@ -33,6 +44,8 @@
 
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<!--获取标签配置-->
+		<property name="freemarkerVariables" value="#{propertyUtils.getBeanMap('directive.')}"/>
 		<property name="templateLoaderPath" value="/WEB-INF/view/" />
 		<property name="freemarkerSettings">
 			<props>
@@ -49,4 +62,13 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!--执行时间标签-->
+	<bean id="uuid" class="com.wx.server.web.directive.UUIDDirective"/>
+	<bean id="process_time" class="com.wx.server.web.directive.ProcessTimeDirective"/>
+	<bean id="text_cut" class="com.wx.server.web.directive.TextCutDirective"/>
+	<bean id="html_cut" class="com.wx.server.web.directive.HtmlCutDirective"/>
+	
+	<bean id="topic_list" class="com.wx.server.web.directive.TopicListDirective"/>
+	<bean id="topic_page" class="com.wx.server.web.directive.TopicPageDirective"/>
 </beans>

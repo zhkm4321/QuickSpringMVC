@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dropeffect="none" class="js  is-AppPromotionBarVisible cssanimations csstransforms csstransitions flexbox touchevents no-mobile">
+<head>
+<meta charset="utf-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>帖子</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="${res}/css/sm.css">
+<link rel="stylesheet" href="${res}/css/sm-extend.css">
+<link rel="stylesheet" href="${res}/css/global.css">
+<link rel="stylesheet" href="${res}/css/topic.css">
+</head>
+
+<body>
+  <div class="page-group">
+    <div id="page-songs-list" class="page">
+      <header class="bar bar-nav">
+        [#if 'topicIndex'!=position]
+        <a class="button button-link button-nav pull-left back" href="${cp}/topic/index">
+          <span class="icon icon-left"></span>
+          返回
+        </a>
+        [#else]
+        [/#if]
+        <h1 class="title">列表</h1>
+      </header>
+      <div class="content">
+        <div class="content-block-title">曲目列表</div>
+        <div class="list-block media-list">
+          <ul>
+            [@topic_list count='10']
+            [#list tag_list as a]
+            <li>
+              <a href="#" class="item-link item-content relative">
+                <div class="item-media">
+                  <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="80">
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">[@text_cut s=a.topicName len='20' append='...'/]</div>
+                    <div class="item-after">${a.createTime?string('MM-dd')}</div>
+                  </div>
+                  <div class="item-text pr-50">[@html_cut s=a.topicText len='900' append='...'/]</div>
+                </div>
+                <a class="absolute more" href="javascript:void(0)">展开</a>
+              </a>
+            </li>
+            [/#list]
+            [/@topic_list]
+            <li>
+              <a href="#" class="item-link item-content">
+                <div class="item-media">
+                  <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="80">
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">标题</div>
+                    <div class="item-after">$15</div>
+                  </div>
+                  <div class="item-subtitle">标题</div>
+                  <div class="item-text">此处是文本内容...</div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="item-link item-content">
+                <div class="item-media">
+                  <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="80">
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">标题</div>
+                    <div class="item-after">$15</div>
+                  </div>
+                  <div class="item-subtitle">标题</div>
+                  <div class="item-text">此处是文本内容...</div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="item-link item-content">
+                <div class="item-media">
+                  <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="80">
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">标题</div>
+                    <div class="item-after">$15</div>
+                  </div>
+                  <div class="item-subtitle">标题</div>
+                  <div class="item-text">此处是文本内容...</div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="item-link item-content">
+                <div class="item-media">
+                  <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="80">
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">标题</div>
+                    <div class="item-after">$15</div>
+                  </div>
+                  <div class="item-subtitle">标题</div>
+                  <div class="item-text">此处是文本内容...</div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="item-link item-content">
+                <div class="item-media">
+                  <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="80">
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">标题</div>
+                    <div class="item-after">$15</div>
+                  </div>
+                  <div class="item-subtitle">标题</div>
+                  <div class="item-text">此处是文本内容...</div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="item-link item-content">
+                <div class="item-media">
+                  <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="80">
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">标题</div>
+                    <div class="item-after">$15</div>
+                  </div>
+                  <div class="item-subtitle">标题</div>
+                  <div class="item-text">此处是文本内容...</div>
+                </div>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script type='text/javascript' src='${res}/js/zepto.js' charset='utf-8'></script>
+  <script type='text/javascript' src="${res}/js/sm.js" charset='utf-8'></script>
+  <script type='text/javascript' src="${res}/js/sm-extend.js" charset='utf-8'></script>
+  <script type='text/javascript' src="${res}/js/sm-city-picker.js" charset='utf-8'></script>
+  <script type='text/javascript' src="${res}/js/global.js" charset='utf-8'></script>
+</body>
+</html>

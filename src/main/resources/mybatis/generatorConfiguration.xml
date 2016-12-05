@@ -84,7 +84,7 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		</table>
 			
-		<!-- 优惠券 -->
+		<!-- 运费 -->
 		<table tableName="tb_freight" domainObjectName="TbFreight"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
@@ -106,6 +106,32 @@
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+		<!-- 问题 -->
+		<table tableName="tb_topic" domainObjectName="TbTopic"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+			<columnOverride column="topic_text" jdbcType="VARCHAR" />
+		</table>
+		
+		<!-- 关注问题用户 -->
+		<table tableName="tb_topic_keep" domainObjectName="TbTopicKeep"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+		<!-- 回复 -->
+		<table tableName="tb_reply" domainObjectName="TbReply"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+			<columnOverride column="reply_text" jdbcType="VARCHAR" />
 		</table>
 		
 		<!-- 技师 -->

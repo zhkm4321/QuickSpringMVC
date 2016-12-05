@@ -53,9 +53,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     criteria.andUsernameEqualTo(username);
     List<TbUser> users = userMapper.selectByExample(_userexample);
     if (users.size() == 1) {
-      Integer userId = users.get(0).getUserId();
-      TbUser user = getById(userId);
-      return user;
+      return users.get(0);
     }
     else {
       new DuplicateException("用户名不唯一:" + _userexample);

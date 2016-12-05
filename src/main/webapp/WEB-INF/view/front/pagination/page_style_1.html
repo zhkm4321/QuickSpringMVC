@@ -1,0 +1,78 @@
+[#assign count=3/]
+[#assign pagination=tag_pagination/]
+[#if pagination.totalPage gt 1]
+<input type="hidden" name="pageNo"/>
+<div class="fd_fenye" style="margin-left:20px;position: absolute;width:900px;margin-top:90px;">
+	<span class="fd_fenye_num">共${pagination.totalPage}页</span>
+	<!-- fd_fenye_a_disable -->
+	<a href="javascript:void(0);" class="fd_znxx_sy " onclick="_gotoPage('1');"[#if pagination.firstPage] disabled="disabled"[/#if]>首页</a>
+	[#if !pagination.firstPage]
+	<a href="javascript:void(0);" class="fd_znxx_prev " onclick="_gotoPage('${pagination.prePage}');"[#if pagination.firstPage] disabled="disabled"[/#if]>上一页</a>
+	[/#if]
+	[#if pagination.pageNo - count gt 0]
+   		[#if pagination.pageNo - count == 1]
+		<span onclick="_gotoPage('1');" >1</span>
+		[#else]
+		<span onclick="_gotoPage('1');">1</span>
+			<span>...</span>
+        [/#if]
+    [/#if]
+    [#list 1..pagination.totalPage as i]
+        [#if pagination.pageNo lt i+count]
+            [#if pagination.pageNo gt i-count]
+                <span [#if i == pagination.pageNo] class="fd_fenye_span_select" [/#if] onclick="_gotoPage('${i}');">${i}</span>
+            [/#if]
+        [/#if]
+    [/#list]
+    [#if pagination.totalPage-pagination.pageNo gt 1]
+        [#if pagination.pageNo gt (pagination.totalPage - count)]
+            [#if pagination.pageNo != (pagination.totalPage - count + 1)]
+                <span [#if pagination.totalPage == pagination.pageNo] class="fd_fenye_span_select"[/#if] onclick="_gotoPage('${pagination.totalPage}');">${pagination.totalPage} </span>
+            [/#if]
+        [#else]
+            [#if pagination.pageNo == (pagination.totalPage - count)]
+                <span [#if pagination.totalPage == pagination.pageNo] class="fd_fenye_span_select" [/#if] onclick="_gotoPage('${pagination.totalPage}');">${pagination.totalPage} </span>
+            [#else]
+                <span>...</span>
+                <span [#if pagination.totalPage == pagination.pageNo] class="fd_fenye_span_select" [/#if] onclick="_gotoPage('${pagination.totalPage}');">${pagination.totalPage}</span>
+            [/#if]
+        [/#if]
+    [/#if]
+	[#if !pagination.lastPage]
+		<a href="javascript:void(0);" class="fd_znxx_next" onclick="_gotoPage('${pagination.nextPage}');"[#if pagination.lastPage] disabled="disabled"[/#if]>下一页</a>
+	[/#if]
+	<span class="fd_fenye_input">
+		<input type="text" id="_goPs" onfocus="this.select();" onkeyup='this.value=this.value.replace(/\D/gi,"")'  maxlength="4" onkeypress="if(this.value.length>3)return false;if(event.keyCode==13){$('#_goPage').click();return false;}"/>
+	</span>
+	<a href="javascript:void(0);" class="fd_znxx_enter" onclick="_gotoPage($('#_goPs').val());"[#if pagination.totalPage==1] disabled="disabled"[/#if]>前往</a>
+</div>
+[/#if]
+<script type="text/javascript">
+    function _gotoPage(num){
+		[#if region??]
+    	 var region = "${region}";
+    	 var href = "${base}/${channel.path}/index_"+num+".jhtml?region="+region;
+    	[#else]
+    	 var href = "${base}/${channel.path}/index.jhtml";
+    	if(href.indexOf('_')==-1){
+    		href = href.replace("index", "index_"+num);
+    	}
+    	else{
+    		var dotPosition = href.indexOf('.jhtml');
+    		var linePos = href.indexOf('index_');
+    		var str = href.substring(0, linePos+6);
+    		str += num;
+    		str += href.substring(dotPosition, href.length);
+    		href = str;
+    	}
+		[/#if]
+    	 // 移除ajax参数
+    	 //href=href.replace("index", "index_"+num);
+    	 location.replace(href); 
+    }
+</script>
+<style type="text/css">
+	.fd_fenye a{
+		width:auto;
+	}
+</style>
