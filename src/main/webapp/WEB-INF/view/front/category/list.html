@@ -1,0 +1,16 @@
+[#list tag_list as categ]
+<div class="content-block-title"><a href="${cp}/topic/index?categoryId=${categ.id}">${categ.ctgName}</a></div>
+<div class="list-block">
+  <ul>
+    [#list categ.subList as subCateg]
+    <li class="item-content">
+      <div class="item-media"><i class="icon icon-f7"></i></div>
+      <div class="item-inner">
+        <div class="item-title"><a href="${cp}/topic/index?categoryId=${subCateg.id}">${subCateg.ctgName}</a></div>
+        <div class="item-after">${subCateg.count}</div>
+      </div>
+    </li>
+    [/#list]
+  </ul>
+</div>
+[/#list]

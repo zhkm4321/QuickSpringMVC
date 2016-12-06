@@ -1,4 +1,4 @@
-package com.wx.server.web.index;
+package com.wx.server.web.controller;
 
 import java.io.IOException;
 

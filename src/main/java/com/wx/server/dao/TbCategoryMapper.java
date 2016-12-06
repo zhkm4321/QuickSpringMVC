@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TbCategoryMapper {
+    long countByExample(TbCategoryExample example);
+
     int deleteByExample(TbCategoryExample example);
 
     int deleteByPrimaryKey(Integer id);

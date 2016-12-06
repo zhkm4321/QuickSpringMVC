@@ -153,6 +153,12 @@
       </if>
     </trim>
   </insert>
+  <select id="countByExample" parameterType="com.wx.server.entity.TbCategoryExample" resultType="java.lang.Long">
+    select count(*) from tb_category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
   <update id="updateByExampleSelective" parameterType="map">
     update tb_category
     <set>

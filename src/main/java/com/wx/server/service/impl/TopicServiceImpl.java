@@ -45,8 +45,27 @@ public class TopicServiceImpl extends AbstractCommonService<TbTopic> implements 
 
   @Override
   public Pagination getPageForTag(Integer categoryId, Integer userId, Integer valid, int pageNo, int pageSize) {
-    // TODO Auto-generated method stub
-    return null;
+    TbTopicExample topicExample = new TbTopicExample();
+    TbTopicExample.Criteria topicCriteria = topicExample.createCriteria();
+    if (null != categoryId) {
+      topicCriteria.andCategoryidEqualTo(categoryId);
+    }
+    if (null != userId) {
+      topicCriteria.andUserIdEqualTo(userId);
+    }
+    if (null != valid) {
+      topicCriteria.andValidEqualTo(valid);
+    }
+    Page<TbTopic> page = new Page<TbTopic>();
+    page.setPageNo(pageNo);
+    page.setPageCount(pageSize);
+    topicExample.setPage(page);
+    List<TbTopic> list = topicMapper.selectByExample(topicExample);
+    long totalCount = topicMapper.countByExample(topicExample);
+    // 再次包装
+    Pagination pagination = new Pagination(pageNo, pageSize, totalCount);
+    pagination.setList(list);
+    return pagination;
   }
 
 }

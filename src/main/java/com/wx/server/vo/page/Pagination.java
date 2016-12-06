@@ -18,7 +18,7 @@ public class Pagination extends Page implements java.io.Serializable {
    * @param pageSize 每页几条数据
    * @param totalCount 总共几条数据
    */
-  public Pagination(int pageNo, int pageSize, int totalCount) {
+  public Pagination(int pageNo, int pageSize, long totalCount) {
     super((pageNo - 1) * pageSize, pageSize, totalCount);
   }
 

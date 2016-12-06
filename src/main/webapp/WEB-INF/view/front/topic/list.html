@@ -1,0 +1,12 @@
+[@topic_list categoryId=categoryId count=count userId=userId valid=valid]
+[#list tag_list as a]
+<div class="card-header">${a.userId!} ${a.createTime?string('MM-dd')}</div>
+<div class="card-content">
+  <div class="card-inner">
+    <h3>[@text_cut s=a.topicName len='20' append='...'/]</h3>
+    <div>[@html_cut s=a.topicText len='900' append='...'/]</div>
+  </div>
+  <a class="absolute more" href="javascript:void(0)">展开</a>
+</div>
+[/#list]
+[/@topic_list]

@@ -70,7 +70,7 @@
 		
 		<!-- 商品分类 -->
 		<table tableName="tb_category" domainObjectName="TbCategory"
-			enableCountByExample="false" enableUpdateByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -94,7 +94,7 @@
 			
 		<!-- 商品 -->
 		<table tableName="tb_goods" domainObjectName="TbGoods"
-			enableCountByExample="false" enableUpdateByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -102,7 +102,7 @@
 		
 		<!-- 订单 -->
 		<table tableName="tb_order" domainObjectName="TbOrder"
-			enableCountByExample="false" enableUpdateByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -110,7 +110,7 @@
 		
 		<!-- 问题 -->
 		<table tableName="tb_topic" domainObjectName="TbTopic"
-			enableCountByExample="false" enableUpdateByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -127,7 +127,7 @@
 		
 		<!-- 回复 -->
 		<table tableName="tb_reply" domainObjectName="TbReply"
-			enableCountByExample="false" enableUpdateByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -168,7 +168,7 @@
 		
 		<!-- 文件 -->
 		<table tableName="tb_message" domainObjectName="TbMessage"
-			enableCountByExample="false" enableUpdateByExample="true"
+			enableCountByExample="ture" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>

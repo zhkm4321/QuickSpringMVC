@@ -7,6 +7,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TbOrderMapper {
+    long countByExample(TbOrderExample example);
+
     int deleteByExample(TbOrderExample example);
 
     int deleteByPrimaryKey(Integer id);

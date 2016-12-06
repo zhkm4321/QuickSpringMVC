@@ -22,3 +22,13 @@
 .pr-50{
 	padding-right: 50px;
 }
+.right_but_area{
+	height:100%;
+	line-height: 2.2rem;
+	float: right;
+}
+.right_but_area a,.right_but_area a:ACTIVE,.right_but_area a:VISITED{
+	color:#fff;
+	background: #0965e1;
+	padding: 0.2rem 1rem;
+}

@@ -67,8 +67,8 @@ public abstract class AbstractCommonService<T> implements CommonService {
 
   @Override
   public <T extends Serializable> List<T> listAll() {
-    // TODO Auto-generated method stub
-    return null;
+    Object object = invoke("selectByExample", null);
+    return (List<T>) object;
   }
 
   @Override

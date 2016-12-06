@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TbTopicMapper {
+    long countByExample(TbTopicExample example);
+
     int deleteByExample(TbTopicExample example);
 
     int deleteByPrimaryKey(Integer id);

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.server.dao.statistic.VCategoryTopicCountMapper">
+  <resultMap id="BaseResultMap" type="com.wx.server.entity.statistic.VCategoryTopicCount">
+    <result column="categoryId" jdbcType="INTEGER" property="categoryId" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+  </resultMap>
+  <select id="selectCategoryTopicCount" resultMap="BaseResultMap">
+    SELECT
+		t1.categoryId, COUNT(t1.id) as count
+	FROM
+		tb_topic t1 LEFT JOIN tb_category t2 on t1.categoryId=t2.id
+	GROUP BY
+		categoryId
+	HAVING
+		categoryId IN (
+			SELECT
+				id
+			FROM
+				tb_category
+			WHERE
+				pid IS NOT NULL
+		)
+  </select>
+</mapper>

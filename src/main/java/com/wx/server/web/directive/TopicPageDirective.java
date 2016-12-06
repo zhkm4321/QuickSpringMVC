@@ -38,7 +38,7 @@ public class TopicPageDirective implements TemplateDirectiveModel {
   /**
    * 是否有效
    */
-  private static final String PARAM_VALID = "valid";
+  public static final String PARAM_VALID = "valid";
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
