@@ -5,7 +5,7 @@ import java.util.List;
 import com.wx.server.entity.TbTopic;
 import com.wx.server.vo.page.Pagination;
 
-public interface TopicService {
+public interface TopicService extends CommonService {
 
   List<TbTopic> getListForTag(Integer categoryId, Integer userId, Integer valid, int count);
 

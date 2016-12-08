@@ -48,7 +48,7 @@ public class TopicServiceImpl extends AbstractCommonService<TbTopic> implements 
     TbTopicExample topicExample = new TbTopicExample();
     TbTopicExample.Criteria topicCriteria = topicExample.createCriteria();
     if (null != categoryId) {
-      topicCriteria.andCategoryidEqualTo(categoryId);
+      topicCriteria.andCategoryIdEqualTo(categoryId);
     }
     if (null != userId) {
       topicCriteria.andUserIdEqualTo(userId);

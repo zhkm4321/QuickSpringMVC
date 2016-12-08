@@ -3,8 +3,12 @@ package com.wx.server.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -45,6 +49,10 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
 
   @Autowired
   TbPermissionMapper permissionMapper;
+
+  @Autowired
+  @Qualifier("credentialsMatcher")
+  HashedCredentialsMatcher credentialsMatcher;
 
   @Override
   public TbUser findUserByUsername(String username) {
@@ -157,6 +165,40 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   public List<TbRole> findUserRoleByUsername(String username) {
     TbUser user = findUserByUsername(username);
     return findUserRole(user);
+  }
+
+  @Override
+  public boolean isPasswordValid(Integer userId, String origPwd) {
+    TbUser user = userMapper.selectByPrimaryKey(userId);
+    String dbPwd = user.getPassword();
+    String hashPwd = new SimpleHash("md5", origPwd, ByteSource.Util.bytes(userId.toString())).toHex();
+    if (dbPwd.equals(hashPwd)) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public int isNewPasswordValid(String newpwd) {
+    // 复杂（同时包含数字，字母，特殊符号）
+    String level3 = "^^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*_-]+$)(?![a-zA-z\\d]+$)(?![a-zA-z!@#$%^&*_-]+$)(?![\\d!@#$%^&*_-]+$)[a-zA-Z\\d!@#$%^&*_-]+$";
+    // 中级（包含字母和数字）
+    String level2 = "^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*]+$)[a-zA-Z\\d!@#$%^&*]+$";
+    // 简单（只包含数字或字母）
+    String level1 = "^(?:\\d+|[a-zA-Z]+|[!@#$%^&*]+)$";
+
+    if (newpwd.matches(level3)) {
+      return 3;
+    }
+    else if (newpwd.matches(level2)) {
+      return 2;
+    }
+    else if (newpwd.matches(level1)) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
 
 }

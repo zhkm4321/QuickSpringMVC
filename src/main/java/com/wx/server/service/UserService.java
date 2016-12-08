@@ -23,4 +23,21 @@ public interface UserService extends CommonService {
   public List<TbPermission> findUserPermissionByUsername(String username);
 
   public List<TbRole> findUserRoleByUsername(String username);
+
+  /**
+   * 密码与用户是否对应
+   * 
+   * @param userId
+   * @param origPwd
+   * @return
+   */
+  public boolean isPasswordValid(Integer userId, String origPwd);
+
+  /**
+   * 新密码是否满足复杂度要求
+   * 
+   * @param newpwd
+   * @return
+   */
+  public int isNewPasswordValid(String newpwd);
 }

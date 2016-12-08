@@ -3,7 +3,7 @@
 <mapper namespace="com.wx.server.dao.TbTopicMapper">
   <resultMap id="BaseResultMap" type="com.wx.server.entity.TbTopic">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="categoryId" jdbcType="INTEGER" property="categoryid" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
     <result column="topic_name" jdbcType="VARCHAR" property="topicName" />
     <result column="topic_text" jdbcType="VARCHAR" property="topicText" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, categoryId, topic_name, topic_text, create_time, update_time, user_id, last_replay_user_id, 
+    id, category_id, topic_name, topic_text, create_time, update_time, user_id, last_replay_user_id, 
     last_replay_time, reply_count, click_count, keep_count, valid
   </sql>
   <select id="selectByExample" parameterType="com.wx.server.entity.TbTopicExample" resultMap="BaseResultMap">
@@ -116,12 +116,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_topic (categoryId, topic_name, topic_text, 
+    insert into tb_topic (category_id, topic_name, topic_text, 
       create_time, update_time, user_id, 
       last_replay_user_id, last_replay_time, reply_count, 
       click_count, keep_count, valid
       )
-    values (#{categoryid,jdbcType=INTEGER}, #{topicName,jdbcType=VARCHAR}, #{topicText,jdbcType=VARCHAR}, 
+    values (#{categoryId,jdbcType=INTEGER}, #{topicName,jdbcType=VARCHAR}, #{topicText,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, 
       #{lastReplayUserId,jdbcType=INTEGER}, #{lastReplayTime,jdbcType=TIMESTAMP}, #{replyCount,jdbcType=INTEGER}, 
       #{clickCount,jdbcType=INTEGER}, #{keepCount,jdbcType=INTEGER}, #{valid,jdbcType=INTEGER}
@@ -133,8 +133,8 @@
     </selectKey>
     insert into tb_topic
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="categoryid != null">
-        categoryId,
+      <if test="categoryId != null">
+        category_id,
       </if>
       <if test="topicName != null">
         topic_name,
@@ -171,8 +171,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="categoryid != null">
-        #{categoryid,jdbcType=INTEGER},
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
       </if>
       <if test="topicName != null">
         #{topicName,jdbcType=VARCHAR},
@@ -221,8 +221,8 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.categoryid != null">
-        categoryId = #{record.categoryid,jdbcType=INTEGER},
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=INTEGER},
       </if>
       <if test="record.topicName != null">
         topic_name = #{record.topicName,jdbcType=VARCHAR},
@@ -265,7 +265,7 @@
   <update id="updateByExample" parameterType="map">
     update tb_topic
     set id = #{record.id,jdbcType=INTEGER},
-      categoryId = #{record.categoryid,jdbcType=INTEGER},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
       topic_name = #{record.topicName,jdbcType=VARCHAR},
       topic_text = #{record.topicText,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -284,8 +284,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wx.server.entity.TbTopic">
     update tb_topic
     <set>
-      <if test="categoryid != null">
-        categoryId = #{categoryid,jdbcType=INTEGER},
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
       </if>
       <if test="topicName != null">
         topic_name = #{topicName,jdbcType=VARCHAR},
@@ -325,7 +325,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.server.entity.TbTopic">
     update tb_topic
-    set categoryId = #{categoryid,jdbcType=INTEGER},
+    set category_id = #{categoryId,jdbcType=INTEGER},
       topic_name = #{topicName,jdbcType=VARCHAR},
       topic_text = #{topicText,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

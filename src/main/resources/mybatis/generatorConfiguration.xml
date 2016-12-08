@@ -100,6 +100,15 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		</table>
 		
+		<!-- 服务 -->
+		<table tableName="tb_service" domainObjectName="TbService"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+			<columnOverride column="service_desc" jdbcType="VARCHAR" />
+		</table>
+		
 		<!-- 订单 -->
 		<table tableName="tb_order" domainObjectName="TbOrder"
 			enableCountByExample="true" enableUpdateByExample="true"

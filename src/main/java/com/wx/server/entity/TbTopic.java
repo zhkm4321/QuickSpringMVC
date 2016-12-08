@@ -6,7 +6,7 @@ import java.util.Date;
 public class TbTopic implements Serializable {
     private Integer id;
 
-    private Integer categoryid;
+    private Integer categoryId;
 
     private String topicName;
 
@@ -40,12 +40,12 @@ public class TbTopic implements Serializable {
         this.id = id;
     }
 
-    public Integer getCategoryid() {
-        return categoryid;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryid(Integer categoryid) {
-        this.categoryid = categoryid;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getTopicName() {

@@ -4,26 +4,13 @@ import org.springframework.stereotype.Service;
 
 import com.wx.server.entity.TbGoods;
 import com.wx.server.service.GoodsService;
+import com.wx.server.service.abs.AbstractCommonService;
 
 @Service
-public class GoodsServiceImpl implements GoodsService {
+public class GoodsServiceImpl extends AbstractCommonService<TbGoods> implements GoodsService {
 
-  @Override
-  public TbGoods saveGoods(TbGoods goods) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public TbGoods updateGoods(TbGoods goods) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void deleteGoods(TbGoods goods) {
-    // TODO Auto-generated method stub
-
+  public GoodsServiceImpl() {
+    super(TbGoods.class);
   }
 
 }
