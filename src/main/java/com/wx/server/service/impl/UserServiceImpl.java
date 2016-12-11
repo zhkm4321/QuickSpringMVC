@@ -3,6 +3,8 @@ package com.wx.server.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -10,6 +12,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 
 import com.wx.server.conf.Constants;
@@ -29,7 +32,8 @@ import com.wx.server.exception.DuplicateException;
 import com.wx.server.service.UserService;
 import com.wx.server.service.abs.AbstractCommonService;
 import com.wx.server.utils.DateUtil;
-import com.wx.server.utils.StringUtil;
+import com.wx.server.utils.StringUtils;
+import com.wx.server.utils.TplPathUtils;
 
 @Service
 public class UserServiceImpl extends AbstractCommonService<TbUser> implements UserService {
@@ -79,7 +83,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
       throw new Exception("用户不存在");
     }
 
-    if (!StringUtil.equal(_user.getPassword(), user.getPassword())) {
+    if (!StringUtils.equal(_user.getPassword(), user.getPassword())) {
       throw new Exception("密码错误");
     }
 
@@ -90,7 +94,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   @Override
   public TbUser register(TbUser user) throws Exception {
 
-    if (StringUtil.isNullOrEmpty(user.getPassword()) || StringUtil.isNullOrEmpty(user.getUsername())) {
+    if (StringUtils.isNullOrEmpty(user.getPassword()) || StringUtils.isNullOrEmpty(user.getUsername())) {
       throw new Exception("注册失败，用户名或密码不能为空");
     }
 
@@ -110,6 +114,10 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     user.setPassword(passwordMd5);
     userMapper.updateByPrimaryKey(user);
     return user;
+  }
+
+  public String registerTechnician(HttpSession session, ModelMap model) {
+    return TplPathUtils.getFrontTpl("/login/register_technician");
   }
 
   @Override

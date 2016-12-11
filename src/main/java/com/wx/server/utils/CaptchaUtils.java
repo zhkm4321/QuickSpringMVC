@@ -14,7 +14,7 @@ public class CaptchaUtils {
 	 */
 	public static boolean validCaptcha(HttpServletRequest request) {
 		String captcha = request.getParameter("captcha");
-		if (!StringUtil.isNullOrEmpty(captcha)) {
+		if (!StringUtils.isNullOrEmpty(captcha)) {
 			if (captcha.equals(getGeneratedKey(request))) {
 				return true;
 			}

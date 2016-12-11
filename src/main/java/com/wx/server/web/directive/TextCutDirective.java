@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-import com.wx.server.utils.StringUtil;
+import com.wx.server.utils.StringUtils;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -33,7 +33,7 @@ public class TextCutDirective implements TemplateDirectiveModel {
     if (s != null) {
       Writer out = env.getOut();
       if (len != null) {
-        out.append(StringUtil.textCut(s, len, append));
+        out.append(StringUtils.textCut(s, len, append));
       }
       else {
         out.append(s);

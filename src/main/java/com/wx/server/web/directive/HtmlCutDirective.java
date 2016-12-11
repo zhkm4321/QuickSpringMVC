@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-import com.wx.server.utils.StringUtil;
+import com.wx.server.utils.StringUtils;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -38,9 +38,9 @@ public class HtmlCutDirective implements TemplateDirectiveModel {
       if (len != null) {
         if (q != null)
           out.append(
-              StringUtil.htmlCut(s, len, append).replaceAll(q, "<span class='fd_color_d94d4c'>" + q + "</span>"));
+              StringUtils.htmlCut(s, len, append).replaceAll(q, "<span class='fd_color_d94d4c'>" + q + "</span>"));
         else
-          out.append(StringUtil.htmlCut(s, len, append));
+          out.append(StringUtils.htmlCut(s, len, append));
       }
       else {
         out.append(s);

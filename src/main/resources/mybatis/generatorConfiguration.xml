@@ -11,7 +11,6 @@
 		
 		<commentGenerator>
 			<property name="suppressDate" value="true" />
-			<property name="suppressAllComments" value="true" />
 		</commentGenerator>
 		<!--数据库链接地址账号密码 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
@@ -109,6 +108,24 @@
 			<columnOverride column="service_desc" jdbcType="VARCHAR" />
 		</table>
 		
+		<!-- 修理店商铺 -->
+		<table tableName="tb_repair_shop" domainObjectName="TbRepairShop"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+			<columnOverride column="shop_description" jdbcType="VARCHAR" />
+		</table>
+		
+		<!-- 预约 -->
+		<table tableName="tb_appointment" domainObjectName="TbAppointment"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+			<columnOverride column="status_info" jdbcType="VARCHAR" />
+		</table>
+		
 		<!-- 订单 -->
 		<table tableName="tb_order" domainObjectName="TbOrder"
 			enableCountByExample="true" enableUpdateByExample="true"
@@ -145,6 +162,14 @@
 		
 		<!-- 技师 -->
 		<table tableName="tb_technician" domainObjectName="TbTechnician"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+		<!-- 技师 评论-->
+		<table tableName="tb_technician_comment" domainObjectName="TbTechnicianComment"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
@@ -213,6 +238,15 @@
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+		<!-- 全局配置 -->
+		<table tableName="tb_config" domainObjectName="TbConfig"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="true">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+			<columnOverride column="config_value" jdbcType="VARCHAR" />
 		</table>
 		
 	</context>

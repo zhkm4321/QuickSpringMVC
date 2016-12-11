@@ -4,9 +4,8 @@ import org.htmlparser.Node;
 import org.htmlparser.lexer.Lexer;
 import org.htmlparser.nodes.TextNode;
 import org.htmlparser.util.ParserException;
-import org.springframework.util.StringUtils;
 
-public abstract class StringUtil {
+public class StringUtils extends org.apache.commons.lang.StringUtils {
 
   public static boolean isNullOrEmpty(String string) {
 

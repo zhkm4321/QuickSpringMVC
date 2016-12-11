@@ -20,25 +20,26 @@ import com.wx.server.web.base.WxKaptchaExtend;
 @Controller
 public class IndexController extends WxKaptchaExtend {
 
-	@Autowired
-	UserService userService;
+  @Autowired
+  UserService userService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String root(HttpServletRequest request, HttpSession session, ModelMap model) {
-		model.put("index", "html");
-		return TplPathUtils.getFrontTpl("/index");
-	}
+  @RequestMapping(value = "/", method = RequestMethod.GET)
+  public String root(HttpServletRequest request, HttpSession session, ModelMap model) {
+    model.put("index", "html");
+    return TplPathUtils.getFrontTpl("/index");
+  }
 
-	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
-	public String index(HttpServletRequest request, HttpSession session, ModelMap model) {
-		return root(request, session, model);
-	}
+  @RequestMapping(value = "/index.html", method = RequestMethod.GET)
+  public String index(HttpServletRequest request, HttpSession session, ModelMap model) {
+    return root(request, session, model);
+  }
 
-	/**
-	 * captcha
-	 */
-	@RequestMapping(value = "/captcha.jpg", method = RequestMethod.GET)
-	public void captcha(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		super.captcha(req, resp);
-	}
+  /**
+   * captcha
+   */
+  @RequestMapping(value = "/captcha.jpg", method = RequestMethod.GET)
+  public void captcha(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    super.captcha(req, resp);
+  }
+
 }

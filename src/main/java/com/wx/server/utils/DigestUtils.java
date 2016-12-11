@@ -3,7 +3,7 @@ package com.wx.server.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public abstract class DigestCoder {
+public abstract class DigestUtils {
 
 	/**
 	 * MD5加密

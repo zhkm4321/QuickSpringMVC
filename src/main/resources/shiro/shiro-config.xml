@@ -98,19 +98,25 @@
 			<value>
 				<!-- 前台 -->
 				/user/**=user
+				/service/**=user
+				/topic/publish=user
+				/=user
+				
 				/login=captcha,authc
+				
 				/logout=logout
+
 				/register=anon
 				/captcha.jpg=anon
 				/topic/index=anon
 				/topic/detail=anon
-				/topic/publish=user
 				<!-- 后台 -->
 				/wxbackstage/signin=captcha,adminAuthc
 				/wxbackstage/logout=logout
 				/wxbackstage/error/**=adminUser
 				/wxbackstage/**=adminUser,perms["admin:manager"]<!-- 后台页面 -->
-				/=user
+
+				/authByWechat=anon
 			</value>
 		</property>
 	</bean>

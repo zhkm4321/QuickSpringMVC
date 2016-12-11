@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50634
 File Encoding         : 65001
 
-Date: 2016-11-25 20:18:13
+Date: 2016-12-11 21:06:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_address`;
 CREATE TABLE `tb_address` (
-  `addr_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '地址ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '地址ID',
   `addr_user` varchar(255) DEFAULT NULL COMMENT '收件人姓名',
   `addr_name` varchar(255) DEFAULT NULL COMMENT '地址',
   `addr_tel` varchar(255) DEFAULT NULL COMMENT '收件人电话',
@@ -29,7 +29,7 @@ CREATE TABLE `tb_address` (
   `city` varchar(255) DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
   `area` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`addr_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -102,17 +102,65 @@ INSERT INTO `tb_address` VALUES ('78', '哈哈', '4444', '13184222222', '186', n
 INSERT INTO `tb_address` VALUES ('79', '我', '你们都', '19398273728', '204', null, '1', '16', '2');
 
 -- ----------------------------
+-- Table structure for tb_appointment
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_appointment`;
+CREATE TABLE `tb_appointment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '预约ID',
+  `service_id` int(11) NOT NULL COMMENT '关联服务ID',
+  `user_id` int(255) NOT NULL COMMENT '预约用户',
+  `phone` varchar(255) NOT NULL COMMENT '预约电话',
+  `note` varchar(255) DEFAULT NULL,
+  `amount` double(10,2) NOT NULL COMMENT '费用',
+  `repair_shop_id` varchar(255) DEFAULT NULL COMMENT '汽修店关联ID',
+  `shop_tel` varchar(255) DEFAULT NULL COMMENT '商户电话',
+  `address` varchar(255) DEFAULT NULL COMMENT '服务地点',
+  `province` varchar(255) NOT NULL COMMENT '服务省份',
+  `city` varchar(255) NOT NULL COMMENT '服务所在地城市',
+  `area` varchar(255) NOT NULL COMMENT '服务所在区域',
+  `status` int(255) NOT NULL COMMENT '预约进度',
+  `status_info` longtext COMMENT '进度文本信息',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_appointment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tb_aptitude
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_aptitude`;
+CREATE TABLE `tb_aptitude` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL COMMENT '关联用户ID',
+  `aptitude_name` varchar(255) DEFAULT NULL,
+  `file_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_aptitude_file_id` (`file_id`),
+  KEY `fk_aptitude_user_id` (`user_id`),
+  CONSTRAINT `fk_aptitude_file_id` FOREIGN KEY (`file_id`) REFERENCES `tb_file` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_aptitude_user_id` FOREIGN KEY (`user_id`) REFERENCES `tb_user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_aptitude
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for tb_banner
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_banner`;
 CREATE TABLE `tb_banner` (
-  `ban_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '广告ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '广告ID',
   `ban_img` varchar(255) DEFAULT NULL COMMENT '广告图片',
   `url` varchar(255) DEFAULT NULL COMMENT '链接地址',
   `sort` int(11) DEFAULT NULL COMMENT '链接排序',
   `type` int(11) DEFAULT NULL COMMENT '链接类型',
   `status` int(11) DEFAULT NULL COMMENT '是否有效',
-  PRIMARY KEY (`ban_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -162,7 +210,7 @@ INSERT INTO `tb_button` VALUES ('1474170107783', 'index', 'view', 'http://www.7h
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_cart`;
 CREATE TABLE `tb_cart` (
-  `cart_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` int(11) NOT NULL COMMENT '商品ID',
   `goods_name` varchar(255) DEFAULT NULL COMMENT '商品名称',
   `goods_img` varchar(255) DEFAULT NULL COMMENT '图片',
@@ -171,7 +219,7 @@ CREATE TABLE `tb_cart` (
   `goods_num` int(11) DEFAULT NULL COMMENT '数量',
   `goods_total` float DEFAULT NULL COMMENT '共计金额',
   `user_id` varchar(255) DEFAULT NULL COMMENT '关联用户',
-  PRIMARY KEY (`cart_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -203,29 +251,77 @@ INSERT INTO `tb_cart` VALUES ('276', '68', '非转基因黄豆', '/upload/146570
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_category`;
 CREATE TABLE `tb_category` (
-  `ctg_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `pid` int(11) DEFAULT NULL COMMENT '父分类ID',
   `ctg_name` varchar(255) DEFAULT '',
   `ctg_img` varchar(255) DEFAULT '',
   `status` int(11) DEFAULT NULL COMMENT '0禁用，1启用',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`ctg_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tb_category
 -- ----------------------------
-INSERT INTO `tb_category` VALUES ('1', '蔬菜卡', '/upload/1460612766269.png', '1', '4');
-INSERT INTO `tb_category` VALUES ('21', '五谷杂粮', '/upload/1460602430649.png', '1', '2');
-INSERT INTO `tb_category` VALUES ('22', '肉禽蛋类', '/upload/1460602659462.png', '1', '3');
-INSERT INTO `tb_category` VALUES ('23', '活力鲜果', '/upload/1460612742253.png', '0', '0');
-INSERT INTO `tb_category` VALUES ('25', '保健养生', '/upload/1460612908722.png', '1', '5');
+INSERT INTO `tb_category` VALUES ('0', null, '根节点', null, '1', null);
+INSERT INTO `tb_category` VALUES ('1', '0', '美容', null, '1', '1');
+INSERT INTO `tb_category` VALUES ('2', '0', '装饰', null, '1', '2');
+INSERT INTO `tb_category` VALUES ('3', '0', '养护', null, '1', '3');
+INSERT INTO `tb_category` VALUES ('4', '0', '改装', null, '0', '4');
+INSERT INTO `tb_category` VALUES ('5', '0', '维修', null, '0', '5');
+INSERT INTO `tb_category` VALUES ('6', '0', '俱乐部', null, '0', '6');
+INSERT INTO `tb_category` VALUES ('7', '0', '保险', null, '0', '7');
+INSERT INTO `tb_category` VALUES ('8', '1', '车表护理', null, '0', null);
+INSERT INTO `tb_category` VALUES ('9', '1', '漆面美容', null, '0', null);
+INSERT INTO `tb_category` VALUES ('10', '1', '内饰美容', null, '0', null);
+INSERT INTO `tb_category` VALUES ('11', '1', '高级美容', null, '0', null);
+INSERT INTO `tb_category` VALUES ('12', '2', '外部装饰', null, '0', null);
+INSERT INTO `tb_category` VALUES ('13', '2', '车内装饰', null, '0', null);
+INSERT INTO `tb_category` VALUES ('14', '2', '高级装饰', null, '0', null);
+INSERT INTO `tb_category` VALUES ('15', '3', '常规养护', null, '0', null);
+INSERT INTO `tb_category` VALUES ('16', '3', '免拆维护', null, '0', null);
+INSERT INTO `tb_category` VALUES ('17', '3', '高级养护', null, '0', null);
+INSERT INTO `tb_category` VALUES ('18', '4', '外观改装', null, '0', null);
+INSERT INTO `tb_category` VALUES ('19', '4', '性能提升', null, '0', null);
+INSERT INTO `tb_category` VALUES ('20', '4', '赛车改装', null, '0', null);
+INSERT INTO `tb_category` VALUES ('21', '5', '钣金喷漆', null, '0', null);
+INSERT INTO `tb_category` VALUES ('22', '5', '车身部分', null, '0', null);
+INSERT INTO `tb_category` VALUES ('23', '5', '汽车玻璃', null, '0', null);
+INSERT INTO `tb_category` VALUES ('24', '5', '动力部分', null, '0', null);
+INSERT INTO `tb_category` VALUES ('25', '5', '电器部分', null, '0', null);
+INSERT INTO `tb_category` VALUES ('26', '5', '底盘部分', null, '0', null);
+INSERT INTO `tb_category` VALUES ('27', '5', '轮胎', null, '0', null);
+
+-- ----------------------------
+-- Table structure for tb_config
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_config`;
+CREATE TABLE `tb_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '配置',
+  `config_group` varchar(255) NOT NULL,
+  `config_key` varchar(255) NOT NULL,
+  `config_value` varchar(255) NOT NULL,
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_config
+-- ----------------------------
+INSERT INTO `tb_config` VALUES ('1', 'wxconfig', 'appID', 'wx1d3a8c1a4339be71', '2016-12-11 20:04:10');
+INSERT INTO `tb_config` VALUES ('2', 'wxconfig', 'appsecret', 'd4624c36b6795d1d99dcf0547af5443d', '2016-12-11 20:04:12');
+INSERT INTO `tb_config` VALUES ('3', 'wxconfig', 'token', '72597b9628704ab09e8b9e8cbe9b540a', '2016-12-11 20:04:15');
+INSERT INTO `tb_config` VALUES ('4', 'wxconfig', 'wxserver_domain', 'http://wx.zheng-hang.com/', '2016-12-11 20:04:17');
+INSERT INTO `tb_config` VALUES ('5', 'wxconfig', 'get_access_token_url', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET', '2016-12-11 20:04:19');
+INSERT INTO `tb_config` VALUES ('6', 'wxconfig', 'access_token', 'ToClTyFwlaLef7Mwidf8YEX-ceP4npIsUyXXIFag5rlbomAP2eLxEPmj0peVSaJk4ovgy-soPXe3rpGkh4tSh76iuM-8bWiBF1rP7Y-vZEEPKsiqDTGNPFjCgWy8ASQVUBAbAGAOVU', '2016-12-08 20:04:21');
+INSERT INTO `tb_config` VALUES ('7', 'wxconfig', 'expires_in', '7200', '2016-12-11 20:04:24');
 
 -- ----------------------------
 -- Table structure for tb_coupons
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_coupons`;
 CREATE TABLE `tb_coupons` (
-  `cps_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
   `cps_name` varchar(255) DEFAULT NULL COMMENT '优惠券名称',
   `cps_code` varchar(255) DEFAULT NULL COMMENT '优惠券兑换码',
   `cps_price` float DEFAULT NULL COMMENT '优惠价格',
@@ -233,7 +329,7 @@ CREATE TABLE `tb_coupons` (
   `cps_level` int(11) DEFAULT NULL COMMENT '0系统总优惠券，!0用户优惠券',
   `user_id` varchar(255) DEFAULT NULL COMMENT '关联用户ID',
   `status` int(11) DEFAULT '1' COMMENT '0已用，1可用',
-  PRIMARY KEY (`cps_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -277,14 +373,34 @@ INSERT INTO `tb_coupons` VALUES ('83', '新手优惠', '13289', '10', '2016-12-3
 INSERT INTO `tb_coupons` VALUES ('84', '新手优惠', '13289', '10', '2016-12-31', '55', '187', '1');
 
 -- ----------------------------
+-- Table structure for tb_file
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_file`;
+CREATE TABLE `tb_file` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '关联用户',
+  `file_path` varchar(255) DEFAULT NULL,
+  `valid` int(11) DEFAULT NULL COMMENT '是否有效',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `type` int(2) DEFAULT NULL COMMENT '文件类型',
+  PRIMARY KEY (`id`),
+  KEY `fk_file_user_id` (`user_id`),
+  CONSTRAINT `fk_file_user_id` FOREIGN KEY (`user_id`) REFERENCES `tb_user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_file
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for tb_freight
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_freight`;
 CREATE TABLE `tb_freight` (
-  `fgt_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '运费ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '运费ID',
   `fgt_price` float DEFAULT NULL COMMENT '运费价格',
   `free_price` float DEFAULT NULL COMMENT '包邮价格',
-  PRIMARY KEY (`fgt_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -297,11 +413,11 @@ INSERT INTO `tb_freight` VALUES ('1', '6', '58');
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_goods`;
 CREATE TABLE `tb_goods` (
-  `goods_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_name` varchar(255) DEFAULT NULL,
   `goods_img` varchar(255) DEFAULT NULL,
   `goods_spe` varchar(255) DEFAULT NULL COMMENT '规格',
-  `goods_price` float DEFAULT NULL,
+  `goods_price` double(10,2) DEFAULT NULL,
   `goods_detail` text,
   `goods_num` varchar(255) DEFAULT NULL,
   `add_time` varchar(255) DEFAULT NULL,
@@ -309,80 +425,117 @@ CREATE TABLE `tb_goods` (
   `is_recommend` int(11) DEFAULT NULL COMMENT '是否首页推荐',
   `status` int(11) DEFAULT NULL,
   `type` int(11) DEFAULT '1' COMMENT '1普通商品2会员商品',
-  PRIMARY KEY (`goods_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tb_goods
 -- ----------------------------
-INSERT INTO `tb_goods` VALUES ('2', '西瓜', '/upload/1457923321834.png', '', '200', '阿斯蒂芬', null, '2016-03-13', '7', '1', '1', null);
-INSERT INTO `tb_goods` VALUES ('16', '油麦菜', '/upload/1464245268878.png', '1斤', '0', '', null, '2016-04-29', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('19', '蔬菜会员月卡', '/upload/1465974795254.png', '1个月/8次 2-3人 每次6斤', '360', '<p>\n	<img src=\"/chihaodian/../upload/image/20160615/20160615151535_211.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615151535_559.jpg\" alt=\"\" />\n</p>\n<p>\n	<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\">如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span> \n</p>', null, '2016-05-12', '1', '1', '1', '1');
-INSERT INTO `tb_goods` VALUES ('20', '蔬菜会员月卡', '/upload/1465975621288.png', '1个月/8次 3-5人 每次9斤', '520', '<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\"><img src=\"/chihaodian/../upload/image/20160615/20160615152713_944.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615152713_423.jpg\" alt=\"\" />如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span>', null, '2016-05-12', '1', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('21', '蔬菜会员半年卡', '/upload/1465975865805.png', '半年/52次 2-3人 每次6斤', '2000', '<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\"><img src=\"/chihaodian/../upload/image/20160615/20160615153117_614.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615153118_561.jpg\" alt=\"\" />如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span>', null, '2016-05-12', '1', '1', '1', '1');
-INSERT INTO `tb_goods` VALUES ('22', '蔬菜会员半年卡', '/upload/1465976834996.png', '半年/52次 3-5人 每次9斤', '2900', '<p>\n	<img src=\"/chihaodian/../upload/image/20160615/20160615154727_406.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615154727_241.jpg\" alt=\"\" />\n</p>\n<p>\n	<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\">如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span> \n</p>', null, '2016-05-12', '1', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('23', '蔬菜会员年卡', '/upload/1465976906449.png', '1年/104次 2-3人 每次6斤', '3600', '<img src=\"/chihaodian/../upload/image/20160615/20160615154839_620.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615154839_633.jpg\" alt=\"\" />', null, '2016-05-12', '1', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('24', '蔬菜会员年卡', '/upload/1465976935715.png', '1年/104次 3-5人 每次9斤', '5300', '<img src=\"/chihaodian/../upload/image/20160615/20160615154908_679.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615154908_133.jpg\" alt=\"\" />', null, '2016-05-12', '1', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('25', '新疆库尔勒香梨', '/upload/1463109011535.png', '16个', '25.8', '<img src=\"/upload/image/20160513/20160513111104_660.jpg\" alt=\"\" /><img src=\"/upload/image/20160513/20160513111118_958.jpg\" alt=\"\" /><img src=\"/upload/image/20160513/20160513111124_44.jpg\" alt=\"\" /><img src=\"/upload/image/20160513/20160513111132_415.jpg\" alt=\"\" />', null, '2016-05-13', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('26', '东方蜜1号', '/upload/1463110161194.png', '3个 约4-5斤', '29.9', '<img src=\"/upload/image/20160513/20160513112937_524.jpg\" alt=\"\" />', null, '2016-05-13', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('27', '海南木瓜', '/upload/1463110264179.png', '1个', '6.5', '<img src=\"/upload/image/20160513/20160513113119_408.jpg\" alt=\"\" />', null, '2016-05-13', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('29', '四川柠檬', '/upload/1465703766021.png', '4个', '7.9', '<img src=\"/upload/image/20160517/20160517161902_232.jpg\" alt=\"\" />', null, '2016-05-17', '23', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('30', '缅甸黄河蜜', '/upload/1464250276685.png', '约4斤', '18.9', '<img src=\"/upload/image/20160517/20160517162017_401.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('31', '麒麟西瓜', '/upload/1463473271392.png', '约5.5斤-6.5斤', '26.9', '<img src=\"/upload/image/20160517/20160517162206_337.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('2', '西瓜', '/upload/1457923321834.png', '', '200.00', '阿斯蒂芬', null, '2016-03-13', '7', '1', '1', null);
+INSERT INTO `tb_goods` VALUES ('16', '油麦菜', '/upload/1464245268878.png', '1斤', '0.00', '', null, '2016-04-29', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('19', '蔬菜会员月卡', '/upload/1465974795254.png', '1个月/8次 2-3人 每次6斤', '360.00', '<p>\n	<img src=\"/chihaodian/../upload/image/20160615/20160615151535_211.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615151535_559.jpg\" alt=\"\" />\n</p>\n<p>\n	<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\">如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span> \n</p>', null, '2016-05-12', '1', '1', '1', '1');
+INSERT INTO `tb_goods` VALUES ('20', '蔬菜会员月卡', '/upload/1465975621288.png', '1个月/8次 3-5人 每次9斤', '520.00', '<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\"><img src=\"/chihaodian/../upload/image/20160615/20160615152713_944.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615152713_423.jpg\" alt=\"\" />如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span>', null, '2016-05-12', '1', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('21', '蔬菜会员半年卡', '/upload/1465975865805.png', '半年/52次 2-3人 每次6斤', '2000.00', '<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\"><img src=\"/chihaodian/../upload/image/20160615/20160615153117_614.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615153118_561.jpg\" alt=\"\" />如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span>', null, '2016-05-12', '1', '1', '1', '1');
+INSERT INTO `tb_goods` VALUES ('22', '蔬菜会员半年卡', '/upload/1465976834996.png', '半年/52次 3-5人 每次9斤', '2900.00', '<p>\n	<img src=\"/chihaodian/../upload/image/20160615/20160615154727_406.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615154727_241.jpg\" alt=\"\" />\n</p>\n<p>\n	<span style=\"color:#333333;font-family:微软雅黑;font-size:16px;line-height:24px;background-color:#F8F8F8;\">如果您的附近没有自提点，而您又不想使用快递，那您只需凑齐六个人办会员卡，我们将为您在附近开设新的自提点！</span> \n</p>', null, '2016-05-12', '1', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('23', '蔬菜会员年卡', '/upload/1465976906449.png', '1年/104次 2-3人 每次6斤', '3600.00', '<img src=\"/chihaodian/../upload/image/20160615/20160615154839_620.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615154839_633.jpg\" alt=\"\" />', null, '2016-05-12', '1', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('24', '蔬菜会员年卡', '/upload/1465976935715.png', '1年/104次 3-5人 每次9斤', '5300.00', '<img src=\"/chihaodian/../upload/image/20160615/20160615154908_679.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615154908_133.jpg\" alt=\"\" />', null, '2016-05-12', '1', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('25', '新疆库尔勒香梨', '/upload/1463109011535.png', '16个', '25.80', '<img src=\"/upload/image/20160513/20160513111104_660.jpg\" alt=\"\" /><img src=\"/upload/image/20160513/20160513111118_958.jpg\" alt=\"\" /><img src=\"/upload/image/20160513/20160513111124_44.jpg\" alt=\"\" /><img src=\"/upload/image/20160513/20160513111132_415.jpg\" alt=\"\" />', null, '2016-05-13', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('26', '东方蜜1号', '/upload/1463110161194.png', '3个 约4-5斤', '29.90', '<img src=\"/upload/image/20160513/20160513112937_524.jpg\" alt=\"\" />', null, '2016-05-13', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('27', '海南木瓜', '/upload/1463110264179.png', '1个', '6.50', '<img src=\"/upload/image/20160513/20160513113119_408.jpg\" alt=\"\" />', null, '2016-05-13', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('29', '四川柠檬', '/upload/1465703766021.png', '4个', '7.90', '<img src=\"/upload/image/20160517/20160517161902_232.jpg\" alt=\"\" />', null, '2016-05-17', '23', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('30', '缅甸黄河蜜', '/upload/1464250276685.png', '约4斤', '18.90', '<img src=\"/upload/image/20160517/20160517162017_401.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('31', '麒麟西瓜', '/upload/1463473271392.png', '约5.5斤-6.5斤', '26.90', '<img src=\"/upload/image/20160517/20160517162206_337.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
 INSERT INTO `tb_goods` VALUES ('32', '特小凤西瓜', '/upload/1463473433361.png', '约4斤-5斤', null, '<img src=\"/upload/image/20160517/20160517162428_793.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('33', '烟台红富士80脆', '/upload/1463473499830.png', '1斤', '4.8', '<img src=\"/upload/image/20160517/20160517162523_535.jpg\" alt=\"\" />', null, '2016-05-17', '23', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('34', '海南西州蜜', '/upload/1463473570955.png', '约4斤', '27.9', '<img src=\"/upload/image/20160517/20160517162639_435.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('35', '小台农芒果', '/upload/1463473632080.png', '12个', '17.8', '<img src=\"/upload/image/20160517/20160517162745_47.jpg\" alt=\"\" /><img src=\"/upload/image/20160517/20160517162751_93.jpg\" alt=\"\" /><img src=\"/upload/image/20160517/20160517162756_531.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('36', '越南红心火龙果', '/upload/1463473711206.png', '1个 约675g', '20', '<img src=\"/upload/image/20160517/20160517163058_156.jpg\" alt=\"\" />', null, '2016-05-17', '23', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('37', '台湾传统小番茄 ', '/upload/1463474160676.png', '1斤', '8', '<img src=\"/upload/image/20160517/20160517163621_933.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('38', '有机葡聚糖胚芽米', '/upload/1464165453285.png', '10斤', '228', '<img src=\"/upload/image/20160525/20160525163922_150.jpg\" alt=\"\" /><img src=\"/upload/image/20160525/20160525163927_913.jpg\" alt=\"\" /><img src=\"/upload/image/20160525/20160525163932_131.jpg\" alt=\"\" />', null, '2016-05-25', '21', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('39', '生态柔玉米', '/upload/1466730801733.png', '10斤', '48', '<img src=\"/upload/image/20160624/20160624091338_96.jpg\" alt=\"\" />', null, '2016-05-25', '21', '1', '1', '1');
-INSERT INTO `tb_goods` VALUES ('40', '新西兰佳沛阳', '/upload/1465724169981.png', '6个', '60', '<img src=\"/upload/image/20160526/20160526140644_568.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526140648_727.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526140652_405.jpg\" alt=\"\" />', null, '2016-05-26', '23', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('42', '泰国金枕榴莲', '/upload/1465724197732.png', '约5-7斤', '109', '<img src=\"/upload/image/20160526/20160526141141_970.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141146_445.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141150_602.jpg\" alt=\"\" />', null, '2016-05-26', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('43', '泰国金枕榴莲', '/upload/1465724208122.png', '约3.5-4.9斤', '89', '<img src=\"/upload/image/20160526/20160526141311_610.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141315_276.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141319_949.jpg\" alt=\"\" />', null, '2016-05-26', '23', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('44', '香葱', '/upload/1464245310066.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('45', '西蓝花', '/upload/1464245343050.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('46', '西葫芦', '/upload/1464245387566.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('47', '豌豆苗', '/upload/1464245419066.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('48', '茼蒿', '/upload/1464245453129.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('49', '榻菜', '/upload/1464245485582.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('50', '蒜薹', '/upload/1464245516050.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('51', '生菜', '/upload/1464245592332.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('52', '青椒', '/upload/1464245620769.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('53', '青菜', '/upload/1464245647957.png', '一斤', '0', '', null, '2016-05-26', null, null, '1', '2');
-INSERT INTO `tb_goods` VALUES ('54', '巴西原装翅中', '/upload/1464316350243.png', '1KG', '58', '<img src=\"/upload/image/20160601/20160601163307_898.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601163459_674.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164856_426.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164905_212.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164912_311.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164919_196.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164925_118.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164932_981.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164938_196.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('55', '加拿大AAA级牛小排', '/upload/1464316409415.png', '500g(3-4片）', '228', '<img src=\"/upload/image/20160606/20160606094353_270.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094401_308.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094418_609.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094427_103.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094435_408.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094442_489.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094449_579.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094456_406.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094504_811.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094512_875.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094518_415.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('56', '加拿大AAA板腱牛排', '/upload/1464319904220.png', '3-4片', '89', '<img src=\"/upload/image/20160606/20160606114256_204.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114304_437.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114310_628.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114316_861.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114321_756.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114326_99.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('57', '澳洲草饲牛仔骨 500g（6-8片）', '/upload/1464319978611.png', '6-8片', '89', '<img src=\"/upload/image/20160606/20160606110603_342.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110610_827.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110616_482.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110626_702.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110632_714.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110638_473.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110651_500.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110656_605.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110703_722.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110710_991.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('58', '肥牛卷 透明托盒装', '/upload/1464318053841.png', ' 500g', '59', '<img src=\"/upload/image/20160606/20160606114831_626.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114837_63.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114842_346.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114847_370.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114852_206.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114857_629.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114901_5.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('59', '澳洲牛尾', '/upload/1464320071736.png', '500g', '58', '<img src=\"/upload/image/20160606/20160606115420_775.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115426_235.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115431_832.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115436_598.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115441_281.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115450_882.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115454_290.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115459_387.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115504_193.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115510_375.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115514_465.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115520_889.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115535_489.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('60', '澳洲草饲牛腩块', '/upload/1464318370545.png', '500g', '56', '<img src=\"/upload/image/20160606/20160606135919_524.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606135927_492.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140003_418.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140008_567.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140017_948.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140022_917.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140028_783.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140033_800.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140038_961.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140044_227.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140053_999.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140057_239.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140102_152.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('61', '台湾土鸡仔', '/upload/1465887400031.png', '1.0-1.2KG', '48', '<img src=\"/upload/image/20160606/20160606140430_427.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140435_145.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140440_760.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140444_391.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140450_406.jpg\" alt=\"\" />', null, '2016-05-27', '22', '1', '1', '1');
-INSERT INTO `tb_goods` VALUES ('62', '台湾红标老母鸡', '/upload/1465888267174.png', '2.0kg', '168', '<img src=\"/chihaodian/../upload/image/20160606/20160606152309_200.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152309_515.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_670.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_793.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_374.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_428.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_638.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_336.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_816.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152311_153.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152311_364.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152311_941.jpg\" alt=\"\" />', null, '2016-05-27', '22', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('63', '同仁堂十全大补台湾红标老母鸡', '/upload/1464319011485.png', '2.0KG', '228', '<img src=\"/chihaodian/../upload/image/20160606/20160606153659_117.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_414.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_71.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_547.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_55.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_164.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_211.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_857.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_250.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_90.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153701_822.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153701_971.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('64', '生态稻田土鸡蛋', '/upload/1466479271070.png', '48枚', '96', '<img src=\"/upload/image/20160615/20160615091200_871.jpg\" alt=\"\" />', null, '2016-05-27', '22', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('65', '妃子笑荔枝', '/upload/1465723952090.png', '1kg', '30', '<img src=\"/chihaodian/../upload/image/20160607/20160607142334_888.jpg\" alt=\"\" />', null, '2016-06-07', '23', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('66', '澳大利亚无籽红提', '/upload/1465724148153.png', '500g', '21.9', '<img src=\"/upload/image/20160607/20160607144646_538.jpg\" alt=\"\" />', null, '2016-06-07', '23', '0', '1', '1');
-INSERT INTO `tb_goods` VALUES ('67', '菲律宾大香蕉', '/upload/1465723850965.png', '1.5kg', '19.8', '<img src=\"/upload/image/20160608/20160608093755_855.jpg\" alt=\"\" />', null, '2016-06-08', '23', '1', '1', '1');
-INSERT INTO `tb_goods` VALUES ('68', '非转基因黄豆', '/upload/1465701002059.png', '500g', '10', '<img src=\"/chihaodian/../upload/image/20160612/20160612111019_687.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612111019_150.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612111019_516.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('69', '生态菜籽油', '/upload/1465717197584.png', '2.5L', '60', '<img src=\"/chihaodian/../upload/image/20160612/20160612155635_29.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155636_501.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155636_968.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('70', '生态菜籽油', '/upload/1465718279680.png', '5L', '115', '<img src=\"/chihaodian/../upload/image/20160612/20160612155912_633.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155912_584.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155912_783.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('71', '生态黄金耳', '/upload/1466474419051.png', '1袋', '12', '<img src=\"/upload/image/20160621/20160621100036_686.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('72', '新疆西州蜜', '/upload/1465802535035.png', '2.25kg-2.5kg', '39.8', '<img src=\"/upload/image/20160613/20160613152642_827.jpg\" alt=\"\" />', null, '2016-06-13', '23', '1', '1', '1');
-INSERT INTO `tb_goods` VALUES ('73', '蔬菜会员卡年卡', '/upload/1465977042091.png', '1年/52次 1-2人 每次4斤', '1588', '<img src=\"/chihaodian/../upload/image/20160615/20160615155134_9.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615155135_852.jpg\" alt=\"\" />', null, '2016-06-15', '1', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('74', '冬虫夏草（鲜草）', '/upload/1466479379008.png', '20条', '850', '<img src=\"/upload/image/20160621/20160621112332_761.jpg\" alt=\"\" />', null, '2016-06-21', '25', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('75', '冬虫夏草（鲜草）', '/upload/1466479445305.png', '50条', '1998', '<img src=\"/upload/image/20160621/20160621112452_333.jpg\" alt=\"\" />', null, '2016-06-21', '25', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('76', '冬虫夏草（鲜草）', '/upload/1466479517055.png', '100条', '3880', '<img src=\"/upload/image/20160621/20160621112538_490.jpg\" alt=\"\" />', null, '2016-06-21', '25', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('77', '山竹', '/upload/1466736000313.png', '1', '0.1', '<img src=\"/upload/image/20160624/20160624104011_926.jpg\" alt=\"\" />', null, '2016-06-24', '23', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('78', '仙桃香粳米 50斤', '/upload/1466818615476.png', '25kg', '180', '<img src=\"/upload/image/20160625/20160625093709_160.jpg\" alt=\"\" />', null, '2016-06-25', '21', null, '1', '1');
-INSERT INTO `tb_goods` VALUES ('79', '商品测试', '/upload/1474343819028.png', '', '1', '', null, '2016-09-20', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('33', '烟台红富士80脆', '/upload/1463473499830.png', '1斤', '4.80', '<img src=\"/upload/image/20160517/20160517162523_535.jpg\" alt=\"\" />', null, '2016-05-17', '23', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('34', '海南西州蜜', '/upload/1463473570955.png', '约4斤', '27.90', '<img src=\"/upload/image/20160517/20160517162639_435.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('35', '小台农芒果', '/upload/1463473632080.png', '12个', '17.80', '<img src=\"/upload/image/20160517/20160517162745_47.jpg\" alt=\"\" /><img src=\"/upload/image/20160517/20160517162751_93.jpg\" alt=\"\" /><img src=\"/upload/image/20160517/20160517162756_531.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('36', '越南红心火龙果', '/upload/1463473711206.png', '1个 约675g', '20.00', '<img src=\"/upload/image/20160517/20160517163058_156.jpg\" alt=\"\" />', null, '2016-05-17', '23', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('37', '台湾传统小番茄 ', '/upload/1463474160676.png', '1斤', '8.00', '<img src=\"/upload/image/20160517/20160517163621_933.jpg\" alt=\"\" />', null, '2016-05-17', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('38', '有机葡聚糖胚芽米', '/upload/1464165453285.png', '10斤', '228.00', '<img src=\"/upload/image/20160525/20160525163922_150.jpg\" alt=\"\" /><img src=\"/upload/image/20160525/20160525163927_913.jpg\" alt=\"\" /><img src=\"/upload/image/20160525/20160525163932_131.jpg\" alt=\"\" />', null, '2016-05-25', '21', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('39', '生态柔玉米', '/upload/1466730801733.png', '10斤', '48.00', '<img src=\"/upload/image/20160624/20160624091338_96.jpg\" alt=\"\" />', null, '2016-05-25', '21', '1', '1', '1');
+INSERT INTO `tb_goods` VALUES ('40', '新西兰佳沛阳', '/upload/1465724169981.png', '6个', '60.00', '<img src=\"/upload/image/20160526/20160526140644_568.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526140648_727.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526140652_405.jpg\" alt=\"\" />', null, '2016-05-26', '23', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('42', '泰国金枕榴莲', '/upload/1465724197732.png', '约5-7斤', '109.00', '<img src=\"/upload/image/20160526/20160526141141_970.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141146_445.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141150_602.jpg\" alt=\"\" />', null, '2016-05-26', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('43', '泰国金枕榴莲', '/upload/1465724208122.png', '约3.5-4.9斤', '89.00', '<img src=\"/upload/image/20160526/20160526141311_610.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141315_276.jpg\" alt=\"\" /><img src=\"/upload/image/20160526/20160526141319_949.jpg\" alt=\"\" />', null, '2016-05-26', '23', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('44', '香葱', '/upload/1464245310066.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('45', '西蓝花', '/upload/1464245343050.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('46', '西葫芦', '/upload/1464245387566.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('47', '豌豆苗', '/upload/1464245419066.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('48', '茼蒿', '/upload/1464245453129.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('49', '榻菜', '/upload/1464245485582.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('50', '蒜薹', '/upload/1464245516050.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('51', '生菜', '/upload/1464245592332.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('52', '青椒', '/upload/1464245620769.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('53', '青菜', '/upload/1464245647957.png', '一斤', '0.00', '', null, '2016-05-26', null, null, '1', '2');
+INSERT INTO `tb_goods` VALUES ('54', '巴西原装翅中', '/upload/1464316350243.png', '1KG', '58.00', '<img src=\"/upload/image/20160601/20160601163307_898.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601163459_674.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164856_426.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164905_212.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164912_311.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164919_196.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164925_118.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164932_981.jpg\" alt=\"\" /><img src=\"/upload/image/20160601/20160601164938_196.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('55', '加拿大AAA级牛小排', '/upload/1464316409415.png', '500g(3-4片）', '228.00', '<img src=\"/upload/image/20160606/20160606094353_270.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094401_308.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094418_609.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094427_103.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094435_408.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094442_489.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094449_579.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094456_406.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094504_811.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094512_875.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606094518_415.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('56', '加拿大AAA板腱牛排', '/upload/1464319904220.png', '3-4片', '89.00', '<img src=\"/upload/image/20160606/20160606114256_204.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114304_437.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114310_628.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114316_861.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114321_756.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114326_99.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('57', '澳洲草饲牛仔骨 500g（6-8片）', '/upload/1464319978611.png', '6-8片', '89.00', '<img src=\"/upload/image/20160606/20160606110603_342.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110610_827.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110616_482.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110626_702.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110632_714.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110638_473.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110651_500.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110656_605.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110703_722.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606110710_991.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('58', '肥牛卷 透明托盒装', '/upload/1464318053841.png', ' 500g', '59.00', '<img src=\"/upload/image/20160606/20160606114831_626.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114837_63.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114842_346.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114847_370.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114852_206.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114857_629.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606114901_5.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('59', '澳洲牛尾', '/upload/1464320071736.png', '500g', '58.00', '<img src=\"/upload/image/20160606/20160606115420_775.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115426_235.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115431_832.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115436_598.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115441_281.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115450_882.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115454_290.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115459_387.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115504_193.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115510_375.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115514_465.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115520_889.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606115535_489.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('60', '澳洲草饲牛腩块', '/upload/1464318370545.png', '500g', '56.00', '<img src=\"/upload/image/20160606/20160606135919_524.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606135927_492.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140003_418.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140008_567.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140017_948.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140022_917.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140028_783.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140033_800.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140038_961.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140044_227.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140053_999.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140057_239.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140102_152.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('61', '台湾土鸡仔', '/upload/1465887400031.png', '1.0-1.2KG', '48.00', '<img src=\"/upload/image/20160606/20160606140430_427.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140435_145.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140440_760.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140444_391.jpg\" alt=\"\" /><img src=\"/upload/image/20160606/20160606140450_406.jpg\" alt=\"\" />', null, '2016-05-27', '22', '1', '1', '1');
+INSERT INTO `tb_goods` VALUES ('62', '台湾红标老母鸡', '/upload/1465888267174.png', '2.0kg', '168.00', '<img src=\"/chihaodian/../upload/image/20160606/20160606152309_200.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152309_515.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_670.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_793.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_374.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_428.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_638.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_336.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152310_816.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152311_153.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152311_364.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606152311_941.jpg\" alt=\"\" />', null, '2016-05-27', '22', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('63', '同仁堂十全大补台湾红标老母鸡', '/upload/1464319011485.png', '2.0KG', '228.00', '<img src=\"/chihaodian/../upload/image/20160606/20160606153659_117.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_414.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_71.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_547.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_55.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_164.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_211.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_857.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_250.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153700_90.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153701_822.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160606/20160606153701_971.jpg\" alt=\"\" />', null, '2016-05-27', '22', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('64', '生态稻田土鸡蛋', '/upload/1466479271070.png', '48枚', '96.00', '<img src=\"/upload/image/20160615/20160615091200_871.jpg\" alt=\"\" />', null, '2016-05-27', '22', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('65', '妃子笑荔枝', '/upload/1465723952090.png', '1kg', '30.00', '<img src=\"/chihaodian/../upload/image/20160607/20160607142334_888.jpg\" alt=\"\" />', null, '2016-06-07', '23', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('66', '澳大利亚无籽红提', '/upload/1465724148153.png', '500g', '21.90', '<img src=\"/upload/image/20160607/20160607144646_538.jpg\" alt=\"\" />', null, '2016-06-07', '23', '0', '1', '1');
+INSERT INTO `tb_goods` VALUES ('67', '菲律宾大香蕉', '/upload/1465723850965.png', '1.5kg', '19.80', '<img src=\"/upload/image/20160608/20160608093755_855.jpg\" alt=\"\" />', null, '2016-06-08', '23', '1', '1', '1');
+INSERT INTO `tb_goods` VALUES ('68', '非转基因黄豆', '/upload/1465701002059.png', '500g', '10.00', '<img src=\"/chihaodian/../upload/image/20160612/20160612111019_687.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612111019_150.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612111019_516.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('69', '生态菜籽油', '/upload/1465717197584.png', '2.5L', '60.00', '<img src=\"/chihaodian/../upload/image/20160612/20160612155635_29.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155636_501.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155636_968.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('70', '生态菜籽油', '/upload/1465718279680.png', '5L', '115.00', '<img src=\"/chihaodian/../upload/image/20160612/20160612155912_633.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155912_584.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160612/20160612155912_783.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('71', '生态黄金耳', '/upload/1466474419051.png', '1袋', '12.00', '<img src=\"/upload/image/20160621/20160621100036_686.jpg\" alt=\"\" />', null, '2016-06-12', '21', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('72', '新疆西州蜜', '/upload/1465802535035.png', '2.25kg-2.5kg', '39.80', '<img src=\"/upload/image/20160613/20160613152642_827.jpg\" alt=\"\" />', null, '2016-06-13', '23', '1', '1', '1');
+INSERT INTO `tb_goods` VALUES ('73', '蔬菜会员卡年卡', '/upload/1465977042091.png', '1年/52次 1-2人 每次4斤', '1588.00', '<img src=\"/chihaodian/../upload/image/20160615/20160615155134_9.jpg\" alt=\"\" /><img src=\"/chihaodian/../upload/image/20160615/20160615155135_852.jpg\" alt=\"\" />', null, '2016-06-15', '1', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('74', '冬虫夏草（鲜草）', '/upload/1466479379008.png', '20条', '850.00', '<img src=\"/upload/image/20160621/20160621112332_761.jpg\" alt=\"\" />', null, '2016-06-21', '25', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('75', '冬虫夏草（鲜草）', '/upload/1466479445305.png', '50条', '1998.00', '<img src=\"/upload/image/20160621/20160621112452_333.jpg\" alt=\"\" />', null, '2016-06-21', '25', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('76', '冬虫夏草（鲜草）', '/upload/1466479517055.png', '100条', '3880.00', '<img src=\"/upload/image/20160621/20160621112538_490.jpg\" alt=\"\" />', null, '2016-06-21', '25', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('77', '山竹', '/upload/1466736000313.png', '1', '0.10', '<img src=\"/upload/image/20160624/20160624104011_926.jpg\" alt=\"\" />', null, '2016-06-24', '23', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('78', '仙桃香粳米 50斤', '/upload/1466818615476.png', '25kg', '180.00', '<img src=\"/upload/image/20160625/20160625093709_160.jpg\" alt=\"\" />', null, '2016-06-25', '21', null, '1', '1');
+INSERT INTO `tb_goods` VALUES ('79', '商品测试', '/upload/1474343819028.png', '', '1.00', '', null, '2016-09-20', '23', null, '1', '1');
+
+-- ----------------------------
+-- Table structure for tb_identification
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_identification`;
+CREATE TABLE `tb_identification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `type` int(1) DEFAULT NULL COMMENT '正反面0:正面，1:反面',
+  `file_id` int(11) DEFAULT NULL COMMENT '关联文件ID',
+  PRIMARY KEY (`id`),
+  KEY `pk_identification_file_id` (`file_id`),
+  CONSTRAINT `pk_identification_file_id` FOREIGN KEY (`file_id`) REFERENCES `tb_file` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_identification
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tb_message
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_message`;
+CREATE TABLE `tb_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `read` int(1) DEFAULT NULL COMMENT '是否已读0:未读1:已读',
+  PRIMARY KEY (`id`),
+  KEY `fk_message_user_id` (`user_id`),
+  CONSTRAINT `fk_message_user_id` FOREIGN KEY (`user_id`) REFERENCES `tb_user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_message
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_order
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_order`;
 CREATE TABLE `tb_order` (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` varchar(255) DEFAULT NULL,
   `goods_name` text,
   `goods_img` text,
@@ -400,7 +553,7 @@ CREATE TABLE `tb_order` (
   `note` varchar(255) DEFAULT NULL COMMENT '订单备注',
   `add_time` varchar(255) DEFAULT NULL COMMENT '下单时间',
   `user_id` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`order_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=522 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -550,226 +703,278 @@ INSERT INTO `tb_order` VALUES ('520', '72', '新疆西州蜜', '/upload/14658025
 INSERT INTO `tb_order` VALUES ('521', '72', '新疆西州蜜', '/upload/1465802535035.png', null, '39.8', '3', '119.4', '3', '我 19398273728 江苏 南京市 玄武区 你们都', '', null, '', '0', '0', '', '2016-09-23 16:42:38', '204');
 
 -- ----------------------------
+-- Table structure for tb_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_permission`;
+CREATE TABLE `tb_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` varchar(255) NOT NULL COMMENT '权限字',
+  `name` varchar(255) NOT NULL COMMENT '权限名称',
+  `role_id` int(11) NOT NULL COMMENT '关联角色ID',
+  `valid` int(1) DEFAULT NULL COMMENT '是否有效',
+  PRIMARY KEY (`id`),
+  KEY `fk_permission_role_id` (`role_id`),
+  CONSTRAINT `fk_permission_role_id` FOREIGN KEY (`role_id`) REFERENCES `tb_role` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_permission
+-- ----------------------------
+INSERT INTO `tb_permission` VALUES ('1', 'admin:add', '发起咨询', '2', '1');
+INSERT INTO `tb_permission` VALUES ('2', 'admin:del', '删除咨询', '2', '1');
+INSERT INTO `tb_permission` VALUES ('3', 'admin:manager', '后台管理', '1', '1');
+
+-- ----------------------------
+-- Table structure for tb_repair_shop
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_repair_shop`;
+CREATE TABLE `tb_repair_shop` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shop_name` varchar(255) DEFAULT NULL COMMENT '汽修店名称',
+  `shop_description` longtext COMMENT '描述信息',
+  `shop_tel` varchar(255) NOT NULL COMMENT '店铺电话',
+  `user_id` varchar(255) DEFAULT NULL COMMENT '店铺关联账号ID',
+  `address` varchar(255) DEFAULT NULL COMMENT '店铺地址',
+  `province` varchar(255) NOT NULL COMMENT '省份',
+  `city` varchar(255) NOT NULL COMMENT '城市',
+  `area` varchar(255) NOT NULL COMMENT '区域',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_repair_shop
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tb_reply
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_reply`;
+CREATE TABLE `tb_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) DEFAULT NULL COMMENT '帖子编号',
+  `reply_text` longtext,
+  `create_time` datetime DEFAULT NULL,
+  `favor_count` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `valid` int(2) DEFAULT NULL COMMENT '帖子的状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_reply
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tb_role
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_role`;
+CREATE TABLE `tb_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `value` varchar(255) DEFAULT NULL COMMENT '角色字',
+  `name` varchar(255) NOT NULL COMMENT '角色名称',
+  `valid` int(1) DEFAULT NULL COMMENT '是否有效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_role
+-- ----------------------------
+INSERT INTO `tb_role` VALUES ('1', 'admin', '管理员', '1');
+INSERT INTO `tb_role` VALUES ('2', 'vip', '付费用户', '1');
+
+-- ----------------------------
+-- Table structure for tb_service
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_service`;
+CREATE TABLE `tb_service` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `caretory_id` int(11) DEFAULT NULL COMMENT '所属分类',
+  `service_name` varchar(255) NOT NULL COMMENT '服务名称',
+  `service_desc` longtext COMMENT '服务描述',
+  `price` double(10,2) NOT NULL COMMENT '价格',
+  `commision` double(10,2) DEFAULT NULL COMMENT '支付给技师的佣金',
+  `benefit_price` double(10,2) DEFAULT NULL COMMENT '优惠金额',
+  `sort` int(5) DEFAULT NULL COMMENT '展示顺序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_service
+-- ----------------------------
+INSERT INTO `tb_service` VALUES ('1', '1', '打蜡', '1啊大好时光', '68.00', '5.00', '58.00', null);
+INSERT INTO `tb_service` VALUES ('2', '2', '内饰清洗', '2让他', '580.00', '50.00', '560.00', null);
+INSERT INTO `tb_service` VALUES ('4', '2', '五座轿车贴膜（德系车）', '3阿范德萨发', '460.00', '40.00', null, null);
+INSERT INTO `tb_service` VALUES ('5', '1', '五座轿车贴膜（非德系车）', '4222312', '380.00', '30.00', null, null);
+INSERT INTO `tb_service` VALUES ('6', '2', '专车专用导航带后视', '对方答复就是的很多人', '200.00', '20.00', null, null);
+INSERT INTO `tb_service` VALUES ('7', '2', '行车记录仪不带后视', '无人条件是否更换自动发货地方就是发个', '80.00', '5.00', null, null);
+INSERT INTO `tb_service` VALUES ('8', '3', '行车记录仪带后视', 'vbj,cghmdg好', '120.00', '10.00', null, null);
+INSERT INTO `tb_service` VALUES ('9', '1', '坐垫拆装', '12313423', '50.00', '5.00', null, null);
+INSERT INTO `tb_service` VALUES ('10', '1', '座套拆装', '566666', '98.00', '10.00', null, null);
+INSERT INTO `tb_service` VALUES ('11', '2', '换胎', '88888', '50.00', '5.00', null, null);
+
+-- ----------------------------
+-- Table structure for tb_technician
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_technician`;
+CREATE TABLE `tb_technician` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '关联用户',
+  `identification_id` int(11) DEFAULT NULL COMMENT '身份证信息',
+  `aptitude_id` int(11) DEFAULT NULL COMMENT '资质',
+  `phone` varchar(255) DEFAULT NULL COMMENT '手机号',
+  `score` double(4,1) DEFAULT NULL COMMENT '评分',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tb_user_user_id_index` (`user_id`) USING BTREE,
+  CONSTRAINT `fk_technician_user_id` FOREIGN KEY (`user_id`) REFERENCES `tb_user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_technician
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tb_technician_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_technician_comment`;
+CREATE TABLE `tb_technician_comment` (
+  `id` int(11) NOT NULL,
+  `comment` longtext,
+  `score` double(4,1) DEFAULT NULL,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `create_time` datetime NOT NULL COMMENT '评论时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_technician_comment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tb_topic
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_topic`;
+CREATE TABLE `tb_topic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) NOT NULL COMMENT '帖子分类',
+  `topic_name` varchar(255) DEFAULT NULL,
+  `topic_text` longtext NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `last_replay_user_id` int(11) DEFAULT NULL,
+  `last_replay_time` datetime DEFAULT NULL,
+  `reply_count` int(11) DEFAULT NULL COMMENT '回复数量',
+  `click_count` int(11) DEFAULT NULL COMMENT '点击量',
+  `keep_count` int(11) DEFAULT NULL COMMENT '收藏用户数量',
+  `valid` int(2) DEFAULT NULL COMMENT '帖子的状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_topic
+-- ----------------------------
+INSERT INTO `tb_topic` VALUES ('1', '6', 'dfgsdgasdf', '<div id=\"maincontent\"><h1>What\'s New in Maven</h1><div class=\"posts\"><div class=\"im\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.10\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/c2d9c104e8c6f60afd684447f04d51b3\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/b62a45eb46f8d5464e16707937f80579\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.10\">Genomic Loci</a><a class=\"im-usage\" href=\"/artifact/org.hammerlab/genomic-loci_2.10/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.hammerlab\">org.hammerlab</a> » <a href=\"/artifact/org.hammerlab/genomic-loci_2.10\">genomic-loci_2.10</a>\r\n» <a href=\"/artifact/org.hammerlab/genomic-loci_2.10/1.4.4\">1.4.4</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\ngenomic-loci\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.11\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/c2d9c104e8c6f60afd684447f04d51b3\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/b62a45eb46f8d5464e16707937f80579\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.11\">Genomic Loci</a><a class=\"im-usage\" href=\"/artifact/org.hammerlab/genomic-loci_2.11/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.hammerlab\">org.hammerlab</a> » <a href=\"/artifact/org.hammerlab/genomic-loci_2.11\">genomic-loci_2.11</a>\r\n» <a href=\"/artifact/org.hammerlab/genomic-loci_2.11/1.4.4\">1.4.4</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\ngenomic-loci\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.pitest/pitest\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/28b0b32aa9fc94cb2d452ce48494daf9\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/2d996e57802dbfcf0c7ad815b4bd7e26\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.pitest/pitest\">Pitest</a><a class=\"im-usage\" href=\"/artifact/org.pitest/pitest/usages\"><b>10</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.pitest\">org.pitest</a> » <a href=\"/artifact/org.pitest/pitest\">pitest</a>\r\n» <a href=\"/artifact/org.pitest/pitest/1.1.11\">1.1.11</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nMutation testing system for Java.\r\n</div></div><div class=\"im\"><a href=\"/artifact/de.knightsoft-net/gwt-mt-widgets\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/7f3f27bc13e55c881f0e8d992d8543c5\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/ef8a037faf08a70165a3abbf08af1243\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/de.knightsoft-net/gwt-mt-widgets\">GWT Bean Validators Example</a><a class=\"im-usage\" href=\"/artifact/de.knightsoft-net/gwt-mt-widgets/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/de.knightsoft-net\">de.knightsoft-net</a> » <a href=\"/artifact/de.knightsoft-net/gwt-mt-widgets\">gwt-mt-widgets</a>\r\n» <a href=\"/artifact/de.knightsoft-net/gwt-mt-widgets/0.22.0\">0.22.0</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nA set of widgets and handlers for gwt applications using gwt-bean-validators.\r\n</div></div><div class=\"im\"><a href=\"/artifact/com.liferay/com.liferay.gradle.plugins\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/82a2ddeea6fada80f80240e51d1df1cf\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/3a054ba198743a87bb236415a8477745\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/com.liferay/com.liferay.gradle.plugins\">Com.liferay.gradle.plugins</a><a class=\"im-usage\" href=\"/artifact/com.liferay/com.liferay.gradle.plugins/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/com.liferay\">com.liferay</a> » <a href=\"/artifact/com.liferay/com.liferay.gradle.plugins\">com.liferay.gradle.plugins</a>\r\n» <a href=\"/artifact/com.liferay/com.liferay.gradle.plugins/3.0.46\">3.0.46</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nLiferay Gradle Plugins\r\n</div></div><div class=\"im\"><a href=\"/artifact/ch.epfl.lamp/dotty-interfaces\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/e1ac4c3eb6284f4ac7a06132e0ae328e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/38ba028699f135d648c28ecacf1f9ebe\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/ch.epfl.lamp/dotty-interfaces\">Dotty Interfaces</a><a class=\"im-usage\" href=\"/artifact/ch.epfl.lamp/dotty-interfaces/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/ch.epfl.lamp\">ch.epfl.lamp</a> » <a href=\"/artifact/ch.epfl.lamp/dotty-interfaces\">dotty-interfaces</a>\r\n» <a href=\"/artifact/ch.epfl.lamp/dotty-interfaces/0.1-20161203-9ceed92-NIGHTLY\">0.1-20161203-...</a><span class=\"b lic im-lic\">BSD</span></p></div><div class=\"im-description\">\r\ndotty-interfaces\r\n</div></div><div class=\"im\"><a href=\"/artifact/ch.epfl.lamp/dotty_2.11\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/e1ac4c3eb6284f4ac7a06132e0ae328e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/38ba028699f135d648c28ecacf1f9ebe\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/ch.epfl.lamp/dotty_2.11\">Dotty</a><a class=\"im-usage\" href=\"/artifact/ch.epfl.lamp/dotty_2.11/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/ch.epfl.lamp\">ch.epfl.lamp</a> » <a href=\"/artifact/ch.epfl.lamp/dotty_2.11\">dotty_2.11</a>\r\n» <a href=\"/artifact/ch.epfl.lamp/dotty_2.11/0.1-20161203-9ceed92-NIGHTLY\">0.1-20161203-...</a><span class=\"b lic im-lic\">BSD</span></p></div><div class=\"im-description\">\r\ndotty\r\n</div></div><div class=\"im\"><a href=\"/artifact/de.knightsoft-net/gwt-bean-validators\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/7f3f27bc13e55c881f0e8d992d8543c5\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/ef8a037faf08a70165a3abbf08af1243\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/de.knightsoft-net/gwt-bean-validators\">GWT Bean Validators</a><a class=\"im-usage\" href=\"/artifact/de.knightsoft-net/gwt-bean-validators/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/de.knightsoft-net\">de.knightsoft-net</a> » <a href=\"/artifact/de.knightsoft-net/gwt-bean-validators\">gwt-bean-validators</a>\r\n» <a href=\"/artifact/de.knightsoft-net/gwt-bean-validators/0.22.0\">0.22.0</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nThe GWT Bean Validators is a collection of JSR-303/JSR-349 bean validators. It can be used on server\r\nand with the help of GWT even on client side. It also contains a lot of improvements in the\r\nvalidation handling in GWT, in displaying validation errors and in input handling.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons\">Common Library</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.commons/usages\"><b>15</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons\">jp.go.nict.langrid.commons</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nCommon and utility library for the Service Grid Server Software and java web services.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.client\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.client\">Client Library</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.client/usages\"><b>6</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.client\">jp.go.nict.langrid.client</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.client/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nClient library including JSON-RPC client for the Service Grid Server Software and java web services.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.common_1_2\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.common_1_2\">Common Service Interface Definition</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.service.common_1_2/usages\"><b>6</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.common_1_2\">jp.go.nict.langrid.service.common_1_2</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.common_1_2/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nCommon Service Interface definitions for the Service Grid Server Software and java web services.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.servicecontainer\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.servicecontainer\">Service Container</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.servicecontainer/usages\"><b>6</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.servicecontainer\">jp.go.nict.langrid.servicecontainer</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.servicecontainer/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nService container including JSON-RPC handler for the Service Grid Server Software and java web services.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.language\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.language\">Language Code Libraries</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.language/usages\"><b>5</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.language\">jp.go.nict.langrid.language</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.language/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nLanguage Code Libraries for RFC3066, ISO3166, ISO639 and IANA Language Tags.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.language_1_2\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.language_1_2\">Language Service Interface Definition</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.service.language_1_2/usages\"><b>4</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.language_1_2\">jp.go.nict.langrid.service.language_1_2</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.service.language_1_2/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nLanguage Service Interface Definitionsfor Service Grid Server Software and java web services.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.client.test\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.client.test\">Client Test Library</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.client.test/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.client.test\">jp.go.nict.langrid.client.test</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.client.test/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nClient Test library\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons.protobufrpc\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/8cba5522ae13c699e41660fe7297966e\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/6911dabe79b30aa652ede82c0761b058\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons.protobufrpc\">Common Library For ProtocolBuffers RPC</a><a class=\"im-usage\" href=\"/artifact/org.langrid/jp.go.nict.langrid.commons.protobufrpc/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.langrid\">org.langrid</a> » <a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons.protobufrpc\">jp.go.nict.langrid.commons.protobufrpc</a>\r\n» <a href=\"/artifact/org.langrid/jp.go.nict.langrid.commons.protobufrpc/1.0.8\">1.0.8</a><span class=\"b lic im-lic\">LGPL</span></p></div><div class=\"im-description\">\r\nCommon and utility library about ProtocolBuffers RPC for the Service Grid Server Software and java web services.\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.fabric8/fabric8-maven-enricher-api\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/28103d429a95bfc17073ed3f0f9bc6a4\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/a4beb5335dbaf9f057a62add1186f9c4\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.fabric8/fabric8-maven-enricher-api\">Fabric8 Maven :: Enricher :: API</a><a class=\"im-usage\" href=\"/artifact/io.fabric8/fabric8-maven-enricher-api/usages\"><b>11</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.fabric8\">io.fabric8</a> » <a href=\"/artifact/io.fabric8/fabric8-maven-enricher-api\">fabric8-maven-enricher-api</a>\r\n» <a href=\"/artifact/io.fabric8/fabric8-maven-enricher-api/3.2.8\">3.2.8</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nFabric8 Maven :: Enricher :: API\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.fabric8/fabric8-maven-generator-api\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/28103d429a95bfc17073ed3f0f9bc6a4\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/a4beb5335dbaf9f057a62add1186f9c4\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.fabric8/fabric8-maven-generator-api\">Fabric8 Maven :: Generator :: API</a><a class=\"im-usage\" href=\"/artifact/io.fabric8/fabric8-maven-generator-api/usages\"><b>8</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.fabric8\">io.fabric8</a> » <a href=\"/artifact/io.fabric8/fabric8-maven-generator-api\">fabric8-maven-generator-api</a>\r\n» <a href=\"/artifact/io.fabric8/fabric8-maven-generator-api/3.2.8\">3.2.8</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nFabric8 Maven :: Generator :: API\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.fabric8/fabric8-maven-core\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/28103d429a95bfc17073ed3f0f9bc6a4\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/a4beb5335dbaf9f057a62add1186f9c4\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.fabric8/fabric8-maven-core\">Fabric8 Maven :: Core</a><a class=\"im-usage\" href=\"/artifact/io.fabric8/fabric8-maven-core/usages\"><b>4</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.fabric8\">io.fabric8</a> » <a href=\"/artifact/io.fabric8/fabric8-maven-core\">fabric8-maven-core</a>\r\n» <a href=\"/artifact/io.fabric8/fabric8-maven-core/3.2.8\">3.2.8</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nFabric8 Maven :: Core\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.fabric8/fabric8-maven-generator-java-exec\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/28103d429a95bfc17073ed3f0f9bc6a4\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/a4beb5335dbaf9f057a62add1186f9c4\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.fabric8/fabric8-maven-generator-java-exec\">Fabric8 Maven :: Generator :: Java Exec</a><a class=\"im-usage\" href=\"/artifact/io.fabric8/fabric8-maven-generator-java-exec/usages\"><b>4</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.fabric8\">io.fabric8</a> » <a href=\"/artifact/io.fabric8/fabric8-maven-generator-java-exec\">fabric8-maven-generator-java-exec</a>\r\n» <a href=\"/artifact/io.fabric8/fabric8-maven-generator-java-exec/3.2.8\">3.2.8</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nFabric8 Maven :: Generator :: Java Exec\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.github.felixbr/swagger-blocks-scala_2.11\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/a13430a4d196a675b07748ef2f020f0\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/c9bb0231a6fefd4f46f122216775b6ba\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.github.felixbr/swagger-blocks-scala_2.11\">Swagger Blocks Scala</a><a class=\"im-usage\" href=\"/artifact/io.github.felixbr/swagger-blocks-scala_2.11/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.github.felixbr\">io.github.felixbr</a> » <a href=\"/artifact/io.github.felixbr/swagger-blocks-scala_2.11\">swagger-blocks-scala_2.11</a>\r\n» <a href=\"/artifact/io.github.felixbr/swagger-blocks-scala_2.11/0.2.1\">0.2.1</a><span class=\"b lic im-lic\">MIT</span></p></div><div class=\"im-description\">\r\nswagger-blocks-scala\r\n</div></div><div class=\"im\"><a href=\"/artifact/com.bestellensoftware/jsync.io\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/2e0bd4e6f0839cbad86747a885f79c91\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/8f0eb162838a490f7141de8f8fad0fe1\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/com.bestellensoftware/jsync.io\">Jsync.io</a><a class=\"im-usage\" href=\"/artifact/com.bestellensoftware/jsync.io/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/com.bestellensoftware\">com.bestellensoftware</a> » <a href=\"/artifact/com.bestellensoftware/jsync.io\">jsync.io</a>\r\n» <a href=\"/artifact/com.bestellensoftware/jsync.io/1.10.11\">1.10.11</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\njsync.io is a non-blocking, event-driven networking framework for Java\r\n</div></div><div class=\"im\"><a href=\"/artifact/de.xwic.etlgine/etlgine-core\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/da565cb3fe9f81f7d3bf798d82219fee\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/2ceb36a7fd77120b0c15a67228dd79a\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/de.xwic.etlgine/etlgine-core\">ETLGINE::CORE</a><a class=\"im-usage\" href=\"/artifact/de.xwic.etlgine/etlgine-core/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/de.xwic.etlgine\">de.xwic.etlgine</a> » <a href=\"/artifact/de.xwic.etlgine/etlgine-core\">etlgine-core</a>\r\n» <a href=\"/artifact/de.xwic.etlgine/etlgine-core/5.3.0.6\">5.3.0.6</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nETLGINE::CORE\r\n</div></div><div class=\"im\"><a href=\"/artifact/com.github.calimero/calimero-rxtx\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/a13430a4d196a675b07748ef2f020f0\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/dcbecb3f624f92b8114c301b93cb7584\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/com.github.calimero/calimero-rxtx\">Calimero Rxtx Adapter</a><a class=\"im-usage\" href=\"/artifact/com.github.calimero/calimero-rxtx/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/com.github.calimero\">com.github.calimero</a> » <a href=\"/artifact/com.github.calimero/calimero-rxtx\">calimero-rxtx</a>\r\n» <a href=\"/artifact/com.github.calimero/calimero-rxtx/2.3\">2.3</a><span class=\"b lic im-lic\">GPL</span><span class=\"b lic im-lic\">GPL</span></p></div><div class=\"im-description\">\r\nAdapter to use the rxtx library for serial communication\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.10\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/c2d9c104e8c6f60afd684447f04d51b3\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/b62a45eb46f8d5464e16707937f80579\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.10\">Genomic Loci</a><a class=\"im-usage\" href=\"/artifact/org.hammerlab/genomic-loci_2.10/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.hammerlab\">org.hammerlab</a> » <a href=\"/artifact/org.hammerlab/genomic-loci_2.10\">genomic-loci_2.10</a>\r\n» <a href=\"/artifact/org.hammerlab/genomic-loci_2.10/1.4.3\">1.4.3</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\ngenomic-loci\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.11\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/c2d9c104e8c6f60afd684447f04d51b3\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/b62a45eb46f8d5464e16707937f80579\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.hammerlab/genomic-loci_2.11\">Genomic Loci</a><a class=\"im-usage\" href=\"/artifact/org.hammerlab/genomic-loci_2.11/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.hammerlab\">org.hammerlab</a> » <a href=\"/artifact/org.hammerlab/genomic-loci_2.11\">genomic-loci_2.11</a>\r\n» <a href=\"/artifact/org.hammerlab/genomic-loci_2.11/1.4.3\">1.4.3</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\ngenomic-loci\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.github.theangrydev.fluentbdd/core\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/a13430a4d196a675b07748ef2f020f0\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/c9bb0231a6fefd4f46f122216775b6ba\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.github.theangrydev.fluentbdd/core\">Core</a><a class=\"im-usage\" href=\"/artifact/io.github.theangrydev.fluentbdd/core/usages\"><b>6</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.github.theangrydev.fluentbdd\">io.github.theangrydev.fluentbdd</a> » <a href=\"/artifact/io.github.theangrydev.fluentbdd/core\">core</a>\r\n» <a href=\"/artifact/io.github.theangrydev.fluentbdd/core/8.2.2\">8.2.2</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nCore\r\n</div></div><div class=\"im\"><a href=\"/artifact/com.github.winteryoung/yanwte\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/a13430a4d196a675b07748ef2f020f0\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/dcbecb3f624f92b8114c301b93cb7584\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/com.github.winteryoung/yanwte\">Yanwte</a><a class=\"im-usage\" href=\"/artifact/com.github.winteryoung/yanwte/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/com.github.winteryoung\">com.github.winteryoung</a> » <a href=\"/artifact/com.github.winteryoung/yanwte\">yanwte</a>\r\n» <a href=\"/artifact/com.github.winteryoung/yanwte/1.2.4\">1.2.4</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nA library to help extending your programs.\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.rundeck/rundeck-core\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/b642817bf756779da77ee4e8a354ac98\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/d7ebc2c37186b0c1a3aa1762ae722dbc\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.rundeck/rundeck-core\">Rundeck Library Core</a><a class=\"im-usage\" href=\"/artifact/org.rundeck/rundeck-core/usages\"><b>6</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.rundeck\">org.rundeck</a> » <a href=\"/artifact/org.rundeck/rundeck-core\">rundeck-core</a>\r\n» <a href=\"/artifact/org.rundeck/rundeck-core/2.7.1\">2.7.1</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nRundeck\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.jresearch.commons.gwt/org.jresearch.commons.gwt.emu\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/c4ca1e6907a8f7efbcd5aa4aad64ccf0\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/b645e38aa620b74277fde8615ccf2631\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.jresearch.commons.gwt/org.jresearch.commons.gwt.emu\">JRESEARCH COMMONS: GWT Java Emulation Classes</a><a class=\"im-usage\" href=\"/artifact/org.jresearch.commons.gwt/org.jresearch.commons.gwt.emu/usages\"><b>5</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.jresearch.commons.gwt\">org.jresearch.commons.gwt</a> » <a href=\"/artifact/org.jresearch.commons.gwt/org.jresearch.commons.gwt.emu\">org.jresearch.commons.gwt.emu</a>\r\n» <a href=\"/artifact/org.jresearch.commons.gwt/org.jresearch.commons.gwt.emu/1.0.97\">1.0.97</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nJRS GWT commons\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.rundeck/rundeck-storage-api\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/b642817bf756779da77ee4e8a354ac98\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/d7ebc2c37186b0c1a3aa1762ae722dbc\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.rundeck/rundeck-storage-api\">Rundeck Library Rundeck Storage Api</a><a class=\"im-usage\" href=\"/artifact/org.rundeck/rundeck-storage-api/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.rundeck\">org.rundeck</a> » <a href=\"/artifact/org.rundeck/rundeck-storage-api\">rundeck-storage-api</a>\r\n» <a href=\"/artifact/org.rundeck/rundeck-storage-api/2.7.1\">2.7.1</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nRundeck\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.hammerlab/spark-tests_2.11\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/c2d9c104e8c6f60afd684447f04d51b3\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/b62a45eb46f8d5464e16707937f80579\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.hammerlab/spark-tests_2.11\">Spark Tests</a><a class=\"im-usage\" href=\"/artifact/org.hammerlab/spark-tests_2.11/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.hammerlab\">org.hammerlab</a> » <a href=\"/artifact/org.hammerlab/spark-tests_2.11\">spark-tests_2.11</a>\r\n» <a href=\"/artifact/org.hammerlab/spark-tests_2.11/1.1.3\">1.1.3</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nspark-tests\r\n</div></div><div class=\"im\"><a href=\"/artifact/org.rundeck/rundeck-storage-data\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/b642817bf756779da77ee4e8a354ac98\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/d7ebc2c37186b0c1a3aa1762ae722dbc\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/org.rundeck/rundeck-storage-data\">Rundeck Library Rundeck Storage Data</a><a class=\"im-usage\" href=\"/artifact/org.rundeck/rundeck-storage-data/usages\"><b>2</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/org.rundeck\">org.rundeck</a> » <a href=\"/artifact/org.rundeck/rundeck-storage-data\">rundeck-storage-data</a>\r\n» <a href=\"/artifact/org.rundeck/rundeck-storage-data/2.7.1\">2.7.1</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\nRundeck\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.get-coursier/coursier-cache_2.11\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/5b997c7f4f020527212d2ce283fd6879\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/cb99af6baa2239073920068b92b2808\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.get-coursier/coursier-cache_2.11\">Coursier Cache</a><a class=\"im-usage\" href=\"/artifact/io.get-coursier/coursier-cache_2.11/usages\"><b>8</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.get-coursier\">io.get-coursier</a> » <a href=\"/artifact/io.get-coursier/coursier-cache_2.11\">coursier-cache_2.11</a>\r\n» <a href=\"/artifact/io.get-coursier/coursier-cache_2.11/1.0.0-M15-1\">1.0.0-M15-1</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\ncoursier-cache\r\n</div></div><div class=\"im\"><a href=\"/artifact/io.get-coursier/coursier-cache_2.10\"><picture><source type=\"image/webp\" srcset=\"https://d2j3q9yua85jt3.cloudfront.net/img/5b997c7f4f020527212d2ce283fd6879\"><img class=\"im-logo\" width=\"48\" height=\"48\" src=\"https://d2j3q9yua85jt3.cloudfront.net/img/cb99af6baa2239073920068b92b2808\"></picture></a><div class=\"im-header\"><h2 class=\"im-title\"><a href=\"/artifact/io.get-coursier/coursier-cache_2.10\">Coursier Cache</a><a class=\"im-usage\" href=\"/artifact/io.get-coursier/coursier-cache_2.10/usages\"><b>3</b> usages</a></h2><p class=\"im-subtitle\"><a href=\"/artifact/io.get-coursier\">io.get-coursier</a> » <a href=\"/artifact/io.get-coursier/coursier-cache_2.10\">coursier-cache_2.10</a>\r\n» <a href=\"/artifact/io.get-coursier/coursier-cache_2.10/1.0.0-M15-1\">1.0.0-M15-1</a><span class=\"b lic im-lic\">Apache</span></p></div><div class=\"im-description\">\r\ncoursier-cache\r\n</div></div></div></div>', '2016-12-06 01:26:32', '2016-12-06 01:26:32', '5', null, '2016-12-06 01:26:32', null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('2', '6', '111111', '1111111', '2016-12-06 22:05:36', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('3', '6', '22222', '22222', '2016-12-06 22:05:38', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('4', '6', '33333333', '3333333', '2016-12-05 22:05:44', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('5', '6', '4444444', '4444444', '2016-12-05 22:05:51', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('6', '6', '5555555', '5555555', '2016-11-30 22:12:14', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('7', '9', '99999999', '9999999999', '2016-12-07 01:24:30', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('8', '9', '100000000', '100000000', '2016-12-05 01:24:46', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('9', '10', '235235234', '23452346', '2016-12-03 01:25:09', null, '5', null, null, null, null, null, '1');
+INSERT INTO `tb_topic` VALUES ('10', '10', 'asdgsdhfdg', '234sfsfhsdfg', '2016-11-28 01:29:54', null, '5', null, null, null, null, null, '1');
+
+-- ----------------------------
+-- Table structure for tb_topic_keep
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_topic_keep`;
+CREATE TABLE `tb_topic_keep` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_topic_keep
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for tb_user
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `oppen_id` varchar(255) NOT NULL,
+  `oppen_id` varchar(255) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL COMMENT '账号手机号',
   `realname` varchar(255) DEFAULT NULL COMMENT '昵称',
   `password` varchar(255) DEFAULT NULL,
   `head_img` varchar(255) DEFAULT NULL,
-  `add_time` varchar(255) DEFAULT NULL,
   `area_id` int(11) DEFAULT NULL,
   `area_name` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  `member_time` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL COMMENT '注册时间',
+  `member_time` datetime DEFAULT NULL COMMENT '关注时间',
+  `type` int(1) DEFAULT NULL COMMENT '用户类型0:技师y用户1:车主用户',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `tb_user_user_id_index` (`user_id`) USING BTREE,
   UNIQUE KEY `tb_user_open_id_index` (`oppen_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tb_user
 -- ----------------------------
-INSERT INTO `tb_user` VALUES ('4', 'oyqTtw3DsY4PXg1wVFfQp8ewOKh8', '', null, null, null, '2016-04-11', '37', '鼓楼2', '1', null);
-INSERT INTO `tb_user` VALUES ('5', 'oyqTtw2gjY17ntKIyba_i48EB26A', '', '尹翔', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLDr5ibdIjO4rX8U4UDVE3Xf1WFAPcYw5Xqzd3phekO1be8j8fCjku6CVwvKkS3iaN9v8Q5uU3iauOdpA/0', '2016-04-11', '36', '南京汉中门大街沟通100服务店', '1', '');
-INSERT INTO `tb_user` VALUES ('6', 'oyqTtw0g_Gc4YlHlUAUGnx6Gft90', '', 'changzhenwei', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLEb7ib78No0HnFF2wEXaVnicBMwOvmeVFxuy4hOlSCjXLeeia42glF84mMCibmrW0ebM6TgCUqYB8nJb/0', '2016-04-13', '39', '玄武区1', '1', '');
-INSERT INTO `tb_user` VALUES ('8', 'oyqTtwxQ7MQgfoqMwVd8mj03MyQQ', '', null, null, null, '2016-04-20', '36', '鼓楼1', '1', null);
-INSERT INTO `tb_user` VALUES ('9', 'oyqTtw96SNP2q4ZZxcnIuVj7sYNk', '', '阿朱', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLD94uicFLQ9Dmt6icfGDoop5lxH9sdiaLs3xocHC9wOhzddYTZ0T7K1fBTicN4rrGDpUclTJCuXia21ofHW2eFjer6O77A3HFWMn3bE/0', '2016-04-26', '39', '玄武区1', '1', '2016-05-25');
-INSERT INTO `tb_user` VALUES ('10', 'oyqTtw1HH95lrkd5GJwqusVT6z5A', '', null, null, null, '2016-04-29', '36', '鼓楼1', '1', null);
-INSERT INTO `tb_user` VALUES ('11', 'oyqTtw8UGbJh7XLMr1s5tSLrC2io', '', '乀_-Sherry', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxlZVicEmK4Jz87E2pGelZ0uxP1WoMotQI70mnPuF1ib3p2jRSeWHLBpXreqFibDqLDMpAM0qPFKRx15/0', '2016-05-06', '36', '鼓楼1', '1', null);
-INSERT INTO `tb_user` VALUES ('12', 'oyqTtw_d252V55C89XiqmkGrRpHM', '', 'Rosarin*', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxmAAsZZI5Sr26AaDeyveYrGMTM5omicPsJp3zEuE7kj2tqBbHBSlyF54XvA2ArrEq90Aqb6ENEicd1/0', '2016-05-06', '36', '鼓楼1', '1', null);
-INSERT INTO `tb_user` VALUES ('13', 'oyqTtw9S7JFtTgx6-3qpSG66w7QU', '', 'wum', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn0aoSDNlW4dEib1Cmy66JZfon7BW6gtc1yBldTU7JDRe5SDcib90otODEJ9JqOQNjMaRpyAcSvf9Us/0', '2016-05-06', '36', '南京汉中门大街沟通100服务店', '1', '2016-06-08');
-INSERT INTO `tb_user` VALUES ('14', 'oyqTtw3i2cte30LSHsGrXAkXVxqE', '', null, null, null, '2016-05-10', '42', '南京升州路营业厅', '1', null);
-INSERT INTO `tb_user` VALUES ('15', 'oyqTtwzgJl31fSxOeeyny-ASSYQ4', '', null, null, null, '2016-05-16', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('16', 'oyqTtw1A-aDwocImx_r01EG0MioY', '', null, null, null, '2016-05-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('17', 'oyqTtw_dPj4Ne9iKxO-S2uK9tGkE', '', '吃号店大掌柜', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM5ia4wIuzuiaszUibU71nMDFjfxUzjmbxhzb6kmuoYxlLVPInRJ9saE6q3iabEibvs37iaT9icuy4FwKXW9Q/0', '2016-05-23', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('18', 'oyqTtw3UjQfx_MINSCnQXbmAPqpY', '', null, null, null, '2016-05-23', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('19', 'oyqTtw3qfVPOKbbdt6v1hHiTVF1U', '', null, null, null, '2016-05-23', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('20', 'oyqTtw1TyV2TRmTIVeF1Z3R3wqaw', '', '胡哥', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn1yvHVIibexDJjcVXqicSmmWpyOuxw5Xiahuyia6c6icScfsDBv5PI6iaEBm3t9mmXKUHYMibHyUstBRgaib/0', '2016-05-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('21', 'oyqTtw_8nBavm1j7aPJwKlic_oqw', '', '夏日凉橙', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QlCS2lTGv7F7gA9B1NXiazYWSb8Pz6X1BYAycGE0lRCSDJnMiasNbxqVty4xRC5Mkpc07QAKoWNXGv/0', '2016-05-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('22', 'oyqTtwwPQXjq5CcUhNuDg-LMzN1A', '', '勐子', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM490yIClsWPyNYHLA0BQOR4Sk7icB9Snic1ZNwdSkZp0YMkq6PCx4ujHwMibcJkuWqmuWJOdwnU1nWJqsLIye0IRdiavKxcXAOr1yo/0', '2016-05-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('23', 'oyqTtw0mBWl6V0bqU-xD5-_vzuiY', '', '陈雪成', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxsS1YN5OIQEFzm4TekpwnYJdnMaaPicy0gLZ5hhicFEPyL4FakXo7DJG4LKZgcoUOFQ5XYwchdv1vK/0', '2016-05-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('24', 'oyqTtw9Rx04TEd8pVCaVXxNFvRDw', '', '姚瑾', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSfZZtRITaVayMWLdib7Lmm8Xrlgph45WDZ8fPtD3dCrvcYUlQvSbSHSFyFdwzQQmMiaXTEK5Z3CmuQ/0', '2016-05-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('25', 'oyqTtw91DW4dmYULSdL7n-4-G9BY', '', '豆娘', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLGh8UD3J3I5GCmliaTcBBf54r827vvGoxNPUPSia0asRHRR9k5aSs83JE4wU9bF0rnwVO2LMmMMl9g/0', '2016-06-03', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('26', 'oyqTtwx22xt4J9oujYfC3wjRD5Uk', '', null, null, null, '2016-06-03', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('27', 'oyqTtw5jkAu9hSIYZUpyqylejx_8', '', 'angel', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEIcFdm4G4fEaQRb5YoQPfupTobpR8z1wQwSlJGCnIiaft9o3rxHwFkRIcka8yO5VPCMRH7tv7Hic8hbgTFu0aicm6Y1Dooia7fafibE/0', '2016-06-03', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('28', 'oyqTtw_SHoOKbpNJoF6fU-vfXxFY', '', '→_→^o^⊙ω⊙(ง •̀_•́)ง', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65Qhs01vSPTts4kmTjEtTM5Cdicd82JFsj8TuhbWg1NHIB49B7tokiajbCmYu3dHIFiaPez6zfvD1GSeM/0', '2016-06-08', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('29', 'oyqTtw0p_NhAaOjZH1OOG7Npg9FA', '', '如果还有明天', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn7RYIC6SsBB4WZ9fPQqBxd7QXOibn0HiaqYOa2ibMt1W9D7SPFoFRXUMejiaIQPNiahRQygkdEo0UOQFv/0', '2016-06-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('30', 'oyqTtw7f1lYZFlKdCF5VAHePqcxI', '', '王博', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBTbibyLs0XWpGVQk6QDKkuPvt8mJrn7W7Fgp0nTKjchS0ELYDiawLr4yiaTxJMYlZ3YDuWxswibWEuxjw/0', '2016-06-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('31', 'oyqTtw4N1B1s_rd4bJyLdfAfNGd8', '', '又变凹凸曼', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUOOuYw6wOpVCJvibXeDPZVtXjqSibCZRImkODLrKLQHTXsuPGdJCZbTJXibUsenrz3WW89ib7gInO6OQM/0', '2016-06-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('32', 'oyqTtw_3J9QWix69R8lFyGcAwCoA', '', '岑岑', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLBlO3ibecznZklsJ2mSNT0CDiaMuibaIQ1gticiaJf2Qp5eSr4YIqEZicCS7gUXpLkp9Vr854K2rfKCIgt/0', '2016-06-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('33', 'oyqTtwzkMdmKiUdVDhnlM6GXGYq8', '', '蝶衣婚庆', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QgsFcUwibab06Mia9zG6W1lSh0AKhTCiberKbOBiaeDibBp15moAFxMgsmWh8VyAVKGFUJt1FIS1g8ea2/0', '2016-06-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('34', 'oyqTtw1jyQge4jL-hxW1fLc1WKnA', '', '釆菊东篱', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKNjqrlFxZibkQpfycicPszZAZ6DhL4meAtcdWTNffynUEqAwAXdPe2c7Q9wtuO1w6Pjq9uzWCfU5qiallNW3SADNz2/0', '2016-06-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('35', 'oyqTtw-iCmyM3xVw_3XM8pO_xao4', '', '张朝', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEJvD49ksHEhxgAShTJialc7rdo20Kz8aIopjEibJDYfxVicGotN6SUnCLHj2pTQ8XM0iamt1icSFdbLUUA/0', '2016-06-16', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('36', 'oyqTtwzEjo8pzJngr0jPsVoKWedo', '', '冯永强', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxqyMtLduCycG9PYhSGKEy3HmVPm9M96PNWJnkLT4WcJ48FrMicibMrP3ahwYQDOtB1g9H1utwPcVv3/0', '2016-06-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('37', 'oyqTtw6su9NPDlAhgmGUYHukqQ7A', '', '细菌', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKO8iazWichBSGk6rEEL7DBk1ib8IloFA93JEAqwkxcIZnVx1yzDUeWttdz3cEqh2J9clSJ7wdjfLL7ibA/0', '2016-06-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('38', 'oyqTtw2vfPMrtQczREkZYaQmMqt0', '', '陆惠', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM6CKGTXCuIoibODV9NdJzdyEb7SWxWXOxdD9KjiaIKyce8YiaMbOaUjxrkldBj7M2WNCBkdPu0V3ibQ0A/0', '2016-06-21', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('39', 'oyqTtw3-pP203p605MLi9iX1utyo', '', 'EOW', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUODmKBp4OplXgw4iauSpag1VjhqYClI4tKiazeKxaNzBsRpH8ibCicuDr6xkpD4HXQ8Doa1ESZTPWVqGW/0', '2016-06-21', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('40', 'oyqTtw-1ntxGmb48Evmvc6r2VlyQ', '', '子夜 「果语官方省代」', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxnA3IJiarFlAqX14Eef3XrNCGHS7icYKRCvQUEiadru3Py7dtFoNOV7BMLKCS9KTszsvoz9s1ichrGpl/0', '2016-06-21', null, null, '1', '');
-INSERT INTO `tb_user` VALUES ('41', 'oyqTtw_4KRONtzhkIWrZMeQVM2So', '', '炎炎', null, '', '2016-06-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('42', 'oyqTtwyAyUrpwNrPPx8F7q61p7RI', '', '有志者事竟成', null, 'http://wx.qlogo.cn/mmopen/MmXzf48yfIlugJ1Ric8ibQBCdiaK6MnPGf6kCJR6L4duBfF8TINAg5CsWuUAyabt4ibeuibex170SeKrsvyTsHl0kpgNYUYBWTXdD/0', '2016-06-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('43', 'oyqTtw1zOWY0M3qayRdDu_XnHsfM', '', '喜之郎', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrTxdZl8tZOXE2icZsmsiasdPKgQsbPXNCfjiaUrCBgMGMOW6ve2QI00zlRibS0WDCbiat3FboczqUic7wVPPnNys64I/0', '2016-06-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('44', 'oyqTtw7EM8Dfe5FtvSXZTP3JpSAI', '', 'Auyl', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM7tYCkvHHWRH5l22e9eictuAlHCfibaMBDpicETrgofTHmqGqG23ERkk54aQRguvMbm6Wj9bpVhZWO6w/0', '2016-06-24', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('45', 'oyqTtww6p1kWXM4oWOWgnwxRG9G4', '', 'twang', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKPBMswfV6UguVHBovTDNLb9bCSHLpqqkdL4J6KkvaKxpQFztVJt94GUpRdjIruuCzJib1qNUd6xQnw/0', '2016-06-26', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('46', 'oyqTtw3FQoAM2glqBcgDYtW4iyUU', '', 'ice_冰块', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QoIO1oZ08ZHWlqRX2QGrm8Jj7veb4RicjfTmKOxu6ibXG7a0t5qQZnnJBGXN5aj9xVOG6TmGm7VzYc/0', '2016-06-26', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('47', 'oyqTtw6QkdoZjbSLlQbEsadb8Eu8', '', 'A^_^上海金蝶软件', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxsrG2picGibW0RU8nM1gZoOlJnjJlFRWtm2MyDXOWsxRnvYptUqOJGBhXbofbXvoYRyOjl5Tp4G0Td/0', '2016-06-27', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('48', 'oyqTtwww94zQehm9KMlvSMsyku_Y', '', '旅馆大兵', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLERgcBibPRPxbzChxnm0qSMJM00nXLrKMkvUaU5Har6gYg0h4phnkREHibMMM7oBjyQQgHMUaX41Ml/0', '2016-06-27', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('49', 'oyqTtw4otwJOBj2s94ZL5Wt5KwGo', '', '磊', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEKvVNjsFMMMz6aQBGVwHgfsYMX0erLDnVj3JicaHZZuibO3zVd1YzllYLGMLeEjCkswOSOA64YeTIVA/0', '2016-06-27', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('50', 'oyqTtw4LxNUBlUOTt1ql0r-sKtv4', '', 'L', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6HH5ynLvIcia8yNzMiaHbC55Ldvm194gcBA4fNaMII26kPUWvveqdeicrRhNbYbeJrvpLb1iaIC5gicibXTfwUt62hkibM/0', '2016-06-27', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('51', 'oyqTtwzH1zzT1xZZWUovnkj6TxPg', '', 'hopeful', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Fn70Vpcrc1c21HNpO6rJsvWSG0hDSxbk9TTnYexiaBooia3EvXP8fBU0AABM3ibEKSbrsZNvqiaqf4g7Q7ytK5EoFf/0', '2016-06-27', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('52', 'oyqTtw__0-vXm5HFx3D7IsKz3M7E', '', '蔡礼松', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLOsEr5cbBWy1lMVffysMG254NfmbyZwFNo3AczCqiaAfNLIr61ncMGOcSoJ6iaxkBo1gdxQU9Ke5Fx/0', '2016-06-28', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('53', 'oyqTtw4O0F2-mrFGbPGHcVXhhF6Q', '', 'HY', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLAY7Fxj6QQKHeXDMQjNbTYddWyrt90Vw1aPk2RGK8W7R594ic1yxhYcLlFEFDwzusKTf7D1Eq7Oyu/0', '2016-06-28', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('54', 'oyqTtw-Wo0Ke5FHnmcvs3-9_NB9Q', '', '扬帆启航', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn3LTib3LzuHRJaukvlfjB0vticgQju5yvIgj0UJuKNvHMA4oBSbEfrspynzLEnrICiaVnb79fbkRpT7/0', '2016-06-28', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('55', 'oyqTtwxkF1w3_DZDu_5Z2cStYoXw', '', '墨', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM7gOkibGxANRp1NyrvcdTk5Os2zw155kSFLYKeibjsurywKnpPdUhwX9M5BfexcjLCbNdHkiaunneOpMicgicbktFaibPPDT5Y3LIfyI/0', '2016-06-28', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('56', 'oyqTtwwMhius33Yqjrv4Q2onmr1c', '', '流浪信仰', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QpCPfY6yhdWyKsUPOBmNdz3LQS14ELAX7Pjlw0vg0FfibTfXY1B6L2ZW6uqicanHUYu2Xibpz3fCeFI/0', '2016-06-29', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('57', 'oyqTtwz-6YtPxpphyqVGGuapqAkc', '', '付伟', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEInV2gyZzicLPWpYWs0p4q1czAKCO5dC1kFFOSPzhMRIwGJ45n68v6416G0ibVR7srPL2I2F0v20zug/0', '2016-06-29', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('58', 'oyqTtw2EbRUgt2TfsjFkKOzDYGlc', '', '鲁云', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEKWAcAXJEssHKs3Mhvibxib3KmgaIibf2bQicEfhLF84K1p6188icNh6D1ESNkBZm2zQsD7PclB8ajq0DA/0', '2016-06-29', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('59', 'oyqTtw7QMYKadn97uYrzoQLtR4Tk', '', 'zxw', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAobcA8L65Yp85VuoVjp5C2fSzPEqOFNQ7OUPH6ib9O3bStj6jH2yicr4grRpZKo5juaZXpSWliaibrtibg9RIBtFUXRP6/0', '2016-06-29', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('60', 'oyqTtw51bjkjUl__qSKCkVzGvCS4', '', '蘭鋳', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLD94uicFLQ9DmiaWto7ogRuBiaibYHBv6hoSAibAzPJPlMWvlhXRjxIhp7rLzGwZjnial9XGqZTdTudQ3aVvfhEBpibU79EvzzOL6cVUc/0', '2016-06-29', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('61', 'oyqTtw3S8l44GHrJyZ6dG_52OuTs', '', '榆林技术宅', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6HPNSGgh0KchK08zfb8DngxsZUMhLsnQvDgCFuviauXrCetjiage1bK9zmyYvhI8B1BibbKsd9yyibn6wdeHR6uZskM/0', '2016-06-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('62', 'oyqTtw2IDXvHmJw1K8vz7jLoffe8', '', '天胡荽', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLMNuicicgtXCfsicOFWgEv3os2BnGrxKqxy2PssrcN5ibnUQTJomsCsIKOXpyqr7y2IW4q62DhBjNN5d/0', '2016-06-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('63', 'oyqTtw0VCsm7fTPrZMMISKZ24-Vk', '', '郭锐', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLEZlW2Hiam7iaauWpamTMBTWQmGK1buCwDaYlR62y2x6KdMx6GBDFcTPKIa6iaejHDAfqtSPMia6fr5K/0', '2016-06-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('64', 'oyqTtwyswNhhDWXXMEAe45cPzgoU', '', '星期五的', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLBrq5Djs00QlXeoBLSnSlLJABgGqIX1eNMJWfSXlGF7aEyWVTSCzicS2QibXLm8Od53hogJXyiaZLMV9ibOk6uibCfDoMu324QfrmC0/0', '2016-07-01', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('65', 'oyqTtw3JBu1RzFLk8vsezSgiENWw', '', '懒懒dè阳光℡', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKNflECOT45DiaUFgXM9HmgUj5TXWiaHwia1tq9ZgnaEaicRDpfPYUZibrVeafq9AxguwzELAmpkydf7bjqInZQ0PPRm6/0', '2016-07-01', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('66', 'oyqTtw_embzWA8S7UcaBBj_cHzGU', '', '张庆', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn1zK8ujrm1V7PLdbTb8Qib2MKenibvxQhA6crsF7gFekn9nVZibT8jNddrg1w1MxnYEJFBiaaBt80RT1/0', '2016-07-01', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('67', 'oyqTtw1y0z_wUYa-w1rNc8Y5s9FU', '', '心晴', null, 'http://wx.qlogo.cn/mmopen/MmXzf48yfIlugJ1Ric8ibQBJSR4BMQUy9JfoibBtyYdUWFGQsjOjBFu2icIOicZvAERc6pItL59LMzfzx74O2AWlOykX3vfDcHRwd/0', '2016-07-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('68', 'oyqTtw6uTN82lKqHdvTKdbAaaxeI', '', '小傑', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxtCVBtpBqjm7dA5UhQ8ia7gKzRTocZuzseARvrJxYyKRefBjDrGG7ibicw5JnUKYiaial72hOuG0gkFNm/0', '2016-07-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('69', 'oyqTtw9KssTdTOkFZcCXB6bowtE4', '', '张腾达', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM5lGQ6tUtayM0NHsZKKcfd9oS2zibGUicXoQnjUb3F5sxs5iaoQ9XIR88gnJTyuDLRXV7QiadId7puia0w/0', '2016-07-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('70', 'oyqTtw_PwoKQINpq6-kzPv0T0wp0', '', 'Michael德亮', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxknOrm8l0tONSy7UWmhhic3EJFobojjyzLZ3RgVn1iceSiac2ex4IChYfbE22xhxIjSNrlDwouviacHW/0', '2016-07-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('71', 'oyqTtw46jXeyrPmgHEXfzqcTxwqM', '', '夜猫', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLB7AfBzoFHlpngYfaDTStJ1ZVSdicrxqrnE766xJlszhhcUaZibww64Xpe8PMhvl0Uu2uhWzsGA2iaF/0', '2016-07-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('72', 'oyqTtw7MN_dqCMg_cG1pXLcXIexE', '', '仲景武（泊仲）', null, 'http://wx.qlogo.cn/mmopen/EzVk5PKYrkqtwafWDnMpK3yz5OKVhhSyRjsq4CFHTeUgFsB6oQwna2ibI7BxKe3amwpoMsVF3EcL4hZYfgwPvycjETicc2iacee/0', '2016-07-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('73', 'oyqTtw6NiB8G2Dsh6X1bFglVUAb8', '', 'bobo', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBQNgFibWuGMRgAJ6d2Ziat1nLpVFvmgSGkf9KVYibXA2zwSbky9nhpG2r9o3NjX6OdCNficr8VVoPuocQ/0', '2016-07-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('74', 'oyqTtwwsQHnURB_ZXmYQR7uson6E', '', '陈新', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLAZfwxQHz6e4KviazNCtNaBUsKMNh6GmQkpG1wFObiaaDTOG4ZSXb8plW0Q7hMDYgDUyg8NtoUkyJ9A/0', '2016-07-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('75', 'oyqTtw-Kanlls4WZ5jSFK07rLtac', '', 'charm', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6GiblpxMvCcQlQrSygSngQwFTTSa7YibrHiaPPN2dMPbxbwsiapQHB3oebibWY6MFLreall4mhysWRSr6aFFLhsaChvh/0', '2016-07-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('76', 'oyqTtwwR_UJKYFzjccGDW-FRlZG8', '', '冯泳', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoZedDVM9ELLFttCKStbX5N8R3KovOGtXy4fDq8AfRF7s0dicEKTmlRcRONXNs7625X5TrTICJwWUfg/0', '2016-07-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('77', 'oyqTtw1s7Kti_ZB6PEZ7aWVeApIU', '', '李强', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxpQehWeECnZbpFyLo77EEqEl8iclVokxwhic730mHA87oyRSzgVbLvFjuh8pxyDfxdd6SelpicvGcfl/0', '2016-07-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('78', 'oyqTtw_noSdZUmM1Jk6nV-592r4I', '', '无言', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaELDVMMBYZ2HZnTibnrSwxZPZlDHKWRNXR49xY2ND1NuvLZrkicRRJBSQCG0hhkfVshibZAndQuyBbHEw/0', '2016-07-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('79', 'oyqTtw13vXWsCtbuSsw7FD8-1oG0', '', 'Leo·S', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxia7icd51TxgLBdk34VyibCp7QQYeKDPiaP5HvuHBiaJAol4647ZzbHJib0dFVLIMsAicUoYXBM0hhzW19V/0', '2016-07-07', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('80', 'oyqTtwy2GZcWnrm7GxdbQ2YCTl04', '', '于文雨', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn5ERNts066OeQVXJGEqqyAAUTUwiaSHTrj4YcWmdNkJZibiaV9szfic0D259FhyUVfyDVErcRRaA2W4ic/0', '2016-07-07', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('81', 'oyqTtw8aLbm2Z9cI_lNZfqA8jO1k', '', '从今以后\'', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEL471xg1Rq7pvdwavXS97ndcf1S4c8iam3nvc599yoqSwg6sAAByhQluADVwaIlBYOicE545K4ibqRHA/0', '2016-07-07', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('82', 'oyqTtw-0IYTFupfhydyMQe1dKe6M', '', 'Kalven', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxoiccianlho0iahZ3IlryGPUlPIEqTDs162Ete7wmLkvUCiaicAdg9L93VJsqb4m4wciaGrVojexVDSBTF/0', '2016-07-08', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('83', 'oyqTtwyvlfpPLihhMb1gsk1yGHtM', '', 'ZHL', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn9lAiclexYyG3p2LSDK7DzQpP2wB0cezX5jokY69rpqugI91rqMpvYL4hRlrV1p0otWEYeAB4tb2t/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('84', 'oyqTtwx33N4XPEOmwvaNVwUl0SfI', '', '马学平', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoYhVOmq9q9gRwmzMFxzEyMUQS6BHKIo8F92ctWJ6zfDliaVyv66f7icKVkNuoUCk8cAHjiaJP1Y8OG5eNl4qgVDmM5/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('85', 'oyqTtw93fUMN48On-8bpNsgkl_VM', '', '邓忠乘', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaELPeicalEoAAEmtOhIbNHyNGMtHAibiaTqz0lCbibFyuFmqqevhghuckibrgukVGAXqrHyic2nFb1NoTdkA/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('86', 'oyqTtwx82NJ_PZhIPb8WgYSZex-Y', '', '刘佳亮', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaELmOknCSHDcSPl7z5LvhXMKlgUvjwicLHBWyVH2BHQeAlB0PUkjIy28qGLib9HaZ3u7u4xP6SHnND7g/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('87', 'oyqTtw2J46OTu-gIHM5Ceh5LWqcM', '', '小炜', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAobAyicsB8W3tAIeRQwpnJhWib8BoCuZKg9go5f2Uicf3wTErEPZSibTxbmGI9ZUXD1QafrbUCeGyFNFVI61uegXgURia/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('88', 'oyqTtwxZ2AM2Kvxae1Di0O2pS0x4', '', '波粒小江', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLB00LKajWxKtjsdpODnClzAyP7GmQdbvUETV283D6SrEAwyk6XZ0GtYoB1ZJDjPmBKjx3Y3WiawJ6w/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('89', 'oyqTtw0daPqFrpzf6udTRq2PvRjk', '', '广州天王点歌总代理小利', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxvRlFkkXfk4IUeGibbV2jBMyiadE4xa0AU5EMNbhFfd2ukNSgx0wvznYzyJcg0NEtxM7HrVL1xjYvw/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('90', 'oyqTtw-lmpvXm419gK1DyMysmtv8', '', '张三鲜', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxolWPy1OY2zGjYHELiaKUiaMThD5bkkBGqiajbBKsibQt2EcJUfgBOZUChMTmDDk9V0snEuUm1E20fvg/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('91', 'oyqTtwyVjYeFls9mzhpP1VtiV25M', '', 'xyy', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn575evwfKKEqTBxXbuicte4bqedjlqs11zngXaicDx4icUgKo9RISrNR2ibrgKKI6GfskJLDpLjPgrJk/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('92', 'oyqTtw18D98Z6Z1N_7nJpTj-aKf8', '', '吴奇胜', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEIqu7EUIFHJLnl3XOxlY7FXMicNhLJsCTI9a98QfxYZjS7V5S4T63icNLL3ibc7zSqdZwSS6hcKteqLA/0', '2016-07-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('93', 'oyqTtw7GMp2Re_LIt9ghepmBqYMI', '', 'cge', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoaAKW87ZqVBRfRVYXnGOEdJVvCGzWAoib9jptiaKnY95uY6tNw9YicUrRUjRtAwT244nDeGicEibAdMBDg/0', '2016-07-10', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('94', 'oyqTtw0mv38vcI-LgoICHl1wN8RQ', '', '传世', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLNJ4RKbNQborUhbYib7zF6pVibkjS7PpClRbWrCuZ0szC7yhjYNEnRUj41QcIicYThibjwklVQxDcYM1/0', '2016-07-11', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('95', 'oyqTtw1Ux4KN9cVDJFLbft1vXLhA', '', 'Ming', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxqP9UONJ2Oj2jYp8LicFTYTrOa8ViaRubN4r2AEva335H6aibEiaSIhlicBz7FAKBxjJztJLWZGO72a6a/0', '2016-07-11', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('96', 'oyqTtwwSpO0YMU0l81eB0fgRYIos', '', '暖暖', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUOPT8ic6484ssbDiaEBXtFkDxZHO2yEM4Fduju6hqS1gibvgPLhnmKfUUiaNUK1toYZydSGzTgggXXgMia/0', '2016-07-11', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('97', 'oyqTtw7awg1cjj_jfWbARvKDmPjg', '', '元亨利贞', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAobJZoQiaSlKRxI7iaxN8m6rYDyZ27G11HmxXicxIQpp5NrWCXiaFqXibLEe7EIQZQT4oibbxsPCB9pH6g2LI5Oz031tvG/0', '2016-07-11', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('98', 'oyqTtw49lh7RNPtgGhJ_BNyF1ro8', '', '殷坤', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAob4zqPEcbFjGgyyGmba4KRp50qxaq4XicG1iamSkgAuWbqEqbCXr6lHMC8AzibCTsJy81x9NdhGiaoic97RaiaTKicoUia9/0', '2016-07-12', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('99', 'oyqTtw323_sdj-rR8Yp27y_ZhUGw', '', '漂流船', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QkRwRwSPr42GpsYjDU6E7b3wFVZggUPuKBGqLAahZjmgekcZILwDTB8AgPEvHGccOpCfDn28pvH4/0', '2016-07-12', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('100', 'oyqTtw6V9K8rfRUIbElW7fBOCOK0', '', '奔牛', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEI70E6NpEfhE2SZYVkoyySUBNYhLibbzbfQMlwwVLKKf6dSU0vBjd65MKoFap2QmScsa143CtAWtBA/0', '2016-07-13', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('101', 'oyqTtw5V1eQrMBLU8bGdYVWSMYz4', '', '高备资产@婴儿', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEI3rYpOwhDoibzZmVAoiav3iaUj45Tb7MaYrHiazt3umhwliaKrU5yE8zDLJayDHpTwk1XuxGedk0J5w3w/0', '2016-07-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('102', 'oyqTtw71JtyPKfnLao7PJyHEB-lU', '', '路鹰', null, 'http://wx.qlogo.cn/mmopen/MmXzf48yfIlugJ1Ric8ibQBOibz7HqJcBUQdMzCiaYzFic0WKNwMPQnjbTNu3zKTGJIukH3DtqqC3AsiafBLiaO627QZ3nUqYGM9I7G/0', '2016-07-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('103', 'oyqTtw0J-ytrGmD0Nx6BbDZHNl70', '', '程丽', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUOAUU0Q1sicXBlvtZVE3KWKYWx5R422MAN9salt6H7lJobEkNSeb9h54tf7sTic6xVE6Y39DorkIbge/0', '2016-07-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('104', 'oyqTtw9evW2ceV_C-wKbpEw7K1EY', '', '四眼摸摸活狗', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaELYicjlUhO2oZSd07ogFqaAolYjwkDq6jlDYCvYgGnAOjwMxFhia6UhuEMI46j4vRibKRmtSvrQMoEAg/0', '2016-07-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('105', 'oyqTtww0HkwishJFkuuYRPjptKUY', '', 'PM - Sparta', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM7M7Qbbx2WUiabOOJl4jlMYz8bicuNwyUiaX5Cob8xzCeEyK0T4ib7TF4yVDx34ljSlaN1KPyHvHWHmIPxaMDJx8jt5OsLfsWvNX44/0', '2016-07-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('106', 'oyqTtw5plnrASL-cF6Al_6lvxc7s', '', '淡茶', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaELSQFrC84ksrg8u1xxiaOvT1UabFQonJLSZicI9vNN8fjKnT7CI7QNZLib5wNQKkOEX73RreG8y0fAYA/0', '2016-07-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('107', 'oyqTtwzHmjTAelgd0QTkmkQ1gqm4', '', 'alex', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBRCyBkkzw2ISXCMnAPVBYM7eqjCBIV6H9GZ2kTJmYeEuAIZewndLTq1jOCgTUwDUX9PX6OSlTatTg/0', '2016-07-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('108', 'oyqTtw6lAhPTweLH13qfNAxt0YNU', '', '济宁商超软件收款机考勤机监控', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLJ1jRyZHia1LRtGqk4LfTVfGsstXv74R3ZjJqZVh2B6Ce3qyh4ZokWf92wcLy7JQhT3OSqxiaWj5Pib/0', '2016-07-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('109', 'oyqTtw0Mg86w0w57h3WFIYHy-h9U', '', '李绍龙', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoaib1bYe0C7SsZo2QJQlp0CQTenzbZFvpiaaWT4JibvdFK36Y6D3CPmoOTZ95WnvoEuia0h40PQjrVpR49eYmnKsmJu/0', '2016-07-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('110', 'oyqTtw24wiquOjeyMKS760QbhJuQ', '', '.zhz', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSfKbicNRNkfVw6tfz4W5vOQ7nsAQszFd9e0lVnN2m7Hb77dqs5vBLpICmN0PYPuqI8MDvr9hAb8nX5ib6dJJqkxVQgUufT8UHz0/0', '2016-07-16', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('111', 'oyqTtw2jJo2PeN2KvEFUhe7GufAA', '', '梁剑平', null, 'http://wx.qlogo.cn/mmopen/jP5X2H3hNnSIBfIUxEsjsEDzibGlyUk3r2JHicxicQraL9wOOMCIxljzPXRmsqiat35uRkmRAoUYWc20iaZB240icnfTM0njRZu6qC/0', '2016-07-16', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('112', 'oyqTtwwEhBETKR7J6VQOjxvS1GNM', '', 'A贷款18658670700林珊', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUOEYTUshficHE98ydLBoCFPr4sDNHDicBMCEwtNLM35Q4ohLRFibm2pjmFfYLJicbiarCZ1cCVOKAaGMVL/0', '2016-07-16', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('113', 'oyqTtwyeKwNSePKB9DZQJwehFWTY', '', '名堂', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6HprCr6cOia3Kb5icaxR9fSX9aV3RT5B0DZk1a4V8AT4ERosmkiaqUddRWl61Lfib5atRtwdHtE0coK9FQdBYEl3acC/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('114', 'oyqTtw9kzffR9DVdS4gEKi8BRLDE', '', 'crazybunny', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUOL89AMibvlxiaKmaFhJ2pLTRFb8Sia1hU0xzoicicHLiajWk7p9vNj8IaNBPt1Y4opaOxrYp8JTldVbFMn/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('115', 'oyqTtwzcmt8yvNWhlP5bcnjImTIY', '', '日落黄昏', null, 'http://wx.qlogo.cn/mmopen/e0ekhuCqbrIEmfBFjg3WOSquVaILOdEzn7pdkakB7qRbnKkjlribfjlQr62FJ9EEOfCNm5ubYvCvOEpPQqY4QURX9TOGbKRcW/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('116', 'oyqTtw08CHLtWYYBuzRnNp3-AX2U', '', '玩具熊', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLDly1yGx2ZlvkjfSHVbBDqYasW60n1hngypND7acOC4pcHLW9VE3hf7yEMBYKJ80ic1Bf4jFOvD94/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('117', 'oyqTtwwL-EG4jwTn3_xrvmS7-Lnk', '', 'Lost youth', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn5CwMsicEPDickbuI9a5Fdl5wtot55RXQqic8FwKVibmUFicUzb04wZiaZdjyY33icN4ZqwfYJHnfj1Po5N/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('118', 'oyqTtw7EJh-DpDBXKkkM9oQVwHTU', '', '陈耀波', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6F3ahmFswkxrEY19oBpCBAGo9Z2CO14ADlMkxNAla0kUoT1eMyM6ibrzR2gfib08FJnIRVS878qtib2kFibeg2P2DR2/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('119', 'oyqTtw4wC-qD6qH83YGbhPS9Y4Go', '', '无名人士', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6E9dlOV2D6hGAMeJoDMKibkeJV4k1ichRwDwBEJAOBa1arlic70OnutH0BktnUMGvPLXnQP6vshWx5jvuQy38hzo2t/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('120', 'oyqTtwz9hyWd87BYMxvfO1qHmQOk', '', '殷年平', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxlAaqoHByHPN7wQxRf2nVvUfKRy4UmEvOHMMeZokFZ8kKn4niarSMqibeUj5DWAot6AplFHsdmlv7V/0', '2016-07-17', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('121', 'oyqTtw5vZzTW34diCGh8EvF-lBgM', '', 'Ziv', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QhGt6AvQkDoUY9CmbgeR83wwK2naOwJYJpKNWV0mrWx1eROsdJxG8etoCwQ5Qr586VleOGUCHcVv/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('122', 'oyqTtw3ezjRdPyFf0mcyZuyzBW7o', '', '随缘', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxn46btUxVZfdyMkYlsVLbhBtqEMRcQtd2PIx5yguVqicsyqzCUooUsdLt3ibZgbtSCA2haYyXsK8G2/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('123', 'oyqTtw_cifF2zCA5nnEbqaIMw08I', '', '阿陶', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxnSA2icUqic7cme3OKUk6sgNBOiaRpSeYb9t9fd9qI2ib6DvTuQJG8K5unibYcSgibVUaB4ymcS8JwqLic4/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('124', 'oyqTtw5rumZrQRMlVjTvBeypYR7s', '', '爱重来', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxtzicOkJ2xu7R2SibR3fSBkRFHcbfP744k98uzgWBiam4A3Yt4ILFZOYtLqEwLg70eJDldibXeKTTrDP/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('125', 'oyqTtw2BEIQMgzza2e4tinoDq6Yg', '', '豆豆的老爸爸', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLNrkyghc9x7zbYZ6w88YOwELGD7kQY4rFAz7Id9oob1hMXPRiaBxqBz2uXEYqm107tQyT6pIqXPVj/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('126', 'oyqTtw_NCZpC9UHIwF7vPOUqAMIs', '', '程巍', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxn5nc8OzgFHengueRSDXJYRzelbcOBuVUmf0vrdrEU6qDVhXFWzymiaJQcmEmHNHTmvLznyEdsFy8/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('127', 'oyqTtw3qFRmliBkvEyV_hnYUFsv8', '', 'king', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QrMWtToXZ8hibMwBibfic8o0NxjJ9o2G4jt0AviaTySnfUCRBQjV5HXicHOGUMWWzGuibArPUoSNdla3NC/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('128', 'oyqTtw_h8d1olzyKFTHWwnhNg50s', '', '瑶瑶', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6G5JkVW1kD2kCuZnXxScgE2GY7TVxZeXMz6icOwAIcwOLhqjichiaP3ibBgP4olRV9B3kKjACWsIBeKTME4ibxTpicIDM/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('129', 'oyqTtwz06Kgz-giiMdPPwiQw6aMw', '', '杨放', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLADHhhnv5W5ic95iaj8l8bAmppVpPEjK61AwCmVq3e5olicI5qic4Q9O26CEQZzkO6uYMbhkEDG1jPvD/0', '2016-07-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('130', 'oyqTtw_MVjQ5TrfRm8YvIvsFmBCI', '', 'Krismile', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLCfCJbK8yZU7h7Ucb7vxzSwYEp4ibUpP9nLOKUNmpvX5DglEjDPO0GlbQEM76fxkF9ddUBw3icXyEC/0', '2016-07-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('131', 'oyqTtw1jIZLr6rAJvAFUWOOiVEqc', '', 'Allan欧阳俊Java工程师', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM7M7Qbbx2WUiabOOJl4jlMYzOUoqg7oVuWMe6SBy01nUJTplf2Ib5Fnt8jgy1WwqUhXNjMTXXcHYsribpMEZUmBVM8l3NJzPuxPM/0', '2016-07-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('132', 'oyqTtw09cLMjwLzQw-q-JatwnM3g', '', '李斌', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEK3kibZLkXqv4n83QzKS46rkeCibfLMnVd0IbZazgDCKqwFd9QaTMLmbnZfHT3DXUAtuvTBvmtiatAibw/0', '2016-07-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('133', 'oyqTtw96aT0ZpaxAqaT3Ue-VXZnA', '', 'Lucive', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLDXKECUS5F3813AtPSLvichCIeg9PXwVcgU6UFRn1avJiak3OFcJSgdox46auxDLoorOciaTNYemxBjQ/0', '2016-07-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('134', 'oyqTtw2BabOclTZPhsF6wwM2iqP0', '', '子鱼', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAobcA8L65Yp85Uqkc8pUTYYMfcgbTMAicPBjcGSdDxd42icjibasSKy1EcknssicSa0uMicvZlOiaFqHwvs9pxdt1CHZne/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('135', 'oyqTtw_1vVdZQ7kCePJjHvbm_a-w', '', 'Leo', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoayaicHFEbFOTxyciciaicc3n89auDnQo60icwelBicE2IaJHOQDxiasOoEibJicpeKSicJicwzfHUicIZSWibLXHib5cJqb80CxK/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('136', 'oyqTtw6nHi7bW3tO7kwOIMnybWtI', '', '王晓鹏', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUOJGzX8MQI22Micicic3tjh0veT3agBdiceoPViaTVgaeMILW5iaNy0JO2ib1fibOPezlibGHiagH8Muw5tdbia1/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('137', 'oyqTtw6OvHzxKSG4PHhp2LM7n1oM', '', '喵了个咪', null, 'http://wx.qlogo.cn/mmopen/jBkb3aQMVicWpiaPO5ZWMMhgofg7MbaKeLvSUukQjeCzWyZU8aDUgwCg4b199UdUmVtjBoic5mz2YWguiaM4JRw9x7CwEtF96abH/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('138', 'oyqTtw48qsyR0Yu3902uUhKw7A6k', '', '美好互联 Jsn 马骏驰 15712890889', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxp38heibqbAVepXhWw77rpzfkEw7Nlia7Bs788CDH2ic2kVFJCJhzXwelibG4oSVgoC4SSOOcOpJibicxw/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('139', 'oyqTtw8OW756Zmt86O2GF_khXKBQ', '', '鱼', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxuYE813saPC6jvckSf4qmeIia3ghhPNQhbUev7dicPYbhq8JllAoe0jTlAx0jBjgqbor3dvN3APgsq/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('140', 'oyqTtw5A8gyh5hWYWeBmGdKifNlE', '', 'Tong', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoaDFTQsNtBOdXCOcmbZ02O5m4hdYSCkibw5s6D7NWzLHP7boaMiaXBd42zaL2k5cicScjZVVriabxLCuQHpKOBGbYJd/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('141', 'oyqTtw2AftPx-_FpLJaHjvaWQaWw', '', '汪成鹏', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLBsic0SWNHQsvL8EVlicRKoq9fNznEMqrDictJNxBogEGGJHFHc287crcfoyU8wj55zKDSkJc5bVr3ZQ/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('142', 'oyqTtw8FM2RkGpPemGt5orP-ghC0', '', 'SoYoung', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEJEO6sFpSyK9RicFn2ry2wTwlpjkeaA3KFE4VhbqZah2TCx6lziauWNkQkHKLGwX7v0OAygv2BN6Tug/0', '2016-07-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('143', 'oyqTtwztm5aidb3UH5dmo9IuEXhQ', '', '荷', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Fn70Vpcrc1c0fdicONCGR5SDPrqMLOia2ibicghhDp6FicZw762UkIvzlFNguJYAbtWm5v4GSHDblktLTXUWp5KyicOd/0', '2016-07-21', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('144', 'oyqTtw3jh4m3jNSXvy0Y_Nd_pmbU', '', '异℃客', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QhSa9Mp6dBsrUBMYp2C5RYhsVHzjj8y6vh48j7GhGw3iabarQvAgfwiaGJgIMAXdKS6icgLYPbSCrsR/0', '2016-07-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('145', 'oyqTtw7t9U3z54G09B0NyVAo_l9Y', '', '黑马', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEIicRGXcS8uF94j1GibngdDwXcS8AiaMTk2jiaic6oKAzU2Aq0PtricbsNdziaHQOX0ic7DGM9BNQvoT5MrAQ/0', '2016-07-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('146', 'oyqTtw2H6UOtEaTxPzdUfIzNbIOI', '', 'Roc.Qian', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBQ2AeNALpaasGxeuKWaXhMeFMNVChE2SCnUSt5ZibEPMFW8uWicAyjCbEoDE56S0K8f1ic5K5NsborcadRgiaD6WR1B/0', '2016-08-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('147', 'oyqTtw_CuGpO4G333OzF5V7NxqiE', '', 'Ray Tsang', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6HPNSGgh0KchPcYpZtLlw5QGf6L5msEhc9SyDCsrKORTU1mca3uVqic7Usoic3O14Obua5ENlMP4o5unu2W0FX5hZ/0', '2016-08-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('148', 'oyqTtw-RJ9WJIPm_H3xi2DRAEp5I', '', 'Mir°伟', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6E0HAicDIQ7C8L4dXvlm3VAcEx0UdTOMYkjqx02qdtHibYIEoEzMbib8KnWTl4k9qtspYev5dYN2IEMJCfys3Lrvvp/0', '2016-08-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('149', 'oyqTtww7ucEo1bpuIrsVUo4kia5o', '', 'Bridge', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEI2oZMs2ibqVBtR2ia7iaXOp4aBP4O2YVE3q32KcDKnbFqT886whr5icdTZhXZXqpbx6L5edvCnSjWKUg/0', '2016-08-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('150', 'oyqTtw-nF4OTvmWLgPzPTbn9x5X0', '', '熊明威', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBTrcibHXyJQ4adx1wQnJW0hZyjsUMkBichEAh96cGnSwSBzYRwLVwHReprEF8UwPCcdGh45rCLicI3Pg/0', '2016-08-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('151', 'oyqTtw2JvPHCFIKyvGEFVM371D70', '', '于伟-微点互动', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLIT13SZQiaktkmPwOicXt2uEoNQDW9Pjb5rLWhC3Pcu4vmRVthhLxw0boIl1sSdshGcReUCpic9SeCR/0', '2016-08-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('152', 'oyqTtw8dWPc3B-m1_HLgEK1Qg4Y8', '', '武敬宇', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMo2dfYBY8UO3sdiaPLv2EbFuribtBAPW1u3EjofibwunDqlQ9uo9xOOSNDUicBdGB8pzIquiaVrW7KoDA/0', '2016-08-30', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('153', 'oyqTtwxVskVi5gknp6Zi85na8Afc', '', '快乐的一匹小野驴', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLLykLR5yXMqtB2w4bYeJf9xkhYbnhNaKVzMjIdelkmOuibwy8zp1L9WqMlssEeHtXjSb69DmR5WZn/0', '2016-08-31', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('154', 'oyqTtwyelf8vi3eGAC8sjJLCuBbY', '', '萌萌哒', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLCSDJibecdsaxsPQsxxTPBoEeW9Iozia5EY4njWV7v9lJzT6hFW1icY85lHvFnZ2NZjMcljl5ypbGGkQ/0', '2016-08-31', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('155', 'oyqTtw5zbd0kCmX0FWZFUym5c1Ps', '', 'Wujy', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLCGiazlaS3aPxHBGfWd0SFOYspq59diceGxfVQ9iax15NRaTiagc4sjL1hgPyetr58RicgY0F4PlbFibGV/0', '2016-08-31', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('156', 'oyqTtw1y5pUj0V-3aJAFi3qXJ9x4', '', 'Mac2013', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxgeibSvzGQ93eq9jnc5D53REsO9bTJ9Iq6DwDKM8cIsJ1CpbbeCsAFo6pWbFgNqv8nRmILtg0kvNj/0', '2016-08-31', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('157', 'oyqTtw3LfpX7MuHYaKpETe2mQCag', '', '丫丫_追逐', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSlH3bVMD9ZHCVwFWfwoNghhfbnA2VG4JNQkSF8wqvURbyQrFcYrV65RMWkJuR5eZjN6rP8KET6IaiaQcaeaMSFf/0', '2016-08-31', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('158', 'oyqTtw--3Bh4dAm_A5P0BoV5pBMo', '', '✨司马逍遥✨', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxpn3f68m5Dia5N6hV8mz882WGyTvtVxFEiapmha7QOveqIP4Fg64BZEesI2DBFIQhBhVvDSP3Glml0/0', '2016-08-31', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('159', 'oyqTtw3ojDG0bxnTcMf3CoSuEiYY', '', '伍照生', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKOyM3jCGFBmtgxaO4VfjDicKiaicyRDpAegF9ficIK4n2F11jQVADuGnJ9M79ysEflLj5bbEM7VskOyN0tbRbh70ogO/0', '2016-08-31', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('160', 'oyqTtw7Yh_thZm7KFtjL_zw2iop4', '', '黑鱼', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn7ozibdh5smbaWl5TvNaURQs6YgCFT20d4WvSNTHsw8icyPiabYv6S8WdVmG72ctxe3icwbpP1ZiaypFJ/0', '2016-09-01', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('161', 'oyqTtw1zA95rJxq9hprpM2Ch87mM', '', 'Zippy mouse', null, 'http://wx.qlogo.cn/mmopen/ricmICEkBzRwELYlxjC8icGbrx1UyTbd6CqVLdsXgib7CLeMcuuj6XZyTY1ibib4iaFG89aEnFCC2uP7J2chqvaR6lJNExRcuRFfHh/0', '2016-09-01', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('162', 'oyqTtwy3SqW5rUagoLqn-viacno8', '', 'scott', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLPVjlDRbXy0tw3fbE001D2y6DJdatRGOCvAxbcw2cpkpQq4tgWvBgxFYBm15Ftf8ia1xcaLicE6t3p/0', '2016-09-02', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('163', 'oyqTtw9ECLc9VMQD80KjR3zNuo84', '', '奇异果', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4SGZIqicZ8xrfME4yTiaBbIcZelLWMoGqtPFxFVicMoWEuund0u7kCDRCrgRMEwkHJSh8FEVgZttRoucQIZNuMC59GiaFNic4Q2j3M/0', '2016-09-02', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('164', 'oyqTtw67Y_g91SQby7DH3U2IqUTE', '', '哎呦，不错哦', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6GrsDojdDUoKk2NR8icagicCkHvNuaYXmEy305aa0ugA95Zdiaicib8QkjEMC4kRG6q1icmRjkJP96X9xNNjuibl8S8Xf9/0', '2016-09-02', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('165', 'oyqTtw5IaGbQIumaF-GB4O4YlkI0', '', '呆毛', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEINbqq0iatyuLYRGrIvhBKl3CDmQApFRnT02cng8SBwblquxibapcc1DQupjwuloBGI8iahaP4iblFJ8w/0', '2016-09-03', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('166', 'oyqTtw3bV5mOoYWAwr1AYPf_w0DE', '', '劣徒 ゅ', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxpkSACicHkBM0ZbYiaiaQK0ichDmNsE7ibKCvBo1B5TrniaJXDXXy4icjjaZkMP1mpHDhh3LqlDrN1p6lHs/0', '2016-09-03', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('167', 'oyqTtw9cO0TFSppEweVBg9AllGvM', '', '夏姥姥', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxs29P1M9lURK0nBdGrN1DDgyk3DluwmQZSqHziawJDKR8rciaX2yxFm8ngtJA6rJNNCA4VQl64O7Al/0', '2016-09-03', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('168', 'oyqTtwxGjP5GfG6Ix4z7d1D0g930', '', '楊', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLNz7aPwpibghXNU3VfWSp0zcFwlFJPcS7hnO5icTKiccnBtHY4iblfTia8rHwD1zu7P7MHtUdgoJ0aXkw/0', '2016-09-04', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('169', 'oyqTtw_WCB0FzRmorLOo51JEMkCE', '', '坚持', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Fn70Vpcrc1cyoXW5G6w5Gk4iaIWgQiaLce0qBXDQTDOvuYfP1E9NliapTnwzF7Or96eVTCIGADPQJKYvibqoicjhnqw/0', '2016-09-04', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('170', 'oyqTtw8_T5EzXa_bV69DuPiLbrnk', '', '海英', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM7M7Qbbx2WUiabOOJl4jlMYzVkrqUmSg9pegS49XbYibwfXoyopGibVJof29acaLAwpym9YRo1AAf41rBdFQC8TtD2WTCufUvBQvQ/0', '2016-09-04', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('171', 'oyqTtw3ZP4OofuFkM2pR_ltiNeNQ', '', '迟到的土豆', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65Qm5J8zlznoRB5fZ5tmiamtWzz2AeouN21K6g3Fd1KJQQjR7RILYTterjoFiaSSErQ0Sbhhh86buRq3/0', '2016-09-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('172', 'oyqTtw-_gendm-RAW5u9bScr_DOY', '', 'Haber', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoaLXHUMYAHoH5zpr2cjjJib3RkgUuiajpoMiblCG6CCrSiaJ1rH3ibJufNs7w4N3FPNic2FKP5QexN1bL1aO4o8t9YXwU/0', '2016-09-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('173', 'oyqTtw85JJoOhM7nf7CTrKEH7sdU', '', 'yepan', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6GoHf3ELocnc2Inas5mWVmRxAc1WHpghHoc2ULqDPjbvWGDkd3eDibvI130Xqbzg7S81p0G8Ur8PjfnEXeb6IwC9/0', '2016-09-05', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('174', 'oyqTtwyPXTTrSvvjAp0dblnYicPA', '', '刘大明', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLAeTNPABkWuZaHgWhic7GvPfPIicPjaUDQ968N5kQyJtqDpN75OgicD59bF42Zp9xOhdiajoT3EQAuq6g/0', '2016-09-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('175', 'oyqTtw_1lKS5bMAK9U0Ujo6jGIUM', '', 'wade_川', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSq9cE2amXQ5hP8c3SQZzAqI0GFvibH8BAplXtr6aThd0N0ich63pyzwOVV0uzOQvcq3qfIP9AaHONA/0', '2016-09-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('176', 'oyqTtw3ebkkuo9scH3wgYBjFUNiU', '', '寻找一份平淡', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QmYqWwfDYjS0QsceB0ol01icn9QGTTOOPmawuRcEkwXOpc36SDAqHwjsIZSFNPzRQQe9S3Jjj7N0K/0', '2016-09-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('177', 'oyqTtw6gaA5Wuh9aNB5_emTm4W8k', '', '杨叫兽', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKNvQza6dMckTXdx6B1aclYUicnCbumlFIpre96QdynMreqibTcgo7PQSj0oKMP9Ned1Qibo6kk9qsnp1NZQCCjmYVk/0', '2016-09-06', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('178', 'oyqTtwyhgl0bTLUXOLonU-YjzoFo', '', '走路到纽约', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEL7m5MCHztg47OWicMUvczjYTicn7e9v3TXZz5qQHZ0iaTefM9NJrnhsxvRiagNWb9wibKOkQFGDvQkMEg/0', '2016-09-08', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('179', 'oyqTtw7YNOwzjFWNQ-OnyFaODSgM', '', '冷雨叶。', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSJNLvGAbTnkdyfobPJIiadMFHGpUUHbVKUia5uia9rKX5QmUE7Ez3dmS9B8qfjXKxrQVdBbgIkyOWnnx59adJ2XA3/0', '2016-09-09', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('180', 'oyqTtw9abo9ZpQURbbh5-S8auD9I', '', '小青', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLIDXaVvd36bPh8Dic0rpFVcTMwCp5Y0U3cD9HvNr3h7goHMibcMaFrLSU59iaRynSoR1DI6xZGvHNgl/0', '2016-09-13', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('181', 'oyqTtwy8o-Xdflbv2N6Qg_iK2p0k', '', 'Since-A', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxv82sqdzSVgdY0xCza3As5S8wfiadviaykoaqH2ssGNiarYjGV142FlFvWXJtsQto8PoibxtSAsbQjJ8/0', '2016-09-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('182', 'oyqTtw5oANq7VTTVQ9Ex03JDYGME', '', 'Adrian', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4lx184PnNf6JtPbtseoFp7W1G452T6vGR8Rcp4S2WaJ6NLzuL6LZPWOewChDpSIbvoY6zXFs2pibibf0hd7y4gRu4dh0tE9fxNY/0', '2016-09-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('183', 'oyqTtw4orv5TBRsz1CCrrU18du5s', '', '龙星', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKNqzO1ibUkiaeQmFw5SicFC4oHmG58PawknySbRsJrrm2EZxhpl6Uel7suJgEKYicK7vfd2UBY8fRYxyxAjgSgkmke7/0', '2016-09-14', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('184', 'oyqTtwwsCMLj1vRupg7-bZteqYYI', '', '硬汉', null, 'http://wx.qlogo.cn/mmopen/3jRiazY6XazKdjibR0KPh3K0pM5jgwibyjJ5MicSFjbqlhOudv693XQ4sBs3RuwawEIRmmLH6RLd0TtLm1AaRIKeKJQMAzglICn5/0', '2016-09-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('185', 'oyqTtwz6CKxywINf8fIHjdTkhfy8', '', '姜建林', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn3hicnHWDlLGLeo6zpicMp0gwicyUg4R8gPlM6qXm9mgGdfobcUOkLkQicezhfXdicibRzGgsmCQUwmRww/0', '2016-09-15', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('186', 'ou8VTwn85kT1eSZmL2Lz7RmXZo10', '', 'wum', null, 'http://wx.qlogo.cn/mmopen/6t0VDe9bl5decMZw1o4qXEYoia2kiaJMibfM5UibpXGw1Rgz9kraXzqNvw7aWFtIhpJCFYcuD5g5EBclAvCTl1icYw5B8eU0cCyzS/0', '2016-09-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('187', 'ou8VTwpbPyK8rYDrec8Xz024pXnc', '', 'Since-A', null, 'http://wx.qlogo.cn/mmopen/4GwEgiaOAwfl6HpHULs1SvtUzSU2UPsib4pqJHNpBHbq8EeSsj9oK4sB6HuiagK9eV1UbGzdicDeU8o6Tk7d4HKFibKSNCqicD6guh/0', '2016-09-18', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('188', 'ou8VTwljRzueY2YuUjYxNnB0YKTQ', '', '✨司马逍遥✨', null, 'http://wx.qlogo.cn/mmopen/4GwEgiaOAwfl6HpHULs1SvoBuMYMfGeFD7Y7c8R3gaSnxVKf8yPteiasUibhqbbOH4O7joAKAzPic1iaxw0TNqWymIyI97zvoUeHP/0', '2016-09-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('189', 'ou8VTwho5jucEwytPnP0MBr-xVHg', '', 'Adrian', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM7TpGFjia3iapyythLVvica2OZoFQeqqD7hoic8CUtMr0L04HgySZFotFXia1bqMMH4pUrpq4AelVczyIqSUQicgeY5yEh3RRLTaiaWyQ/0', '2016-09-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('190', 'ou8VTwqa4RborKLR1cmsu0Q9QrL4', '', 'Krismile', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA2JEOmZNUcVSw50HUyAyS0mr8zJs2OJauHrZMjibZ3RIonCunBWstkA8GK2k6VH2TapF2jS6hPNMtnGlLGv2Da/0', '2016-09-19', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('191', 'ou8VTwgfr0H4ReIvXZpgiBlhqGZM', '', '徐辉', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA2JEOmZNUcRWAbI8LnW1ul8wtgh5GpFPrQqdxHRz3IIt7RBTw5gJE9H0NgwAOT0EyrUJ0MyUicRYmD2g7By0x8/0', '2016-09-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('192', 'ou8VTws6WD0XhKyFIrzurEOk_B08', '', '韦', null, 'http://wx.qlogo.cn/mmopen/6t0VDe9bl5decMZw1o4qXPgRdbBePmfgWmtRjkZhcsSvM8mlYv4ZFWlWuxuXZe0gCm5T7K8IDAOS1I6xpOFcCVoIhZHUTjZ0/0', '2016-09-20', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('193', 'ou8VTwjcT9r3iq1TdcVMsn5zlSwI', '', '风云', null, 'http://wx.qlogo.cn/mmopen/4GwEgiaOAwfl6HpHULs1SvhS22V6IsiajUZWF5VGXDSpNcymCibickgic6xuKJJ3iaLjEN9SrzTqP0XP3Qtz96CPVVyF3GMe0XNjvU/0', '2016-09-21', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('194', 'ou8VTwoICPQd9VSLj9FSkilLTFmY', '', '郑绍鹏', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA2JEOmZNUcXhSIYe7W1dvzKv3sXomTEw0PXo4Aia80H8ibCrPnSxGhKo5CibqAakpoAicjF8H6ZovHg7ZZr0ZOic3R/0', '2016-09-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('195', 'ou8VTwvN4GzWWr79oZLvkD_YxsuU', '', '楊', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA2JEOmZNUcU399tlA9X1q9licSQIrNWrtRibf3Qrpib9dEjsyICqmNax1RW8bBnRGl0EXvD7C70V7anzDXfLPFoI/0', '2016-09-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('196', 'ou8VTwskoxxmWPrfJzWqyNaPNMe8', '', '徐子旭', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLCqeib3ia1HW3pTyRxmLcNeePgic7Cect2jeHiadTAibRYIIvmTJL9AoJEF87qYhGPNDaO3xiaibrKykb5FQ/0', '2016-09-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('197', 'ou8VTwqfBP8vjG9h55ihMQ01MRY4', '', '韩聪', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA2JEOmZNUcYib2FcwdzJYhpicaUjY7kxTm8boJoDaTMTEG9fs39om9lhib17RwcQIiawNicicCz19B5rNgj0C3vP0zk/0', '2016-09-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('198', 'ou8VTwsobQoGHPRsCxIq_m_jk_z8', '', '伍照生', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA1FqMZFReSl6AzD0OicDDpmXs9lFdaRbCajsLy5Krx15lZCiajAInteFh85V1bf1aXVrCicR8b5JkNNo2fnxFIyc/0', '2016-09-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('199', 'ou8VTwq99JgxdYFlFBn0QS_aOSbQ', '', 'Chen chang qing', null, 'http://wx.qlogo.cn/mmopen/qg6b6KFrM06w0ibaxoKabcDL5c4Cd0NFNncmFGpuiaZOAS1QcVjQRpgPlOiatlU3Sictu2BsScrjMoZWVEQf3YgGIHHeFI331UeQ/0', '2016-09-22', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('200', 'ou8VTwqbP6sY2C6blaA0Vg7BvXrQ', '', '波', null, 'http://wx.qlogo.cn/mmopen/4GwEgiaOAwfl6HpHULs1SvoTsLSGJ6ianYyUibrhapLlZoYDemEE0MYIWqgtqPiaISwqYfsyEVgOLL6VQ0icT0a0tdDw3SluCrn72/0', '2016-09-23', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('201', 'ou8VTwmv8TsZQgPnDiaUFMJtCACE', '', 'Wujy', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA2JEOmZNUcT2mabqxZg7e3mAzaezzrWkbo52IbV0nZUzBNNcNBNOdVv1iawaVcVkEgAqdAV3Kicy8VeXlRB2QZo/0', '2016-09-23', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('202', 'ou8VTwua1n88i0M-8HQD3I5CpRJc', '', '小奔', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1fA2JEOmZNUcUwqoMRvVDB8ggJCica2NqpyzVs4icsjHg4GPnBccjNvR7Qs6vONvEr22zialSAkR9vPmL6rNeIwGYp/0', '2016-09-23', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('203', 'ou8VTwqvmbvC70s3zwNfua8yfhLs', '', '我喜欢两个啦啦', null, 'http://wx.qlogo.cn/mmopen/wnCxTeuKa1cI9jbBZrIiasCRWeh0BgXvMDRKVyUoavThJ3PY8e6Clp8ckiaOkmPQCjPsysFCBGz3UplVCQSOxDQPXCy2zq7iblx/0', '2016-09-23', null, null, '1', null);
-INSERT INTO `tb_user` VALUES ('204', 'ou8VTwjjeTBoS_83y-GVz_dsULFA', '', 'alo', null, 'http://wx.qlogo.cn/mmopen/4GwEgiaOAwfk2NbCYwMOd2NOLuK6OZqusnaiasyVX5RCZiafueBztmNibk3AERsrzT9c9noWSI27A0BNh9Vbj7XDnTC8zppPrOsD/0', '2016-09-23', null, null, '1', null);
+INSERT INTO `tb_user` VALUES ('4', 'oyqTtw3DsY4PXg1wVFfQp8ewOKh8', '', null, null, null, '37', '鼓楼2', '1', null, '2016-04-11 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('5', 'oyqTtw2gjY17ntKIyba_i48EB26A', '', '尹翔', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLDr5ibdIjO4rX8U4UDVE3Xf1WFAPcYw5Xqzd3phekO1be8j8fCjku6CVwvKkS3iaN9v8Q5uU3iauOdpA/0', '36', '南京汉中门大街沟通100服务店', '1', '0000-00-00 00:00:00', '2016-04-11 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('6', 'oyqTtw0g_Gc4YlHlUAUGnx6Gft90', '', 'changzhenwei', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLEb7ib78No0HnFF2wEXaVnicBMwOvmeVFxuy4hOlSCjXLeeia42glF84mMCibmrW0ebM6TgCUqYB8nJb/0', '39', '玄武区1', '1', '0000-00-00 00:00:00', '2016-04-13 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('8', 'oyqTtwxQ7MQgfoqMwVd8mj03MyQQ', '', null, null, null, '36', '鼓楼1', '1', null, '2016-04-20 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('9', 'oyqTtw96SNP2q4ZZxcnIuVj7sYNk', '', '阿朱', null, 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLD94uicFLQ9Dmt6icfGDoop5lxH9sdiaLs3xocHC9wOhzddYTZ0T7K1fBTicN4rrGDpUclTJCuXia21ofHW2eFjer6O77A3HFWMn3bE/0', '39', '玄武区1', '1', '2016-05-25 00:00:00', '2016-04-26 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('10', 'oyqTtw1HH95lrkd5GJwqusVT6z5A', '', null, null, null, '36', '鼓楼1', '1', null, '2016-04-29 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('11', 'oyqTtw8UGbJh7XLMr1s5tSLrC2io', '', '乀_-Sherry', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxlZVicEmK4Jz87E2pGelZ0uxP1WoMotQI70mnPuF1ib3p2jRSeWHLBpXreqFibDqLDMpAM0qPFKRx15/0', '36', '鼓楼1', '1', null, '2016-05-06 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('12', 'oyqTtw_d252V55C89XiqmkGrRpHM', '', 'Rosarin*', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxmAAsZZI5Sr26AaDeyveYrGMTM5omicPsJp3zEuE7kj2tqBbHBSlyF54XvA2ArrEq90Aqb6ENEicd1/0', '36', '鼓楼1', '1', null, '2016-05-06 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('13', 'oyqTtw9S7JFtTgx6-3qpSG66w7QU', '', 'wum', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn0aoSDNlW4dEib1Cmy66JZfon7BW6gtc1yBldTU7JDRe5SDcib90otODEJ9JqOQNjMaRpyAcSvf9Us/0', '36', '南京汉中门大街沟通100服务店', '1', '2016-06-08 00:00:00', '2016-05-06 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('14', 'oyqTtw3i2cte30LSHsGrXAkXVxqE', '', null, null, null, '42', '南京升州路营业厅', '1', null, '2016-05-10 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('15', 'oyqTtwzgJl31fSxOeeyny-ASSYQ4', '', null, null, null, null, null, '1', null, '2016-05-16 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('16', 'oyqTtw1A-aDwocImx_r01EG0MioY', '', null, null, null, null, null, '1', null, '2016-05-19 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('17', 'oyqTtw_dPj4Ne9iKxO-S2uK9tGkE', '', '吃号店大掌柜', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM5ia4wIuzuiaszUibU71nMDFjfxUzjmbxhzb6kmuoYxlLVPInRJ9saE6q3iabEibvs37iaT9icuy4FwKXW9Q/0', null, null, '1', null, '2016-05-23 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('18', 'oyqTtw3UjQfx_MINSCnQXbmAPqpY', '', null, null, null, null, null, '1', null, '2016-05-23 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('19', 'oyqTtw3qfVPOKbbdt6v1hHiTVF1U', '', null, null, null, null, null, '1', null, '2016-05-23 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('20', 'oyqTtw1TyV2TRmTIVeF1Z3R3wqaw', '', '胡哥', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn1yvHVIibexDJjcVXqicSmmWpyOuxw5Xiahuyia6c6icScfsDBv5PI6iaEBm3t9mmXKUHYMibHyUstBRgaib/0', null, null, '1', null, '2016-05-24 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('21', 'oyqTtw_8nBavm1j7aPJwKlic_oqw', '', '夏日凉橙', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QlCS2lTGv7F7gA9B1NXiazYWSb8Pz6X1BYAycGE0lRCSDJnMiasNbxqVty4xRC5Mkpc07QAKoWNXGv/0', null, null, '1', null, '2016-05-24 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('22', 'oyqTtwwPQXjq5CcUhNuDg-LMzN1A', '', '勐子', null, 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM490yIClsWPyNYHLA0BQOR4Sk7icB9Snic1ZNwdSkZp0YMkq6PCx4ujHwMibcJkuWqmuWJOdwnU1nWJqsLIye0IRdiavKxcXAOr1yo/0', null, null, '1', null, '2016-05-24 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('23', 'oyqTtw0mBWl6V0bqU-xD5-_vzuiY', '', '陈雪成', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxsS1YN5OIQEFzm4TekpwnYJdnMaaPicy0gLZ5hhicFEPyL4FakXo7DJG4LKZgcoUOFQ5XYwchdv1vK/0', null, null, '1', null, '2016-05-24 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('24', 'oyqTtw9Rx04TEd8pVCaVXxNFvRDw', '', '姚瑾', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSfZZtRITaVayMWLdib7Lmm8Xrlgph45WDZ8fPtD3dCrvcYUlQvSbSHSFyFdwzQQmMiaXTEK5Z3CmuQ/0', null, null, '1', null, '2016-05-24 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('25', 'oyqTtw91DW4dmYULSdL7n-4-G9BY', '', '豆娘', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLGh8UD3J3I5GCmliaTcBBf54r827vvGoxNPUPSia0asRHRR9k5aSs83JE4wU9bF0rnwVO2LMmMMl9g/0', null, null, '1', null, '2016-06-03 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('26', 'oyqTtwx22xt4J9oujYfC3wjRD5Uk', '', null, null, null, null, null, '1', null, '2016-06-03 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('27', 'oyqTtw5jkAu9hSIYZUpyqylejx_8', '', 'angel', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEIcFdm4G4fEaQRb5YoQPfupTobpR8z1wQwSlJGCnIiaft9o3rxHwFkRIcka8yO5VPCMRH7tv7Hic8hbgTFu0aicm6Y1Dooia7fafibE/0', null, null, '1', null, '2016-06-03 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('28', 'oyqTtw_SHoOKbpNJoF6fU-vfXxFY', '', '→_→^o^⊙ω⊙(ง •̀_•́)ง', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65Qhs01vSPTts4kmTjEtTM5Cdicd82JFsj8TuhbWg1NHIB49B7tokiajbCmYu3dHIFiaPez6zfvD1GSeM/0', null, null, '1', null, '2016-06-08 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('29', 'oyqTtw0p_NhAaOjZH1OOG7Npg9FA', '', '如果还有明天', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBSCGg65m04jn7RYIC6SsBB4WZ9fPQqBxd7QXOibn0HiaqYOa2ibMt1W9D7SPFoFRXUMejiaIQPNiahRQygkdEo0UOQFv/0', null, null, '1', null, '2016-06-15 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('30', 'oyqTtw7f1lYZFlKdCF5VAHePqcxI', '', '王博', null, 'http://wx.qlogo.cn/mmopen/iahdQicCC5VBTbibyLs0XWpGVQk6QDKkuPvt8mJrn7W7Fgp0nTKjchS0ELYDiawLr4yiaTxJMYlZ3YDuWxswibWEuxjw/0', null, null, '1', null, '2016-06-15 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('31', 'oyqTtw4N1B1s_rd4bJyLdfAfNGd8', '', '又变凹凸曼', null, 'http://wx.qlogo.cn/mmopen/xLj91RZ6kpDMtE6INGZUOOuYw6wOpVCJvibXeDPZVtXjqSibCZRImkODLrKLQHTXsuPGdJCZbTJXibUsenrz3WW89ib7gInO6OQM/0', null, null, '1', null, '2016-06-15 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('32', 'oyqTtw_3J9QWix69R8lFyGcAwCoA', '', '岑岑', null, 'http://wx.qlogo.cn/mmopen/GEicHjw6yAoausj0bjjZeLBlO3ibecznZklsJ2mSNT0CDiaMuibaIQ1gticiaJf2Qp5eSr4YIqEZicCS7gUXpLkp9Vr854K2rfKCIgt/0', null, null, '1', null, '2016-06-15 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('33', 'oyqTtwzkMdmKiUdVDhnlM6GXGYq8', '', '蝶衣婚庆', null, 'http://wx.qlogo.cn/mmopen/Fz6VicuJux6Gan5ZFWR65QgsFcUwibab06Mia9zG6W1lSh0AKhTCiberKbOBiaeDibBp15moAFxMgsmWh8VyAVKGFUJt1FIS1g8ea2/0', null, null, '1', null, '2016-06-15 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('34', 'oyqTtw1jyQge4jL-hxW1fLc1WKnA', '', '釆菊东篱', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKNjqrlFxZibkQpfycicPszZAZ6DhL4meAtcdWTNffynUEqAwAXdPe2c7Q9wtuO1w6Pjq9uzWCfU5qiallNW3SADNz2/0', null, null, '1', null, '2016-06-15 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('35', 'oyqTtw-iCmyM3xVw_3XM8pO_xao4', '', '张朝', null, 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEJvD49ksHEhxgAShTJialc7rdo20Kz8aIopjEibJDYfxVicGotN6SUnCLHj2pTQ8XM0iamt1icSFdbLUUA/0', null, null, '1', null, '2016-06-16 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('36', 'oyqTtwzEjo8pzJngr0jPsVoKWedo', '', '冯永强', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKMrkYDpIGuCxqyMtLduCycG9PYhSGKEy3HmVPm9M96PNWJnkLT4WcJ48FrMicibMrP3ahwYQDOtB1g9H1utwPcVv3/0', null, null, '1', null, '2016-06-19 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('37', 'oyqTtw6su9NPDlAhgmGUYHukqQ7A', '', '细菌', null, 'http://wx.qlogo.cn/mmopen/8rt3KXLfQKO8iazWichBSGk6rEEL7DBk1ib8IloFA93JEAqwkxcIZnVx1yzDUeWttdz3cEqh2J9clSJ7wdjfLL7ibA/0', null, null, '1', null, '2016-06-20 00:00:00', null);
+INSERT INTO `tb_user` VALUES ('210', null, '18201117315', null, '92e400683ff001ff4de7b952ff5ad391', 'http://www.iconres.com/topic/supermariopack/png/www.iconres.com_cartoon_mario_icon_128.png', null, null, '0', '2016-11-30 23:26:44', null, null);
+INSERT INTO `tb_user` VALUES ('211', null, 'admin', '阿法狗浪', 'f6aaf9925e7fb1bfcf7bedc73c3a8a60', 'http://www.iconres.com/topic/supermariopack/png/www.iconres.com_cartoon_mario_icon_128.png', null, null, '0', '2016-12-01 01:28:29', null, null);
+
+-- ----------------------------
+-- Table structure for tb_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_user_role`;
+CREATE TABLE `tb_user_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_user_role_user_id` (`user_id`),
+  KEY `fk_user_role_role_id` (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_user_role
+-- ----------------------------
+INSERT INTO `tb_user_role` VALUES ('1', '211', '1');
+INSERT INTO `tb_user_role` VALUES ('2', '5', '2');

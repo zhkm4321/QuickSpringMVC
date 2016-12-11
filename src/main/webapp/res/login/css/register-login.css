@@ -41,16 +41,9 @@ canvas {
 }
 
 .cent-box {
-	width: 400px;
-    height: 440px;
-    vertical-align: middle;
-    white-space: normal;
-    margin: 40px auto;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-top: -200px;
-    margin-left: -200px;
+	width: 100%;
+    position:absolute;
+    top:10rem;
     z-index: 2;
 }
 
@@ -155,8 +148,9 @@ canvas {
 }
 
 .form .group .group-ipt input {
-	padding: 1em .8em;
+	padding: 0em .5em;
 	width: 100%;
+	height:10rem;
 	box-sizing: border-box;
 	border: 0;
 	border-radius: 0;
@@ -164,6 +158,7 @@ canvas {
 	background: rgba(255, 255, 255, 0.5);
 	font-family: 'Microsoft Yahei';
 	color: #666;
+	font:5rem/10rem "microsoft yahei";
 	position: relative;
 }
 
@@ -172,12 +167,12 @@ canvas {
 }
 
 .captcha {
-	width: 95px;
-	position: absolute;
-	right: 0;
-	top: 2px;
-	cursor: pointer;
-	height: 40px;
+	width: 25rem;
+    height: 10rem;
+    position: absolute;
+    right: 0;
+    top: 2px;
+    cursor: pointer;
 }
 
 .button {
@@ -186,6 +181,7 @@ canvas {
 
 .login-btn,.register-btn {
 	width: 100%;
+	height:10rem;
 	background: #0f88eb;
 	box-shadow: none;
 	border: 0;
@@ -193,7 +189,7 @@ canvas {
 	line-height: 41px;
 	color: #fff;
 	display: block;
-	font-size: 15px;
+	font-size: 5rem;
 	cursor: pointer;
 	font-family: 'Microsoft Yahei';
 }

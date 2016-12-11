@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>选择服务</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<link rel="stylesheet" href="${res}/css/weui.min.css">
+<link rel="stylesheet" href="${res}/css/global.css">
+</head>
+<body>
+  <div class="page-group">
+    <div class="page page-current">
+      <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left" href="${cp}" data-transition='slide-out'>
+          <span class="icon icon-left"></span>
+          返回
+        </a>
+        <h1 class="title">预约服务</h1>
+      </header>
+      <div class="content">
+        <form id="selectService">
+          <div class="weui-cells__title">选择服务和时间</div>
+          <div class="weui-cells">
+            <div class="weui-cell weui-cell_select">
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="serviceId">
+                    <option selected="" value="">--请选择服务--</option>
+                    [#list serviceList as s]<option value="${s.id}">${s.serviceName}</option>[/#list]
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="" class="weui-label">时间</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="serviceDate" type="datetime-local" value="" placeholder="">
+                </div>
+            </div>
+          </div>
+          <div>
+            <button class="submit_btn" type="button">下一步</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type='text/javascript' src='${res}/js/zepto.js' charset='utf-8'></script>
+  <script type='text/javascript' src='${res}/js/weui.min.js' charset='utf-8'></script>
+  <script type="text/javascript">
+  $(function() {
+      /*
+      $("#servicePicker").picker({
+        toolbarTemplate: '<header class="bar bar-nav">\
+        <button class="button button-link pull-right close-picker">确定</button>\
+        <h1 class="title">请选择您期望的服务</h1>\
+        </header>',
+        cols: [
+          {
+            textAlign: 'left',
+            values: [[#list serviceList as s]'${s.serviceName}',[/#list]]
+          }
+        ]
+      });
+      $("#datePicker").calendar({
+        value: ['${curDateStr}']
+      });
+      */
+      $(".submit_btn").bind("tap", function() {
+        if ($("select[name=serviceId]").val() != "") {
+          $.ajax({
+            type : 'POST',
+            url : '${cp}/service/appointment.json',
+            // post payload:
+            data : $("#selectService").serializeArray(),
+            dataType : 'json',
+            success : function(result) {
+              if (result.success) {
+                window.location.href="${cp}/service/appointment_2";
+              } else {
+                alert(result.message);
+              }
+            }
+          })
+        } else {
+          alert("必须选择一个有效的服务")
+        }
+      });
+    //$("#servicePicker").picker("open");
+  });
+</script>
+</body>
+</html>

@@ -7,31 +7,40 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 
 import com.wx.server.service.CommonService;
 import com.wx.server.service.SpringBeanService;
-import com.wx.server.utils.StringUtil;
+import com.wx.server.service.impl.ConfigServiceImpl;
+import com.wx.server.utils.StringUtils;
 import com.wx.server.vo.page.Page;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "hiding" })
 public abstract class AbstractCommonService<T> implements CommonService {
 
+  private static Logger log = LoggerFactory.getLogger(ConfigServiceImpl.class);
+
   private Object mapper = null;
+
+  private Class<?> exampleClazz = null;
 
   private Class<?> mapperClazz = null;
 
   private Map<String, Method> cacheMethod = new HashMap<String, Method>();
 
   public AbstractCommonService(Class<T> clazz) {
+    String example = clazz.getName() + "Example";
     String className = clazz.getSimpleName() + "Mapper";
     String fullClassName = "com.wx.server.dao." + className;
     try {
+      exampleClazz = Class.forName(example);
       mapperClazz = Class.forName(fullClassName);
       for (Method method : mapperClazz.getMethods()) {
         cacheMethod.put(method.getName(), method);
       }
-      mapper = SpringBeanService.getBean(StringUtil.toLowerCaseFirstOne(className));
+      mapper = SpringBeanService.getBean(StringUtils.toLowerCaseFirstOne(className));
     }
     catch (BeansException e) {
       e.printStackTrace();
@@ -67,7 +76,13 @@ public abstract class AbstractCommonService<T> implements CommonService {
 
   @Override
   public <T extends Serializable> List<T> listAll() {
-    Object object = invoke("selectByExample", null);
+    Object object = null;
+    try {
+      object = invoke("selectByExample", exampleClazz.newInstance());
+    }
+    catch (InstantiationException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
     return (List<T>) object;
   }
 
@@ -89,10 +104,19 @@ public abstract class AbstractCommonService<T> implements CommonService {
     return 0;
   }
 
+  /**
+   * 反射调用方法
+   * 
+   * @param methodName
+   * @param args
+   * @return
+   */
   private Object invoke(String methodName, Object... args) {
     try {
       Method m = cacheMethod.get(methodName);
-      return m.invoke(mapper, args);
+      Object obj = m.invoke(mapper, args);
+      log.info("invoke 【{}】 in mapper", m.getName());
+      return obj;
     }
     catch (SecurityException e) {
       e.printStackTrace();
@@ -107,6 +131,40 @@ public abstract class AbstractCommonService<T> implements CommonService {
       e.printStackTrace();
     }
     return null;
+  }
+
+  /**
+   * 无参数反射调用方法
+   * 
+   * @param methodName
+   * @return
+   */
+  @SuppressWarnings("unused")
+  private Object invoke(String methodName) {
+    try {
+      Method m = cacheMethod.get(methodName);
+      Object obj = m.invoke(mapper);
+      log.info("invoke 【{}】 in mapper", m.getName());
+      return obj;
+    }
+    catch (SecurityException e) {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    }
+    catch (InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public Object getTExample(Class<T> clazz) throws ClassNotFoundException {
+    String exampleName = clazz.getName() + "Example";
+    return Class.forName(exampleName);
   }
 
 }

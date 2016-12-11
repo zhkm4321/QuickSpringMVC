@@ -27,7 +27,7 @@ public class CarServiceServiceImpl extends AbstractCommonService<TbService> impl
     TbServiceExample example = new TbServiceExample();
     TbServiceExample.Criteria criteria = example.createCriteria();
     criteria.andCaretoryIdEqualTo(categoryId);
-    example.setOrderByClause("order asc");
+    example.setOrderByClause("sort asc");
     List<TbService> list = serviceMapper.selectByExample(example);
     return list;
   }

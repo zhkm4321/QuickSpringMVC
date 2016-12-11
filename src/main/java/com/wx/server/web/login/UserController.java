@@ -3,7 +3,6 @@ package com.wx.server.web.login;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,7 @@ import com.wx.server.entity.TbUser;
 import com.wx.server.service.UserService;
 import com.wx.server.shiro.utils.TbUserUtils;
 import com.wx.server.utils.AjaxRespUtils;
+import com.wx.server.utils.StringUtils;
 import com.wx.server.utils.TplPathUtils;
 import com.wx.server.web.base.WxKaptchaExtend;
 

@@ -32,3 +32,8 @@
 	background: #0965e1;
 	padding: 0.2rem 1rem;
 }
+
+/*--weui 修改--------------*/
+.weui-label{
+	padding-left: 5px;
+}

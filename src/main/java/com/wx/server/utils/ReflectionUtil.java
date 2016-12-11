@@ -14,7 +14,7 @@ public abstract class ReflectionUtil {
 	 */
 	public static Object invokeMethod(Object obj,String methodName,Object[] params){
 		
-		if(null==obj||StringUtil.isNullOrEmpty(methodName)){
+		if(null==obj||StringUtils.isNullOrEmpty(methodName)){
 			return null;
 		}
 		

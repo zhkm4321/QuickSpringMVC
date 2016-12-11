@@ -6,7 +6,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authc.DisabledAccountException;
+import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,108 +24,149 @@ import com.alibaba.fastjson.JSON;
 import com.wx.server.base.BaseConstans;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
+import com.wx.server.service.ConfigService;
 import com.wx.server.service.UserService;
 import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.utils.SessionUtils;
 import com.wx.server.utils.TplPathUtils;
+import com.wx.server.vo.UserVo;
 import com.wx.server.web.base.WxKaptchaExtend;
 
 @Controller
 public class LoginController extends WxKaptchaExtend {
 
-	private static Logger log = LoggerFactory.getLogger(LoginController.class);
+  private static Logger log = LoggerFactory.getLogger(LoginController.class);
 
-	@Autowired
-	UserService userService;
+  @Autowired
+  UserService userService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(HttpSession session, ModelMap mav) {
-		addCaptcha(session, mav);
-		// 注销后返回登录页
-		TbUser user = TbUserUtils.currentUser();
-		if (null != user) {
-			TbUserUtils.logout();
-			return "redirect:/login";
-		}
-		return TplPathUtils.getFrontTpl("/login/login");
-	}
+  @Autowired
+  ConfigService configService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public String login(HttpServletRequest request, TbUser user) {
-		Map<String, Object> result = new HashMap<String, Object>();
+  @RequestMapping(value = "/login", method = RequestMethod.GET)
+  public String login(HttpSession session, ModelMap mav) {
+    addCaptcha(session, mav);
+    // 注销后返回登录页
+    TbUser user = TbUserUtils.currentUser();
+    if (null != user) {
+      TbUserUtils.logout();
+      return "redirect:/login";
+    }
+    return TplPathUtils.getFrontTpl("/login/login");
+  }
 
-		Object errorClassName = request.getAttribute("shiroLoginFailure");
-		String authticationError = null;
-		if (null != errorClassName) {
-			if (UnknownAccountException.class.equals(errorClassName.getClass())) {
-				authticationError = "用户名或密码错误";
-			} else if (IncorrectCredentialsException.class.equals(errorClassName.getClass())) {
-				authticationError = "用户名或密码错误";
-			} else if (IncorrectCaptchaException.class.equals(errorClassName.getClass())) {
-				authticationError = "验证码错误";
-			} else if (errorClassName != null) {
-				authticationError = "未知错误：" + errorClassName;
-			}
-		}
-		if (null != authticationError) {
-			BaseConstans.wrapError(authticationError, result);
-		} else {
-			BaseConstans.wrapSuccess(true, result);
-		}
-		return JSON.toJSONString(result);
-	}
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  @ResponseBody
+  public String login(HttpServletRequest request, TbUser user) {
+    Map<String, Object> result = new HashMap<String, Object>();
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	@ResponseBody
-	public String logout(HttpSession session, ModelMap mav) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			TbUserUtils.logout();
-			BaseConstans.wrapSuccess("注销成功", result);
-		} catch (Exception e) {
-			BaseConstans.wrapError("注销失败", result);
-		}
-		return JSON.toJSONString(result);
-	}
+    Object errorClassName = request.getAttribute("shiroLoginFailure");
+    Class errorClass = null;
+    String authticationError = null;
+    if (null != errorClassName) {
+      try {
+        errorClass = Class.forName((String) errorClassName);
+      }
+      catch (ClassNotFoundException e) {
+        log.error("不存在的异常类【" + errorClassName + "】", e);
+      }
+      if (UnknownAccountException.class.equals(errorClass)) {
+        authticationError = "用户名或密码错误";
+      }
+      else if (IncorrectCredentialsException.class.equals(errorClass)) {
+        authticationError = "用户名或密码错误";
+      }
+      else if (IncorrectCaptchaException.class.equals(errorClass)) {
+        authticationError = "验证码错误";
+      }
+      else if (DisabledAccountException.class.equals(errorClass)) {
+        authticationError = "帐号被禁用";
+      }
+      else if (LockedAccountException.class.equals(errorClass)) {
+        authticationError = "帐号被锁定";
+      }
+      else if (ExpiredCredentialsException.class.equals(errorClass)) {
+        authticationError = "凭证过期";
+      }
+      else {
+        authticationError = "未知错误：" + errorClassName;
+      }
+    }
+    if (null != authticationError) {
+      BaseConstans.wrapError(authticationError, result);
+    }
+    else {
+      BaseConstans.wrapSuccess(true, result);
+    }
+    return JSON.toJSONString(result);
+  }
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register(Integer error, HttpSession session, ModelMap mav) {
-		if (null != error && error == 1) {
-			mav.put("message", "请填写验证码");
-		} else if (null != error && error == 2) {
-			mav.put("message", "验证码填写错误");
-		}
-		addCaptcha(session, mav);
-		return TplPathUtils.getFrontTpl("/login/register");
-	}
+  @RequestMapping(value = "/logout", method = RequestMethod.GET)
+  @ResponseBody
+  public String logout(HttpSession session, ModelMap mav) {
+    Map<String, Object> result = new HashMap<String, Object>();
+    try {
+      TbUserUtils.logout();
+      BaseConstans.wrapSuccess("注销成功", result);
+    }
+    catch (Exception e) {
+      BaseConstans.wrapError("注销失败", result);
+    }
+    return JSON.toJSONString(result);
+  }
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	@ResponseBody
-	public String register(HttpServletRequest request, TbUser user, String password1) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			if (validCaptcha(request)) {
-				if (!user.getPassword().equals(password1)) {
-					BaseConstans.wrapError("两次输入密码不一致", result);
-				} else {
-					TbUser exist = userService.findUserByUsername(user.getUsername());
-					if (null == exist) {
-						userService.register(user);
-						BaseConstans.wrapSuccess(null, result);
-					} else {
-						BaseConstans.wrapError("用户名已存在", result);
-					}
-				}
-			} else {
-				BaseConstans.wrapError("验证码不正确，请重新输入", result);
-			}
-		} catch (IncorrectCaptchaException e) {
-			BaseConstans.wrapError("验证码不能为空", result);
-		} catch (Exception e) {
-			e.printStackTrace();
-			BaseConstans.wrapError("程序内部异常", result);
-		}
-		return JSON.toJSONString(result);
+  @RequestMapping(value = "/register", method = RequestMethod.GET)
+  public String register(Integer type, Integer error, HttpSession session, ModelMap mav) {
+    if (null != error && error == 1) {
+      mav.put("message", "请填写验证码");
+    }
+    else if (null != error && error == 2) {
+      mav.put("message", "验证码填写错误");
+    }
+    addCaptcha(session, mav);
+    return TplPathUtils.getFrontTpl("/login/register");
+  }
 
-	}
+  @RequestMapping(value = "/regForCarOwner", method = RequestMethod.GET)
+  public String register(String code, String state, HttpSession session, ModelMap mav) {
+
+    return TplPathUtils.getFrontTpl("/login/register_carowner");
+  }
+
+  @RequestMapping(value = "/register", method = RequestMethod.POST)
+  @ResponseBody
+  public String register(TbUser user, String password1, HttpServletRequest request, HttpSession session) {
+    Map<String, Object> result = new HashMap<String, Object>();
+    try {
+      if (validCaptcha(request)) {
+        if (!user.getPassword().equals(password1)) {
+          BaseConstans.wrapError("两次输入密码不一致", result);
+        }
+        else {
+          TbUser exist = userService.findUserByUsername(user.getUsername());
+          if (null == exist) {
+            userService.register(user);
+            UserVo vo = (UserVo) user;
+            SessionUtils.setUserVo(vo, session);
+            BaseConstans.wrapSuccess(null, result);
+          }
+          else {
+            BaseConstans.wrapError("用户名已存在", result);
+          }
+        }
+      }
+      else {
+        BaseConstans.wrapError("验证码不正确，请重新输入", result);
+      }
+    }
+    catch (IncorrectCaptchaException e) {
+      BaseConstans.wrapError("验证码不能为空", result);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      BaseConstans.wrapError("程序内部异常", result);
+    }
+    return JSON.toJSONString(result);
+
+  }
 }

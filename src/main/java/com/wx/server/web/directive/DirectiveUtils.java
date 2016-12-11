@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.support.RequestContext;
 
+import com.wx.server.utils.StringUtils;
 import com.wx.server.web.converter.DateTypeEditor;
 import com.wx.server.web.directive.exception.MustBooleanException;
 import com.wx.server.web.directive.exception.MustDateException;
@@ -35,7 +35,7 @@ import freemarker.template.TemplateScalarModel;
 /**
  * Freemarker标签工具类
  */
-public abstract class DirectiveUtils {
+public class DirectiveUtils {
   /**
    * 输出参数：对象数据
    */

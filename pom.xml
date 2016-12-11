@@ -11,7 +11,7 @@
 		<spring-version>4.3.3.RELEASE</spring-version>
 		<shiro-version>1.2.4</shiro-version>
 		<mybatis-version>3.3.0</mybatis-version>
-		<mybatis-generator-core-version>1.3.2</mybatis-generator-core-version>
+		<mybatis-generator-core-version>1.3.5</mybatis-generator-core-version>
 		<mybatis-spring-version>1.2.3</mybatis-spring-version>
 		<mybatis-ehcache-version>1.0.3</mybatis-ehcache-version>
 		<ehcache-version>3.0.0.m4</ehcache-version>
@@ -23,6 +23,8 @@
 		<druid-version>1.0.23</druid-version>
 		<freemarker-version>2.3.23</freemarker-version>
 		<fastjson-version>1.2.21</fastjson-version>
+
+		<lib.exclude>alljars</lib.exclude>
 	</properties>
 
 	<dependencies>
@@ -225,7 +227,39 @@
 
 	</dependencies>
 	<build>
-		<finalName>quick-smvcm</finalName>
+		<finalName>wxserver</finalName>
+		<filters> <!-- 指定 filter -->
+			<filter>config-production.properties</filter>
+		</filters>
+		<resources>
+			<!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>database/db_smvcm.sql</exclude>
+					<exclude>mybatis/generatorConfiguration.xml</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<!--设置自动替换 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>database/db.properties</include>
+					<include>logback.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -242,6 +276,21 @@
 				<version>2.4.3</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<packagingExcludes>WEB-INF/lib/${lib.exclude}.jar</packagingExcludes>
 				</configuration>
 			</plugin>
 		</plugins>
