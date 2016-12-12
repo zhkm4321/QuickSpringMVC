@@ -117,6 +117,7 @@
 				/wxbackstage/**=adminUser,perms["admin:manager"]<!-- 后台页面 -->
 
 				/authByWechat=anon
+				/cgi-bin/**=anon
 			</value>
 		</property>
 	</bean>

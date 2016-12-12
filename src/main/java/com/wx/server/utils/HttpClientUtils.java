@@ -40,6 +40,7 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StreamUtils;
 
 import com.alibaba.fastjson.JSON;
 
@@ -75,47 +76,6 @@ public abstract class HttpClientUtils {
 
     return null;
 
-  }
-
-  /**
-   * 发送HTTP_POST请求
-   * 
-   * @see 该方法会自动关闭连接,释放资源
-   * @see 该方法会自动对<code>params</code>中的[中文][|][
-   *      ]等特殊字符进行<code>URLEncoder.encode(string,encodeCharset)</code>
-   * @param reqURL 请求地址
-   * @param params 请求参数
-   * @param encodeCharset 编码字符集,编码请求数据时用之,其为null时默认采用UTF-8解码
-   * @param decodeCharset 解码字符集,解析响应数据时用之,其为null时默认采用UTF-8解码
-   * @return 远程主机响应正文
-   */
-  public static String sendPostRequest(String reqURL, Map<String, String> params, String encodeCharset,
-      String decodeCharset) {
-    String responseContent = null;
-    HttpClient httpClient = new DefaultHttpClient();
-
-    HttpPost httpPost = new HttpPost(reqURL);
-    List<NameValuePair> formParams = new ArrayList<NameValuePair>(); // 创建参数队列
-    for (Map.Entry<String, String> entry : params.entrySet()) {
-      formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-    }
-    try {
-      httpPost.setEntity(new UrlEncodedFormEntity(formParams, encodeCharset == null ? "UTF-8" : encodeCharset));
-
-      HttpResponse response = httpClient.execute(httpPost);
-      HttpEntity entity = response.getEntity();
-      if (null != entity) {
-        responseContent = EntityUtils.toString(entity, decodeCharset == null ? "UTF-8" : decodeCharset);
-        EntityUtils.consume(entity);
-      }
-    }
-    catch (Exception e) {
-      logger.debug("与[" + reqURL + "]通信过程中发生异常,堆栈信息如下", e);
-    }
-    finally {
-      httpClient.getConnectionManager().shutdown();
-    }
-    return responseContent;
   }
 
   /**
@@ -155,6 +115,71 @@ public abstract class HttpClientUtils {
     }
     finally {
       httpClient.getConnectionManager().shutdown(); // 关闭连接,释放资源
+    }
+    return responseContent;
+  }
+
+  /**
+   * 发送 SSL GET 请求（HTTPS）
+   * 
+   * @param apiUrl
+   * @return
+   */
+  public static String sendGetSSL(String apiUrl) {
+    CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(createSSLConnSocketFactory()).build();
+    HttpGet get = new HttpGet(apiUrl);
+    String content = null;
+    try {
+      CloseableHttpResponse response = client.execute(get);
+      HttpEntity entity = response.getEntity();
+      content = StreamUtils.copyToString(entity.getContent(), Charset.forName("UTF-8"));
+    }
+    catch (UnsupportedOperationException e) {
+      e.printStackTrace();
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    return content;
+  }
+
+  /**
+   * 发送HTTP_POST请求
+   * 
+   * @see 该方法会自动关闭连接,释放资源
+   * @see 该方法会自动对<code>params</code>中的[中文][|][
+   *      ]等特殊字符进行<code>URLEncoder.encode(string,encodeCharset)</code>
+   * @param reqURL 请求地址
+   * @param params 请求参数
+   * @param encodeCharset 编码字符集,编码请求数据时用之,其为null时默认采用UTF-8解码
+   * @param decodeCharset 解码字符集,解析响应数据时用之,其为null时默认采用UTF-8解码
+   * @return 远程主机响应正文
+   */
+  public static String sendPostRequest(String reqURL, Map<String, String> params, String encodeCharset,
+      String decodeCharset) {
+    String responseContent = null;
+    HttpClient httpClient = new DefaultHttpClient();
+
+    HttpPost httpPost = new HttpPost(reqURL);
+    List<NameValuePair> formParams = new ArrayList<NameValuePair>(); // 创建参数队列
+    for (Map.Entry<String, String> entry : params.entrySet()) {
+      formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+    }
+    try {
+      httpPost.setEntity(new UrlEncodedFormEntity(formParams, encodeCharset == null ? "UTF-8" : encodeCharset));
+
+      HttpResponse response = httpClient.execute(httpPost);
+      HttpEntity entity = response.getEntity();
+      if (null != entity) {
+        responseContent = EntityUtils.toString(entity, decodeCharset == null ? "UTF-8" : decodeCharset);
+        EntityUtils.consume(entity);
+      }
+    }
+    catch (Exception e) {
+      logger.debug("与[" + reqURL + "]通信过程中发生异常,堆栈信息如下", e);
+    }
+    finally {
+      httpClient.getConnectionManager().shutdown();
     }
     return responseContent;
   }

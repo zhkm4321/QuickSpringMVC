@@ -16,6 +16,8 @@ public interface ConfigService extends CommonService {
 
   public static String GROUP_USERCONFIG = "userconfig";
 
+  public static String GROUP_JSAPI = "jsapi";
+
   public static String WXCONFIG_TOKEN = "token";
 
   public static String WXCONFIG_APPID = "appID";
@@ -36,7 +38,45 @@ public interface ConfigService extends CommonService {
 
   public static String USERCONFIG_SNSAPI_USERINFO_URL = "snsapi_userinfo_url";
 
-  public static String USERCONFIG_REDIRECT_URI = "redirect_uri";
+  /**
+   * 获取用户access_token的URL
+   */
+  public static String USERCONFIG_GET_TOKEN_URL = "get_token_url";
+
+  /**
+   * 更新用户access_token的URL
+   */
+  public static String USERCONFIG_REFRESH_TOKEN_URL = "refresh_token_url";
+
+  /**
+   * 注册重定向页面
+   */
+  public static String USERCONFIG_REDIRECT_REG_URL = "redirect_reg_url";
+
+  /**
+   * jsapi_ticket临时票据
+   */
+  public static String WXCONFIG_JSAPI_TICKET = "jsapi_ticket";
+
+  /**
+   * 湖获取jsapi_ticket的地址
+   */
+  public static String WXCONFIG_GET_JSAPI_TICKET_URL = "get_jsapi_ticket_url";
+
+  /**
+   * 时间戳
+   */
+  public static String TIMESTAMP = "timestamp";
+
+  /**
+   * 签名
+   */
+  public static String SIGNATURE = "signature";
+
+  /**
+   * 返回字符串
+   */
+  public static String NONCESTR = "noncestr";
 
   /**
    * 刷新缓存

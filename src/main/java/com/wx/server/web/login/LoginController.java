@@ -1,9 +1,11 @@
 package com.wx.server.web.login;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authc.DisabledAccountException;
@@ -21,13 +23,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.wx.server.base.BaseConstans;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
-import com.wx.server.service.ConfigService;
 import com.wx.server.service.UserService;
+import com.wx.server.service.WxService;
 import com.wx.server.shiro.utils.TbUserUtils;
 import com.wx.server.utils.SessionUtils;
+import com.wx.server.utils.StringUtils;
 import com.wx.server.utils.TplPathUtils;
 import com.wx.server.vo.UserVo;
 import com.wx.server.web.base.WxKaptchaExtend;
@@ -38,10 +42,10 @@ public class LoginController extends WxKaptchaExtend {
   private static Logger log = LoggerFactory.getLogger(LoginController.class);
 
   @Autowired
-  UserService userService;
+  private UserService userSvc;
 
   @Autowired
-  ConfigService configService;
+  private WxService wxSvc;
 
   @RequestMapping(value = "/login", method = RequestMethod.GET)
   public String login(HttpSession session, ModelMap mav) {
@@ -127,12 +131,6 @@ public class LoginController extends WxKaptchaExtend {
     return TplPathUtils.getFrontTpl("/login/register");
   }
 
-  @RequestMapping(value = "/regForCarOwner", method = RequestMethod.GET)
-  public String register(String code, String state, HttpSession session, ModelMap mav) {
-
-    return TplPathUtils.getFrontTpl("/login/register_carowner");
-  }
-
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   @ResponseBody
   public String register(TbUser user, String password1, HttpServletRequest request, HttpSession session) {
@@ -143,9 +141,9 @@ public class LoginController extends WxKaptchaExtend {
           BaseConstans.wrapError("两次输入密码不一致", result);
         }
         else {
-          TbUser exist = userService.findUserByUsername(user.getUsername());
+          TbUser exist = userSvc.findUserByUsername(user.getUsername());
           if (null == exist) {
-            userService.register(user);
+            userSvc.register(user);
             UserVo vo = (UserVo) user;
             SessionUtils.setUserVo(vo, session);
             BaseConstans.wrapSuccess(null, result);
@@ -168,5 +166,34 @@ public class LoginController extends WxKaptchaExtend {
     }
     return JSON.toJSONString(result);
 
+  }
+
+  @RequestMapping(value = "/loginForWx", method = RequestMethod.GET)
+  public void loginForWx(String state, HttpServletResponse response, HttpSession session) {
+    try {
+      // 获取微信用户认证界面的url
+      String url = wxSvc.getWxUserAuthUrl(state);
+      response.sendRedirect(url);
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @RequestMapping(value = "/cgi-bin/regForWx/", method = RequestMethod.GET)
+  public String regForCarOwner(String code, String state, HttpSession session, ModelMap mav) {
+    if (StringUtils.isNotEmpty(state) && StringUtils.isNotEmpty(code)) {
+      String json = wxSvc.getWxUserAccessToken(code);
+      JSONObject.parseObject(json);
+      log.info("user_info:" + json);
+      if ("carowner".equals(state)) {
+        return TplPathUtils.getFrontTpl("/login/register_carowner");
+      }
+      else if ("technician".equals(state)) {
+        return TplPathUtils.getFrontTpl("/login/register_technician");
+      }
+    }
+    log.error("非法请求，未携带正确state参数");
+    return "error";
   }
 }

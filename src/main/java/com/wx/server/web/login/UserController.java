@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,6 +23,8 @@ import com.wx.server.web.base.WxKaptchaExtend;
 
 @Controller
 public class UserController extends WxKaptchaExtend {
+
+  private static Logger log = LoggerFactory.getLogger(UserController.class);
 
   @Autowired
   private UserService userService;
