@@ -2,7 +2,12 @@ package com.wx.server.service;
 
 import java.util.Map;
 
+import com.wx.server.vo.UserVo;
+
 public interface WxService {
+
+  public String getAppID();
+
   /**
    * 验证签名
    * 
@@ -74,5 +79,12 @@ public interface WxService {
    * @return
    */
   public String getWxUserAccessToken(String code);
+
+  /**
+   * 获取用户信息
+   * 
+   * @param vo
+   */
+  public void getWxUserInfo(UserVo vo);
 
 }

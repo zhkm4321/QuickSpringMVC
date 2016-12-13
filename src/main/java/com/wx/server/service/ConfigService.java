@@ -38,6 +38,10 @@ public interface ConfigService extends CommonService {
 
   public static String USERCONFIG_SNSAPI_USERINFO_URL = "snsapi_userinfo_url";
 
+  public static String USERCONFIG_GET_USERINFO_URL = "get_userinfo_url";
+
+  public static String USERCONFIG_CHECK_TOKEN_URL = "check_token_url";
+
   /**
    * 获取用户access_token的URL
    */

@@ -8,11 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +25,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.wx.server.base.BaseConstans;
+import com.wx.server.conf.EnumUserStatus;
+import com.wx.server.conf.EnumUserType;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
 import com.wx.server.service.UserService;
 import com.wx.server.service.WxService;
+import com.wx.server.shiro.token.UserIdToken;
 import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.utils.CameTools;
 import com.wx.server.utils.SessionUtils;
 import com.wx.server.utils.StringUtils;
 import com.wx.server.utils.TplPathUtils;
@@ -105,6 +110,21 @@ public class LoginController extends WxKaptchaExtend {
     return JSON.toJSONString(result);
   }
 
+  @RequestMapping(value = "/cgi-bin/login", method = RequestMethod.GET)
+  public String loginForTest(Integer id, HttpServletRequest request) {
+    loginByUserId(id, request.getServerName());
+    TbUser user = TbUserUtils.currentUser();
+    if (user.getType().equals(EnumUserType.TECHNICIAN.getCode())) {
+      return "redirect:/user/technician/my";
+    }
+    else if (user.getType().equals(EnumUserType.CAROWNER.getCode())) {
+      return "redirect:/user/carowner/my";
+    }
+    else {
+      return "redirect:/";
+    }
+  }
+
   @RequestMapping(value = "/logout", method = RequestMethod.GET)
   @ResponseBody
   public String logout(HttpSession session, ModelMap mav) {
@@ -168,11 +188,21 @@ public class LoginController extends WxKaptchaExtend {
 
   }
 
+  /**
+   * 必须带上type参数
+   * 
+   * @see EnumUserType
+   * 
+   * @param type 注册用户类型
+   * @param response
+   * @param session
+   */
   @RequestMapping(value = "/loginForWx", method = RequestMethod.GET)
-  public void loginForWx(String state, HttpServletResponse response, HttpSession session) {
+  public void loginForWx(String type, HttpServletResponse response, HttpSession session) {
     try {
       // 获取微信用户认证界面的url
-      String url = wxSvc.getWxUserAuthUrl(state);
+      String url = wxSvc.getWxUserAuthUrl(type);
+      // 第一步：跳转到微信登录页面当用户同意授权，获取code
       response.sendRedirect(url);
     }
     catch (IOException e) {
@@ -180,20 +210,55 @@ public class LoginController extends WxKaptchaExtend {
     }
   }
 
-  @RequestMapping(value = "/cgi-bin/regForWx/", method = RequestMethod.GET)
-  public String regForCarOwner(String code, String state, HttpSession session, ModelMap mav) {
+  /**
+   * 车主、技师和商家都通过这个回调请求进入首页
+   * 
+   * @param code
+   * @param state
+   * @param session
+   * @param mav
+   * @return
+   */
+  @RequestMapping(value = "/cgi-bin/regForWx", method = RequestMethod.GET)
+  public String regOrLoginForWx(String code, String state, HttpServletRequest request, HttpSession session,
+      ModelMap mav) {
     if (StringUtils.isNotEmpty(state) && StringUtils.isNotEmpty(code)) {
+      // 第二步：通过code换取网页授权access_token
       String json = wxSvc.getWxUserAccessToken(code);
-      JSONObject.parseObject(json);
-      log.info("user_info:" + json);
-      if ("carowner".equals(state)) {
-        return TplPathUtils.getFrontTpl("/login/register_carowner");
+      if (JSON.parseObject(json).containsKey("errcode")) {
+        log.error("获取用户登录授权code失败");
       }
-      else if ("technician".equals(state)) {
-        return TplPathUtils.getFrontTpl("/login/register_technician");
+      else {
+        UserVo vo = JSON.parseObject(CameTools.convert(json), UserVo.class);
+        // 获取用户信息
+        wxSvc.getWxUserInfo(vo);
+        // 刚刚登录进来的用户状态
+        vo.setStatus(EnumUserStatus.BEGINNER.getCode());
+        if ("carowner".equals(state)) {
+          vo.setType(EnumUserType.CAROWNER.getCode());
+          // 更新或保存用户信息
+          userSvc.saveOrupdateWxUserInfo(vo);
+          loginByUserId(vo.getUserId(), request.getServerName());
+          return "redirect:/user/carownerInfo";
+        }
+        else if ("technician".equals(state)) {
+          vo.setType(EnumUserType.TECHNICIAN.getCode());
+          // 更新或保存用户信息
+          userSvc.saveOrupdateWxUserInfo(vo);
+          loginByUserId(vo.getUserId(), request.getServerName());
+          return "redirect:/user/technicianInfo";
+        }
       }
     }
-    log.error("非法请求，未携带正确state参数");
+    else {
+      log.error("非法请求，未携带正确state参数");
+    }
     return "error";
+  }
+
+  private void loginByUserId(Integer userId, String host) {
+    Subject subject = SecurityUtils.getSubject();
+    UserIdToken token = new UserIdToken(userId, host);
+    subject.login(token);// 登录
   }
 }

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="${res}/favicon.ico" type="image/x-icon" /> 
+<link rel="shortcut icon" href="${res}/favicon.ico" type="image/x-icon" />
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>首页</title>
 <link rel="stylesheet" href="${res}/css/sm.min.css">
@@ -11,7 +13,7 @@
 <body ontouchstart>
   <div class="page-group">
     <header class="bar bar-nav">
-      <span class="button button-nav pull-left">欢迎[#if user??]${user.username}[/#if]</span>
+      <span class="button button-nav pull-left">欢迎[#if user??]${user.realname!user.nickname}[/#if]</span>
       <h1 class="title">技师注册</h1>
       <a href="${cp}/logout" class="button pull-right">注销</a>
     </header>

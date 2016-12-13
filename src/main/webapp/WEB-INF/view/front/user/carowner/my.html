@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="${res}/favicon.ico" type="image/x-icon" /> 
+<link rel="shortcut icon" href="${res}/favicon.ico" type="image/x-icon" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>车在行 - 我的</title>
+<link rel="stylesheet" href="${res}/css/sm.min.css">
+<link rel="stylesheet" href="${res}/css/sm-extend.min.css">
+<link rel="stylesheet" href="${res}/css/global.css" />
+</head>
+<body ontouchstart>
+  <div class="page-group">
+    <header class="bar bar-nav">
+      <a href="${cp}/user/config" class="button pull-left">设置</a>
+      <a href="${cp}/user/message/list" class="button pull-right">消息</a>
+    </header>
+    <div class="content">
+      <div class="content-padded">
+        <div class="row">
+          <div class="col-50">
+            <div class="avator">
+              <img src="${user.headImg!}" alt="" width="50">
+            </div>
+            <span>${user.nickname!}</span>
+            <span>
+            [@user_type code=user.type type='carowner']车主[/@user_type]
+            [@user_type code=user.type type='technician']技师[/@user_type]
+            [@perm key='vip']VIP[/@perm]</span>
+          </div>
+          <div class="col-50">
+            <a href="${cp}/user/index">完善个人信息(完善度60%)</a>
+          </div>
+        </div>
+        <div class="row">
+          <ul>
+            <li>
+              <a href="${cp}/user/modifyPwd">修改密码</a>
+            </li>
+            <li>
+              <a href="${cp}/service/standard">收费服务标准</a>
+            </li>
+            <li>
+              <a href="#">在线咨询</a>
+            </li>
+            <li>
+              <a href="${cp}/service/appointment_1">预约</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    [#include 'common/bottom.html' /]
+    
+  </div>
+
+  <script src="${res}/js/zepto.js"></script>
+  <script src="${res}/js/global.js"></script>
+</body>
+</html>

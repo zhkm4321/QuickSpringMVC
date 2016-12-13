@@ -29,6 +29,59 @@ public class UserController extends WxKaptchaExtend {
   @Autowired
   private UserService userService;
 
+  @RequestMapping(value = "/user/profile", method = RequestMethod.GET)
+  public String index(ModelMap model) {
+    return TplPathUtils.getFrontTpl("/user/profile");
+  }
+
+  /**
+   * 车主-我的
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/carowner/my", method = RequestMethod.GET)
+  public String carownerMy(ModelMap model) {
+
+    return TplPathUtils.getFrontTpl("/user/carowner/my");
+  }
+
+  /**
+   * 车主设置
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/carowner/config", method = RequestMethod.GET)
+  public String carownerConfig(ModelMap model) {
+
+    return TplPathUtils.getFrontTpl("/user/carowner/config");
+  }
+
+  /**
+   * 车主设置
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/carowner/detail", method = RequestMethod.GET)
+  public String carownerDetail(ModelMap model) {
+
+    return TplPathUtils.getFrontTpl("/user/carowner/detail");
+  }
+
+  /**
+   * 技师-我的
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/technician/my", method = RequestMethod.GET)
+  public String technicianInfo(ModelMap model) {
+
+    return TplPathUtils.getFrontTpl("/user/technician_info");
+  }
+
   @RequestMapping(value = "/user/modifyPwd", method = RequestMethod.GET)
   public String modifyPassword(ModelMap model) {
     return TplPathUtils.getFrontTpl("/user/modify_password");

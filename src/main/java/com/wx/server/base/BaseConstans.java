@@ -35,6 +35,8 @@ public class BaseConstans {
    */
   public static final String USER_KEY = "user";
 
+  public static final String PERMISSION_KEY = "_permission_key";
+
   /**
    * 前台模板路径
    */

@@ -3,8 +3,6 @@ package com.wx.server.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -12,7 +10,6 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 
 import com.wx.server.conf.Constants;
@@ -33,7 +30,7 @@ import com.wx.server.service.UserService;
 import com.wx.server.service.abs.AbstractCommonService;
 import com.wx.server.utils.DateUtil;
 import com.wx.server.utils.StringUtils;
-import com.wx.server.utils.TplPathUtils;
+import com.wx.server.vo.UserVo;
 
 @Service
 public class UserServiceImpl extends AbstractCommonService<TbUser> implements UserService {
@@ -69,6 +66,17 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     }
     else {
       new DuplicateException("用户名不唯一:" + _userexample);
+    }
+    return null;
+  }
+
+  public TbUser findUserByUnionId(String unionId) {
+    TbUserExample example = new TbUserExample();
+    TbUserExample.Criteria criteria = example.createCriteria();
+    criteria.andUnionIdEqualTo(unionId);
+    List<TbUser> userList = userMapper.selectByExample(example);
+    if (!CollectionUtils.isEmpty(userList)) {
+      return userList.get(0);
     }
     return null;
   }
@@ -110,20 +118,59 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     String paswd = user.getPassword();
     user.setPassword(null);
     userMapper.insert(user);
-    String passwordMd5 = new Md5Hash(paswd, user.getUserId().toString()).toString();
+    String passwordMd5 = new Md5Hash(paswd == null ? "" : paswd, user.getUserId().toString()).toString();
     user.setPassword(passwordMd5);
     userMapper.updateByPrimaryKey(user);
     return user;
   }
 
-  public String registerTechnician(HttpSession session, ModelMap model) {
-    return TplPathUtils.getFrontTpl("/login/register_technician");
+  @Override
+  public TbUser update(TbUser user) {
+    user.setUpdateTime(new java.util.Date());
+    userMapper.updateByPrimaryKey(user);
+    return user;
   }
 
   @Override
-  public TbUser update(TbUser user) throws Exception {
-    userMapper.updateByPrimaryKey(user);
-    return user;
+  public UserVo saveOrupdateWxUserInfo(UserVo vo) {
+    TbUser user = findUserByUnionId(vo.getUnionId());
+    boolean isUpdate = true;
+    if (null == user) {
+      isUpdate = false;
+      user = new TbUser();
+    }
+    user.setHeadImg(vo.getHeadImg());
+    user.setNickname(vo.getNickname());
+    user.setSex(vo.getSex());
+    user.setCountry(vo.getCountry());
+    user.setProvince(vo.getProvince());
+    user.setCity(vo.getCity());
+    user.setStatus(vo.getStatus());
+    user.setAccessToken(vo.getAccessToken());
+    user.setExpiresIn(vo.getExpiresIn());
+    user.setRefreshToken(vo.getRefreshToken());
+    user.setOpenId(vo.getOpenId());
+    user.setScope(vo.getScope());
+    user.setUnionId(vo.getUnionId());
+    user.setOpenId(vo.getOpenId());
+    user.setStatus(vo.getStatus());
+    user.setType(vo.getType());
+    if (isUpdate) {
+      // 更新用户
+      update(user);
+    }
+    else {
+      // 新添加一个用户
+      try {
+        userMapper.insert(user);
+        vo.setCreateTime(new java.util.Date());
+        vo.setUserId(user.getUserId());
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    return vo;
   }
 
   @Override
@@ -208,5 +255,4 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
       return 0;
     }
   }
-
 }

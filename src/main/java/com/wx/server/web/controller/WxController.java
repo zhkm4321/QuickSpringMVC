@@ -20,9 +20,9 @@ public class WxController {
   /**
    * 微信平台接入
    */
-  @RequestMapping(value = "/authByWechat", method = RequestMethod.GET)
+  @RequestMapping(value = "/authByWechat", method = RequestMethod.POST)
   @ResponseBody
-  public String authByWechat(HttpServletRequest request, HttpServletResponse response) {
+  public String authByWechatPOST(HttpServletRequest request, HttpServletResponse response) {
     // 获取微信后台传入的四个参数
     String signature = request.getParameter("signature");
     String timestamp = request.getParameter("timestamp");
@@ -35,5 +35,11 @@ public class WxController {
       return echostr;// 注意此处必须返回echostr以完成验证
     }
     return "faile";
+  }
+
+  @RequestMapping(value = "/authByWechat", method = RequestMethod.GET)
+  @ResponseBody
+  public String authByWechatGET(HttpServletRequest request, HttpServletResponse response) {
+    return authByWechatPOST(request, response);
   }
 }

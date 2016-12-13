@@ -5,6 +5,7 @@ import java.util.List;
 import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbUser;
+import com.wx.server.vo.UserVo;
 
 public interface UserService extends CommonService {
 
@@ -14,7 +15,9 @@ public interface UserService extends CommonService {
 
   public TbUser register(TbUser user) throws Exception;
 
-  public TbUser update(TbUser user) throws Exception;
+  public TbUser update(TbUser user);
+
+  public UserVo saveOrupdateWxUserInfo(UserVo vo);
 
   public List<TbPermission> findUserPermission(TbUser user);
 

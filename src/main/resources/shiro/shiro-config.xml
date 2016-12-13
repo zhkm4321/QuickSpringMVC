@@ -24,8 +24,8 @@
 		<property name="rememberMeParam" value="rememberme" />
 		<property name="loginUrl" value="/login" />
 	</bean>
-	
-	
+
+
 	<!-- 后台登录验证过滤器 -->
 	<bean id="adminCaptchaFormAuthenticationFilter"
 		class="com.wx.server.shiro.filter.AdminCaptchaFormAuthenticationFilter">
@@ -39,7 +39,7 @@
 		<property name="captchaEbabled" value="true" />
 		<property name="failureKeyAttribute" value="shiroLoginFailure" />
 	</bean>
-	
+
 	<bean id="adminUserFilter" class="com.wx.server.shiro.filter.AdminUserFilter">
 		<property name="adminUrl" value="/wxbackstage/signin" />
 	</bean>
@@ -51,10 +51,25 @@
 		<property name="hashAlgorithmName" value="MD5" />
 		<property name="hashSalted" value="true" />
 	</bean>
+	
+	<!-- 使用userId去查询用户信息用于登录 -->
+	<bean id="userIdMatcher" class="com.wx.server.shiro.authenticator.UserIdCredentialsMatcher"></bean>
 
-	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的ShiroDbRealm.java -->
+	<!-- 用户名密码登录realm -->
 	<bean id="userRealm" class="com.wx.server.shiro.realm.TbUserRealm">
 		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
+	</bean>
+
+	<!-- 微信跳转微信平台登录realm -->
+	<bean id="wxUserRealm" class="com.wx.server.shiro.realm.WxUserRealm">
+		<property name="credentialsMatcher" ref="userIdMatcher"></property>
+	</bean>
+	
+	<!-- 根据登录类型选择不同的realm登录 -->
+	<bean id="authenticator" class="com.wx.server.shiro.authenticator.SysRealmAuthenticator">
+		<property name="authenticationStrategy">
+			<bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy" />
+		</property>
 	</bean>
 
 	<!-- 缓存管理 -->
@@ -64,7 +79,13 @@
 	<!-- 即<property name="sessionMode" value="native"/>,详细说明见官方文档 -->
 	<!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="userRealm" />
+		<property name="authenticator" ref="authenticator" />
+		<property name="realms">
+			<list>
+				<ref bean="userRealm" />
+				<ref bean="wxUserRealm" />
+			</list>
+		</property>
 		<property name="rememberMeManager" ref="rememberMeManager" />
 		<property name="sessionManager" ref="sessionManager" />
 		<property name="cacheManager" ref="cacheManager" />
@@ -85,7 +106,7 @@
 			<util:map>
 				<entry key="authc" value-ref="captchaFormAuthenticationFilter" />
 				<entry key="adminAuthc" value-ref="adminCaptchaFormAuthenticationFilter" />
-				<entry key="adminUser" value-ref="adminUserFilter"/>
+				<entry key="adminUser" value-ref="adminUserFilter" />
 				<entry key="captcha" value-ref="kCaptchaValidateFilter" />
 			</util:map>
 		</property>
@@ -101,9 +122,9 @@
 				/service/**=user
 				/topic/publish=user
 				/=user
-				
+
 				/login=captcha,authc
-				
+
 				/logout=logout
 
 				/register=anon
@@ -143,7 +164,7 @@
 	<!-- 会话管理器 -->
 	<bean id="sessionManager"
 		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-		<!-- session的失效时长，单位毫秒	5*60*1000=300000 5分钟-->
+		<!-- session的失效时长，单位毫秒 5*60*1000=300000 5分钟 -->
 		<property name="globalSessionTimeout" value="300000" />
 		<!-- 删除失效的session -->
 		<property name="deleteInvalidSessions" value="true" />

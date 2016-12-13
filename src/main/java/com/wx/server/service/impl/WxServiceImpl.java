@@ -21,6 +21,7 @@ import com.wx.server.utils.HttpClientUtils;
 import com.wx.server.utils.SignUtil;
 import com.wx.server.utils.StringUtils;
 import com.wx.server.vo.SignatureVo;
+import com.wx.server.vo.UserVo;
 
 @Service
 public class WxServiceImpl implements WxService {
@@ -29,6 +30,12 @@ public class WxServiceImpl implements WxService {
 
   @Autowired
   private ConfigService cfgSvc;
+
+  @Override
+  public String getAppID() {
+    String appID = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPID);
+    return appID;
+  }
 
   @Override
   public boolean checkSignature(String signature, String timestamp, String nonce) {
@@ -78,10 +85,10 @@ public class WxServiceImpl implements WxService {
   public String getAccessToken() {
     if (!checkAccessTokenValid()) {
       String reqATUrl = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_GET_ACCESS_TOKEN_URL);
-      String appID = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPID);
+      String appID = getAppID();
       String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPSECRET);
       reqATUrl = StringUtils.replace(reqATUrl, "APPID", appID);
-      reqATUrl = StringUtils.replace(reqATUrl, "APPSECRET", appsecret);
+      reqATUrl = StringUtils.replace(reqATUrl, "SECRET", appsecret);
       String jsonStr = HttpClientUtils.sendGetRequest(reqATUrl, null);
       JSONObject jsonObj = (JSONObject) JSONObject.parse(jsonStr);
       String accessToken = jsonObj.getString(ConfigService.WXCONFIG_ACCESS_TOKEN);
@@ -140,12 +147,12 @@ public class WxServiceImpl implements WxService {
       cfgSvc.setValue(ConfigService.GROUP_JSAPI, ConfigService.SIGNATURE, signature);
       log.debug("【JSAPI参数设置更新完毕】");
     }
-    String appId = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPID);
+    String appID = getAppID();
     String timestamp = cfgSvc.getValue(ConfigService.GROUP_JSAPI, ConfigService.TIMESTAMP);
     String signature = cfgSvc.getValue(ConfigService.GROUP_JSAPI, ConfigService.SIGNATURE);
     String noncestr = cfgSvc.getValue(ConfigService.GROUP_JSAPI, ConfigService.NONCESTR);
     Map<String, String> map = new HashMap<String, String>();
-    map.put("appId", appId);
+    map.put("appID", appID);
     map.put("timestamp", timestamp);
     map.put("noncestr", noncestr);
     map.put("signature", signature);
@@ -164,7 +171,7 @@ public class WxServiceImpl implements WxService {
   @Override
   public String getWxUserAuthUrl(String state) {
     String wxAuthUrl = cfgSvc.getValue(ConfigService.GROUP_USERCONFIG, ConfigService.USERCONFIG_SNSAPI_USERINFO_URL);
-    String appID = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPID);
+    String appID = getAppID();
     wxAuthUrl = StringUtils.replace(wxAuthUrl, "APPID", appID);
     // 用户登录完后重定向地址
     String redirectUrl = null;
@@ -189,18 +196,90 @@ public class WxServiceImpl implements WxService {
   public String getWxUserAccessToken(String code) {
     // https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
     String apiUrl = cfgSvc.getValue(ConfigService.GROUP_USERCONFIG, ConfigService.USERCONFIG_GET_TOKEN_URL);
-    String appID = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPID);
+    String appID = getAppID();
+    String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPSECRET);
     apiUrl = StringUtils.replace(apiUrl, "APPID", appID);
+    apiUrl = StringUtils.replace(apiUrl, "SECRET", appsecret);
+    apiUrl = StringUtils.replace(apiUrl, "CODE", code);
     String json = HttpClientUtils.sendGetSSL(apiUrl);
     return json;
   }
 
+  @Override
+  public void getWxUserInfo(UserVo vo) {
+    String accessToken = vo.getAccessToken();
+    if (StringUtils.isNotBlank(accessToken) && (null != vo.getExpiresIn())) {
+      // 检验授权凭证（access_token）是否有效
+      if (!checkWxUserAccessToken(vo)) {
+        // 第三步：刷新access_token（如果需要）
+        refreshAccessToken(vo);
+      }
+
+      // 第四步：拉取用户信息(需scope为 snsapi_userinfo)
+      String apiUrl = cfgSvc.getValue(ConfigService.GROUP_USERCONFIG, ConfigService.USERCONFIG_GET_USERINFO_URL);
+      apiUrl = StringUtils.replace(apiUrl, "ACCESS_TOKEN", vo.getAccessToken());
+      apiUrl = StringUtils.replace(apiUrl, "OPENID", vo.getOpenId());
+      String json = HttpClientUtils.sendGetSSL(apiUrl);
+      JSONObject result = JSON.parseObject(json);
+      if (!result.containsKey("errcode")) {
+        vo.setNickname(result.getString("nickname"));
+        vo.setHeadImg(result.getString("headimgurl"));
+        vo.setCountry(result.getString("country"));
+        vo.setProvince(result.getString("province"));
+        vo.setCity(result.getString("city"));
+        vo.setSex(result.getInteger("sex"));
+        vo.setUpdateTime(new java.util.Date());
+      }
+      else {
+        log.error("获取用户信息错误 json:{}", result.toJSONString());
+      }
+    }
+  }
+
+  private boolean checkWxUserAccessToken(UserVo vo) {
+    String apiUrl = cfgSvc.getValue(ConfigService.GROUP_USERCONFIG, ConfigService.USERCONFIG_CHECK_TOKEN_URL);
+    apiUrl = StringUtils.replace(apiUrl, "ACCESS_TOKEN", vo.getAccessToken());
+    apiUrl = StringUtils.replace(apiUrl, "OPENID", vo.getOpenId());
+    String json = HttpClientUtils.sendGetSSL(apiUrl);
+    JSONObject result = JSON.parseObject(json);
+    int errorcode = result.getIntValue("errcode");
+    if (errorcode == 0) {
+      return true;
+    }
+    else if (errorcode == 40003) {
+      log.error("验证用户unionId:{}的AccessToken失效 ", vo.getUnionId());
+    }
+    return false;
+  }
+
+  private void refreshAccessToken(UserVo vo) {
+    String appID = getAppID();
+    String apiUrl = cfgSvc.getValue(ConfigService.GROUP_USERCONFIG, ConfigService.USERCONFIG_REFRESH_TOKEN_URL);
+    String refreshToken = vo.getRefreshToken();
+    apiUrl = StringUtils.replace(apiUrl, "APPID", appID);
+    apiUrl = StringUtils.replace(apiUrl, "REFRESH_TOKEN", refreshToken);
+    String json = HttpClientUtils.sendGetSSL(apiUrl);
+    JSONObject result = JSON.parseObject(json);
+    if (!result.containsKey("errcode")) {
+      vo.setAccessToken(result.getString("access_token"));
+      vo.setExpiresIn(result.getInteger("expires_in"));
+      vo.setRefreshToken(result.getString("refresh_token"));
+      vo.setOpenId(result.getString("openid"));
+      vo.setScope(result.getString("scope"));
+      vo.setUpdateTime(new java.util.Date());
+      log.error("更新用户unionId:{}的AccessToken", vo.getUnionId());
+    }
+    else {
+      log.error("更新用户accessToken错误 json:{}", result.toJSONString());
+    }
+  }
+
   private String handlePlaceholder(String reqUrl) {
-    String appID = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPID);
+    String appID = getAppID();
     String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPSECRET);
     String accessToken = getAccessToken();
     reqUrl = StringUtils.replace(reqUrl, "APPID", appID);
-    reqUrl = StringUtils.replace(reqUrl, "APPSECRET", appsecret);
+    reqUrl = StringUtils.replace(reqUrl, "SECRET", appsecret);
     reqUrl = StringUtils.replace(reqUrl, "ACCESS_TOKEN", accessToken);
     return reqUrl;
   }

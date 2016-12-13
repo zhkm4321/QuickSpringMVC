@@ -9,7 +9,7 @@ public class TestUser {
   public void Test01() {
 
     TbUser user = new TbUser();
-    user.setOppenId("1111111111");
+    user.setOpenId("1111111111");
     user.setUsername("我是郑航");
 
     String postJsonEntity = HttpClientUtils.postJsonEntity("http://localhost:8080/wxserver/user/register.action", user);

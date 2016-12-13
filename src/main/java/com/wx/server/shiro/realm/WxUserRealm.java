@@ -11,25 +11,25 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.wx.server.conf.EnumUserStatus;
 import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbUser;
 import com.wx.server.service.UserService;
+import com.wx.server.shiro.token.UserIdToken;
 
-public class TbUserRealm extends AuthorizingRealm {
+public class WxUserRealm extends AuthorizingRealm {
 
-  private static Logger log = LoggerFactory.getLogger(TbUserRealm.class);
+  private static Logger log = LoggerFactory.getLogger(WxUserRealm.class);
 
   @Autowired
   private UserService userService;
@@ -42,7 +42,7 @@ public class TbUserRealm extends AuthorizingRealm {
     // 获取登录信息
     TbUser user = (TbUser) principals.getPrimaryPrincipal();
 
-    List<TbRole> roleList = userService.findUserRoleByUsername(user.getUsername());
+    List<TbRole> roleList = userService.findUserRole(user);
     // 角色字的集合
     Set<String> roles = new HashSet<String>();
     if (!CollectionUtils.isEmpty(roleList)) {
@@ -51,7 +51,7 @@ public class TbUserRealm extends AuthorizingRealm {
         roles.add(role.getValue());
       }
     }
-    List<TbPermission> permissionList = userService.findUserPermissionByUsername(user.getUsername());
+    List<TbPermission> permissionList = userService.findUserPermission(user);
     // 权限字的集合
     Set<String> permissions = new HashSet<String>();
     if (!CollectionUtils.isEmpty(permissionList)) {
@@ -75,32 +75,27 @@ public class TbUserRealm extends AuthorizingRealm {
   @Override
   protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
-    String username = (String) token.getPrincipal();
-    TbUser user = userService.findUserByUsername(username);
+    Integer userId = (Integer) token.getPrincipal();
+    TbUser user = userService.getById(userId);
     // 用户状态判断，返回不同的异常
     if (user == null) {
       // 木有找到用户
       throw new UnknownAccountException("没有找到该账号");
     }
-    if (-1 == user.getStatus()) {// 帐号锁定
+    if (EnumUserStatus.LOCKED.getCode() == user.getStatus()) {// 帐号锁定
       throw new LockedAccountException();
     }
 
     /**
-     * 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
+     * 通过验证userId判断用户是否可用
      */
-    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(),
-        ByteSource.Util.bytes(user.getUserId().toString()), getName());
-
+    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, null, getName());
     return info;
   }
 
   @Override
   public boolean supports(AuthenticationToken token) {
-    if (token instanceof UsernamePasswordToken) {
-      return true;
-    }
-    return super.supports(token);
+    return token instanceof UserIdToken;
   }
 
   @Override
