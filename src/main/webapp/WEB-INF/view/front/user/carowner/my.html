@@ -2,60 +2,117 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="${res}/favicon.ico" type="image/x-icon" /> 
+<link rel="icon" href="${res}/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="${res}/favicon.ico" type="image/x-icon" />
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>车在行 - 我的</title>
-<link rel="stylesheet" href="${res}/css/sm.min.css">
+<link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
 <link rel="stylesheet" href="${res}/css/sm-extend.min.css">
+<link rel="stylesheet" href="${res}/css/iconfont.css">
 <link rel="stylesheet" href="${res}/css/global.css" />
+<script type='text/javascript' src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type="text/javascript" src="${res}/js/sm.js"></script>
 </head>
 <body ontouchstart>
   <div class="page-group">
-    <header class="bar bar-nav">
-      <a href="${cp}/user/config" class="button pull-left">设置</a>
-      <a href="${cp}/user/message/list" class="button pull-right">消息</a>
-    </header>
-    <div class="content">
-      <div class="content-padded">
-        <div class="row">
-          <div class="col-50">
-            <div class="avator">
-              <img src="${user.headImg!}" alt="" width="50">
+    <div class="page page-current my" id='my'>
+      <header class="bar bar-nav">
+        <a href="${cp}/user/config" class="button pull-left">设置</a>
+        <h1 class="title">我的</h1>
+        <a href="${cp}/user/message/list" class="button pull-right">消息</a>
+      </header>
+      <div class="content"> 
+        <div class="content-padded">
+          <div class="row profile a-link" href="${cp}/user/profile">
+            <div class="col-50 pull-left">
+              <div class="avatar">
+                <img src="${user.headImg!}" alt="" width="50">
+              </div>
+              <div class="avatar_info">
+                <span>${user.nickname!}</span>
+                <span>[@user_type code=user.type type='carowner']车主[/@user_type] [@user_type code=user.type type='technician']技师[/@user_type] [@perm key='vip']VIP[/@perm]</span>
+              </div>
             </div>
-            <span>${user.nickname!}</span>
-            <span>
-            [@user_type code=user.type type='carowner']车主[/@user_type]
-            [@user_type code=user.type type='technician']技师[/@user_type]
-            [@perm key='vip']VIP[/@perm]</span>
-          </div>
-          <div class="col-50">
-            <a href="${cp}/user/index">完善个人信息(完善度60%)</a>
+            <div class="col-50 list-block pull-right">
+              <div class="item-link">
+                <div class="item-inner a-link" href="${cp}/user/profile">完善个人信息<br>(完善度60%)</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="row">
+        <div class="content-padded">
+          <div class="row">
+            <div class="col-50">
+              <a class="button button-big" href="${cp}/user/profile">
+                <span class="icon icon-clock"></span><span class="my_btn">我的预约</span>
+              </a>
+            </div>
+            <div class="col-50">
+              <a class="button button-big" href="${cp}/user/profile">
+                <span class="icon icon-edit"></span><span class="my_btn">我的提问</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="list-block">
           <ul>
-            <li>
-              <a href="${cp}/user/modifyPwd">修改密码</a>
+            <li class="item-content item-link">
+              <div class="item-media">
+                <i class="icon icon-check"></i>
+              </div>
+              <a class="item-inner" href="${cp}/service/standard">服务收费标准</a>
             </li>
-            <li>
-              <a href="${cp}/service/standard">收费服务标准</a>
+            <li class="item-content item-link">
+              <div class="item-media">
+                <i class="icon icon-me"></i>
+              </div>
+              <a class="item-inner" href="#">开通会员</a>
             </li>
-            <li>
-              <a href="#">在线咨询</a>
-            </li>
-            <li>
-              <a href="${cp}/service/appointment_1">预约</a>
+            <li class="item-content item-link">
+              <div class="item-media">
+                <i class="icon icon-message"></i>
+              </div>
+              <a class="item-inner" href="#">在线咨询</a>
             </li>
           </ul>
         </div>
       </div>
+      [#include '../../common/bottom.html' /]
     </div>
-    [#include 'common/bottom.html' /]
-    
   </div>
 
-  <script src="${res}/js/zepto.js"></script>
-  <script src="${res}/js/global.js"></script>
+  <script type="text/javascript" src="${res}/js/fastclick.js"></script>
+  <script type="text/javascript">
+  var BASE = "${cp}";
+  $.config = {
+      // 路由功能开关过滤器，返回 false 表示当前点击链接不使用路由
+      routerFilter: function($link) {
+        // 某个区域的 a 链接不想使用路由功能
+        if ($link.is('.disable-router a')) {
+            return false;
+        }
+
+        return true;
+    }
+  }
+  </script>
+  <script type="text/javascript" src="${res}/js/global.js"></script>
+  <script type="text/javascript">
+      $(function() {
+        FastClick.attach(document.body);
+        $(document).on("pageInit", function(e, id, $page) {
+          if (id == "my") {
+            console.log("my 页面展示出来了");
+          } else if (id == "cahnge_pwd") {
+            console.log("cahnge_pwd 页面展示出来了");
+          } else if (id == "cahnge_phone") {
+            console.log("cahnge_phone 页面展示出来了");
+          } else if (id == "config") {
+            console.log("config 页面展示出来了");
+          }
+        })
+        $.init();
+      })
+    </script>
 </body>
 </html>

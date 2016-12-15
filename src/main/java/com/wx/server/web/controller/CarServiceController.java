@@ -34,6 +34,18 @@ public class CarServiceController {
   @Autowired
   private CarServiceService carSvc;
 
+  /**
+   * 服务标准静态页面
+   * 
+   * @param session
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/standard", method = RequestMethod.GET)
+  public String standardPage(HttpSession session, ModelMap model) {
+    return TplPathUtils.getFrontTpl("/service/standard");
+  }
+
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   @ResponseBody
   public String list(Integer categoryId) {

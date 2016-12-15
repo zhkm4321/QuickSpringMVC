@@ -1,71 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<link rel="icon" href="${res}/favicon.ico" type="image/x-icon" /> 
-<link rel="shortcut icon" href="${res}/favicon.ico" type="image/x-icon" />
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-<title>车在行 - 我的</title>
-<link rel="stylesheet" href="${res}/css/sm.min.css">
-<link rel="stylesheet" href="${res}/css/sm-extend.min.css">
-<link rel="stylesheet" href="${res}/css/global.css" />
-</head>
-<body ontouchstart>
-  <div class="page-group">
+<div class="page-group">
+  <div class="page page-current" id="config">
     <header class="bar bar-nav">
-      <a href="${cp}/user/config" class="button pull-left">设置</a>
-      <a href="${cp}/user/message/list" class="button pull-right">消息</a>
+      <a class="button button-link button-nav pull-left" href="${cp}/user/carowner/my">
+        <span class="icon icon-left"></span>返回
+      </a>
+      <h1 class="title">设置</h1>
     </header>
     <div class="content">
-      <div class="content-padded">
-        <div class="row">
-          <div class="col-50">
-            <div class="avator">
-              <img src="${user.headImg!}" alt="" width="50">
+      <div class="list-block">
+        <ul>
+          <li class="item-content item-link">
+            <div class="item-media">
+              <i class="icon icon-f7">
+              </i>
             </div>
-            <span>${user.nickname!}</span>
-            <span>普通用户</span>
-          </div>
-          <div class="col-50">
-            <a href="${cp}/user/index">完善个人信息(完善度60%)</a>
-          </div>
-        </div>
-        <div class="row">
+            <a class="item-inner" href="#change_phone">修改手机号</a>
+          </li>
+          <li class="item-content item-link">
+            <div class="item-media">
+              <i class="icon icon-f7">
+              </i>
+            </div>
+            <a class="item-inner" href="#change_pwd">修改密码</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    [#include '../../common/bottom.html' /]
+  </div>
+  <div class="page" id="change_phone">
+    <header class="bar bar-nav">
+      <a class="button button-link button-nav pull-left" href="#config" data-transition='slide-out'>
+        <span class="icon icon-left"></span>
+        返回
+      </a>
+      <h1 class="title">修改手机号</h1>
+    </header>
+    <div class="content">
+      <form id="change_phone_form" method="post">
+        <div class="list-block">
           <ul>
             <li>
-              <a href="${cp}/user/modifyPwd">修改密码</a>
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="icon icon-form-name"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title label">原手机号</div>
+                  <div class="item-input">
+                    <input type="text" name="oldphone" placeholder="请输入原手机号" class="oldphone" maxlength="11" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                  </div>
+                </div>
+              </div>
             </li>
             <li>
-              <a href="${cp}/service/standard">收费服务标准</a>
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="icon icon-form-password"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title label">新绑定手机</div>
+                  <div class="item-input">
+                    <input type="text" name="newphone" placeholder="请输入新手机号" class="newphone" maxlength="11" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                  </div>
+                </div>
+              </div>
             </li>
             <li>
-              <a href="#">在线咨询</a>
+              <div class="content-block btn_in_form">
+                <a href="javascript:void(0)" class="button button-big button-fill sendsms_btn">发送短信验证码</a>
+              </div>
             </li>
             <li>
-              <a href="${cp}/service/appointment_1">预约</a>
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="icon icon-form-password"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title label">短信验证码</div>
+                  <div class="item-input">
+                    <input type="text" name="smscode" placeholder="请输入收到的短信验证码 " class="newpwd" maxlength="4">
+                  </div>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
-      </div>
+        <div class="content-block">
+          <a href="javascript:void(0)" class="button button-big button-fill submit_btn">提交</a>
+        </div>
+      </form>
     </div>
-    <nav class="bar bar-tab">
-      <a class="tab-item external" href="#">
-        <span class="icon icon-home"></span>
-        <span class="tab-label">首页</span>
-      </a>
-      <a class="tab-item external" href="#">
-        <span class="icon icon-message"></span>
-        <span class="tab-label">问大家</span>
-      </a>
-      <a class="tab-item external active" href="#">
-        <span class="icon icon-me"></span>
-        <span class="tab-label">我的</span>
-        <!-- <span class="badge">2</span>  -->
-      </a>
-    </nav>
   </div>
-
-  <script src="${res}/js/zepto.js"></script>
-  <script src="${res}/js/global.js"></script>
-</body>
-</html>
+  <div class="page" id="change_pwd">
+    <header class="bar bar-nav">
+      <a class="button button-link button-nav pull-left" href="#config" data-transition='slide-out'>
+        <span class="icon icon-left"></span>返回
+      </a>
+      <h1 class="title">修改密码</h1>
+    </header>
+    <div class="content">
+      <form id="change_pwd_form" method="post">
+        <div class="list-block">
+          <ul>
+            <li>
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="icon icon-form-name"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title label">旧密码</div>
+                  <div class="item-input">
+                    <input type="text" name="oldpwd" placeholder="请输入原来的密码" class="oldpwd">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="icon icon-form-password"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title label">设置密码</div>
+                  <div class="item-input">
+                    <input type="password" name="newpwd" placeholder="请输入新密码" class="newpwd">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="icon icon-form-password"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title label">重复密码</div>
+                  <div class="item-input">
+                    <input type="password" name="pwdrepeat" placeholder="请再次输入新密码" class="pwdrepeat">
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="content-block">
+          <div class="row">
+            <div class="col-100">
+              <a href="javascript:void(0)" class="button button-big button-fill submit_btn">提交</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

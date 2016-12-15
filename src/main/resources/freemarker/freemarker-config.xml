@@ -74,4 +74,7 @@
 	
 	<bean id="perm" class="com.wx.server.web.directive.PermistionDirective"/>
 	<bean id="user_type" class="com.wx.server.web.directive.UserTypeDirective"/>
+	
+	<bean id="car_models" class="com.wx.server.web.directive.CarModelsDirective"/>
+	<bean id="car_brand" class="com.wx.server.web.directive.CarBrandDirective"/>
 </beans>

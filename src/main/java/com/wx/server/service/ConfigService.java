@@ -16,6 +16,8 @@ public interface ConfigService extends CommonService {
 
   public static String GROUP_USERCONFIG = "userconfig";
 
+  public static String GROUP_SMSCONFIG = "smsconfig";
+
   public static String GROUP_JSAPI = "jsapi";
 
   public static String WXCONFIG_TOKEN = "token";
@@ -41,6 +43,10 @@ public interface ConfigService extends CommonService {
   public static String USERCONFIG_GET_USERINFO_URL = "get_userinfo_url";
 
   public static String USERCONFIG_CHECK_TOKEN_URL = "check_token_url";
+
+  public static String SMSCONFIG_SMS_SEND_URL = "sms_send_url";
+
+  public static String SMSCONFIG_SMS_TIMEOUT = "sms_timeout";
 
   /**
    * 获取用户access_token的URL

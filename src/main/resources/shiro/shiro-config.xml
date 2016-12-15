@@ -129,6 +129,7 @@
 
 				/register=anon
 				/captcha.jpg=anon
+				/sendSMS.json=anon
 				/topic/index=anon
 				/topic/detail=anon
 				<!-- 后台 -->

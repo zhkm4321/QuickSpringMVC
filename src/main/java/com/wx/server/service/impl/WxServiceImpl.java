@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +19,7 @@ import com.wx.server.service.WxService;
 import com.wx.server.utils.HttpClientUtils;
 import com.wx.server.utils.SignUtil;
 import com.wx.server.utils.StringUtils;
+import com.wx.server.utils.RandomUtil;
 import com.wx.server.vo.SignatureVo;
 import com.wx.server.vo.UserVo;
 
@@ -138,7 +138,7 @@ public class WxServiceImpl implements WxService {
     String accessToken = getAccessToken();
     if (!checkSignatureValid()) {
       String jsApiTicket = getJsApiTicket(accessToken);
-      String noncestr = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+      String noncestr = RandomUtil.genUUID();
       String timestamp = String.valueOf(System.currentTimeMillis() / 1000);// 时间戳
       String str = "jsapi_ticket=" + jsApiTicket + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url=" + url;
       String signature = SignUtil.getSha1(str);

@@ -54,6 +54,7 @@ public class ConfigServiceImpl extends AbstractCommonService<TbConfig> implement
 
   @Override
   public void reload() {
+    cache.clear();
     initCache();
     log.info("【缓存服务器配置reload】");
   }

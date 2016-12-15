@@ -1,0 +1,105 @@
+<div class="page-group">
+  <div class="page page-current profile" id="profile">
+    <header class="bar bar-nav">
+      <a class="button button-link button-nav pull-left" href="javascript:back();">
+        <span class="icon icon-left"></span>返回
+      </a>
+      <h1 class="title">编辑</h1>
+    </header>
+    <div class="content">
+        <div class="content-padded">
+          <div class="row a-link" href="#edit_profile">
+            <div class="col-50">
+              <div class="avatar">
+                <img src="${user.headImg!}" alt="" width="50">
+              </div>
+              <div class="avatar_info">
+                <span>${user.nickname!}&nbsp;|&nbsp;[#if user.sex??][#if user.sex=1]男[#else]女[/#if][/#if]</span>
+                <span>编辑个人信息</span>
+              </div>
+            </div>
+            <div class="list-block pull-right">
+              <div class="item-link">
+                <span class="item-inner a-link" href="#edit_profile">待完善</span>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="list-block icon-list">
+        <ul>
+          <li class="item-content item-link a-link" href="#car_brand">
+            <div class="item-media">
+              <i class="iconfont icon-svg12"></i>
+            </div>
+            <div class="item-title txt-align-left">车型</div>
+            <div class="item-after">${user.carModels!}</div>
+          </li>
+          <li class="item-content item-link a-link" href="#num_plates">
+            <div class="item-media">
+              <i class="iconfont icon-wxbpinpaibao"></i>
+            </div>
+            <div class="item-title txt-align-left">车牌号</div>
+            <div class="item-after">${user.numPlates!}</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    [#include '../../common/bottom.html' /]
+  </div>
+  <div class="page" id="edit_profile">
+    <header class="bar bar-nav">
+      <a class="button button-link button-nav pull-left" href="#profile">
+        <span class="icon icon-left"></span>返回
+      </a>
+      <h1 class="title">个人信息</h1>
+    </header>
+    <div class="content">
+        <div class="content-padded">
+          <div class="row">
+            <div class="col-50">
+              <div class="avator">
+                <img src="${user.headImg!}" alt="" width="50">
+              </div>
+              <span>${user.nickname!}</span>
+              <span> [@user_type code=user.type type='carowner']车主[/@user_type] [@user_type code=user.type type='technician']技师[/@user_type] [@perm key='vip']VIP[/@perm]</span>
+            </div>
+            <div class="col-50">
+              <a href="#editProfile" >待完善</a>
+            </div>
+          </div>
+      </div>
+    </div>
+    [#include '../../common/bottom.html' /]
+  </div>
+  <div class="page car_models" id="car_brand">
+    <header class="bar bar-nav">
+      <a class="button button-link button-nav pull-left" href="#profile">
+        <span class="icon icon-left"></span>返回
+      </a>
+      <h1 class="title">车型</h1>
+    </header>
+    <div class="content">
+      [@car_brand]
+        [#list tag_list.keySet() as mKey]
+          <h2>${mKey}</h2>
+          [#assign item = tag_list[mKey] /]
+          [#list item as brand]
+            <span>${brand}</span>
+          [/#list]
+        [/#list]
+      [/@car_brand]
+    </div>
+    [#include '../../common/bottom.html' /]
+  </div>
+  <div class="page num_plates" id="num_plates">
+    <header class="bar bar-nav">
+      <a class="button button-link button-nav pull-left" href="${cp}/user/carowner/my">
+        <span class="icon icon-left"></span>返回
+      </a>
+      <h1 class="title">车牌号</h1>
+    </header>
+    <div class="content">
+    </div>
+    [#include '../../common/bottom.html' /]
+  </div>
+</div>

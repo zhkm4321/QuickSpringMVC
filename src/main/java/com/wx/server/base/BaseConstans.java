@@ -38,6 +38,11 @@ public class BaseConstans {
   public static final String PERMISSION_KEY = "_permission_key";
 
   /**
+   * 存放在session中的用户短信验证码
+   */
+  public static final String USER_SMS_KEY = "_user_sms_key";
+
+  /**
    * 前台模板路径
    */
   public static final String FRONT_TPL_DIR = "/front";

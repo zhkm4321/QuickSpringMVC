@@ -239,14 +239,14 @@ public class LoginController extends WxKaptchaExtend {
           // 更新或保存用户信息
           userSvc.saveOrupdateWxUserInfo(vo);
           loginByUserId(vo.getUserId(), request.getServerName());
-          return "redirect:/user/carownerInfo";
+          return "redirect:/user/carowner/my";
         }
         else if ("technician".equals(state)) {
           vo.setType(EnumUserType.TECHNICIAN.getCode());
           // 更新或保存用户信息
           userSvc.saveOrupdateWxUserInfo(vo);
           loginByUserId(vo.getUserId(), request.getServerName());
-          return "redirect:/user/technicianInfo";
+          return "redirect:/user/carowner/my";
         }
       }
     }

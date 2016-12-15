@@ -70,6 +70,21 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     return null;
   }
 
+  @Override
+  public TbUser findUserByPhone(String phone) {
+    TbUserExample _userexample = new TbUserExample();
+    TbUserExample.Criteria criteria = _userexample.createCriteria();
+    criteria.andPhoneEqualTo(phone);
+    List<TbUser> users = userMapper.selectByExample(_userexample);
+    if (users.size() == 1) {
+      return users.get(0);
+    }
+    else {
+      new DuplicateException("手机号不唯一:" + _userexample);
+    }
+    return null;
+  }
+
   public TbUser findUserByUnionId(String unionId) {
     TbUserExample example = new TbUserExample();
     TbUserExample.Criteria criteria = example.createCriteria();
@@ -156,6 +171,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     user.setStatus(vo.getStatus());
     user.setType(vo.getType());
     if (isUpdate) {
+      vo.setUserId(user.getUserId());
       // 更新用户
       update(user);
     }

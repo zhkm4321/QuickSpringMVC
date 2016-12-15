@@ -2,9 +2,8 @@ package com.wx.server.web.directive;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
-import com.wx.server.utils.StringUtils;
+import com.wx.server.utils.RandomUtil;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -19,8 +18,7 @@ public class UUIDDirective implements TemplateDirectiveModel {
   @SuppressWarnings("unchecked")
   public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
       throws TemplateException, IOException {
-    String uuid = UUID.randomUUID().toString();
-    uuid = StringUtils.remove(uuid, '-');
+    String uuid = RandomUtil.genUUID();
     env.getOut().append(uuid);
   }
 }

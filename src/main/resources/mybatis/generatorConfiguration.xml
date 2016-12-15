@@ -99,6 +99,14 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		</table>
 		
+		<!-- 车型 -->
+		<table tableName="tb_car_models" domainObjectName="TbCarModels"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
 		<!-- 服务 -->
 		<table tableName="tb_service" domainObjectName="TbService"
 			enableCountByExample="true" enableUpdateByExample="true"

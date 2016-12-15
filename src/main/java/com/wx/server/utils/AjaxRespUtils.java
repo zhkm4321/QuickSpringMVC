@@ -20,21 +20,6 @@ public class AjaxRespUtils {
    * @param data
    * @return
    */
-  public static String renderSuccess(Map<String, Object> data, String message) {
-    Map<String, Object> result = new HashMap<String, Object>();
-    result.put("success", true);
-    result.put("message", message);
-    result.put("data", data);
-    result.put("timestamp", new Date().getTime());
-    return JSONObject.toJSONString(result);
-  }
-  
-  /**
-   * 渲染正常返回数据的json
-   * 
-   * @param data
-   * @return
-   */
   public static String renderSuccess() {
     Map<String, Object> result = new HashMap<String, Object>();
     result.put("success", true);
@@ -57,6 +42,21 @@ public class AjaxRespUtils {
   }
 
   /**
+   * 渲染正常返回数据的json
+   * 
+   * @param data
+   * @return
+   */
+  public static String renderSuccess(Map<String, Object> data, String message) {
+    Map<String, Object> result = new HashMap<String, Object>();
+    result.put("success", true);
+    result.put("message", message);
+    result.put("data", data);
+    result.put("timestamp", new Date().getTime());
+    return JSONObject.toJSONString(result);
+  }
+
+  /**
    * 渲染异常json
    * 
    * @param message
@@ -69,4 +69,20 @@ public class AjaxRespUtils {
     result.put("timestamp", new Date().getTime());
     return JSONObject.toJSONString(result);
   }
+
+  /**
+   * 渲染异常返回数据的json
+   * 
+   * @param data
+   * @return
+   */
+  public static String renderErrors(Map<String, Object> data, String message) {
+    Map<String, Object> result = new HashMap<String, Object>();
+    result.put("success", false);
+    result.put("message", message);
+    result.put("data", data);
+    result.put("timestamp", new Date().getTime());
+    return JSONObject.toJSONString(result);
+  }
+
 }

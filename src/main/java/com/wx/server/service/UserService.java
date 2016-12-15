@@ -11,6 +11,8 @@ public interface UserService extends CommonService {
 
   public TbUser findUserByUsername(String username);
 
+  public TbUser findUserByPhone(String phone);
+
   public TbUser login(TbUser user) throws Exception;
 
   public TbUser register(TbUser user) throws Exception;
