@@ -120,6 +120,7 @@
 				<!-- 前台 -->
 				/upload/**=user
 				/user/**=user
+				/service/search=anon
 				/service/**=user
 				/topic/publish=user
 				/=user

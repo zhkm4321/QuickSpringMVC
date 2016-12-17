@@ -31,23 +31,24 @@
           </div>
       </header>
       <div class="content">
+        <div class="buttons-tab">
+          <a href="javascript:searchTech('',1,10)" class="tab-link active button">全部</a>
+          <a href="javascript:searchTech('',1,10)" class="tab-link button">保养护理</a>
+          <a href="javascript:searchTech('',1,10)" class="tab-link button">精品装饰</a>
+          <a href="javascript:searchTech('',1,10)" class="tab-link button">维修钣喷</a>
+        </div>
         <div class="card">
-          [@topic_page categoryId=categoryId valid=valid pageNo=pageNo pageSize=pageSize]
-          [#list tag_list as a]
-          <div class="card-header">${a.userId!} ${a.createTime?string('MM-dd')}</div>
+          <div class="card-header">124142</div>
           <div class="card-content">
             <div class="card-inner">
-              <h3>[@text_cut s=a.topicName len='20' append='...'/]</h3>
-              <div>[@html_cut s=a.topicText len='200' append='...'/]</div>
+              <h3>234325</h3>
+              <div>456345</div>
             </div>
             <a class="absolute more" href="javascript:void(0)">展开</a>
           </div>
-          [/#list]
-          [/@topic_page]
         </div>
       </div>
     </div>
-    [#include '../common/left_menu.html' /]
   </div>
 
   </div>

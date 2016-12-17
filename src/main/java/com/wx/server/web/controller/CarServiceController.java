@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.wx.server.entity.TbService;
+import com.wx.server.entity.TbTechnician;
 import com.wx.server.service.CarServiceService;
 import com.wx.server.utils.AjaxRespUtils;
 import com.wx.server.utils.SessionUtils;
 import com.wx.server.utils.TplPathUtils;
+import com.wx.server.vo.page.Page;
 
 @Controller
 @RequestMapping(value = "/service")
@@ -60,13 +62,14 @@ public class CarServiceController {
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.GET)
-  public String getSearchTechnicianPage(ModelMap model) {
+  public String getSearchTechPage(ModelMap model) {
 
-    return postSearchTechnicianPage(model);
+    return postSearchTechPage(null, null, null, null, model);
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public String postSearchTechnicianPage(ModelMap model) {
+  public String postSearchTechPage(Integer categoryId, String keywords, String location, Page<TbTechnician> page,
+      ModelMap model) {
 
     return TplPathUtils.getFrontTpl("/service/search");
   }
