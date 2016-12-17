@@ -8,13 +8,31 @@
 .list-block {
 	margin: 0 0;
 }
-.txt-align-left{
-	text-align: left;
+.list-block .item-input input{
+	text-indent: .2rem;
 }
-/*--weui 修改--------------*/
+.list-block .item-content{
+	overflow: hidden;
+}
 .weui-label {
 	padding-left: 5px;
 }
+.progressBar{
+	position: absolute;
+}
+.edit_profile .progressBar{
+	width:100%;
+	height:.1rem;
+	border: none;  
+    background-color:#e6e6e6;
+    color: #0064B4; /*IE10*/
+	bottom: 0px;
+	left: 0px;
+	display: none;
+}
+progress::-moz-progress-bar { background: #0064B4; }
+progress::-webkit-progress-bar { background: #e6e6e6; }
+progress::-webkit-progress-value  { background: #0064B4; }
 /*--SM.css修改-----------------*/
 .btn_in_form {
 	margin: .15rem 0;
@@ -23,7 +41,84 @@
 .button em {
 	font-style: normal;
 }
-
+/*--车主端-首页--------*/
+.bar .location{
+	position: relative;
+	top: 0.56rem;
+	font-weight: 400;
+	background: none;
+	margin: 0;
+	height: 1.25rem;
+	box-sizing: border-box;
+	color: #0894ec;
+	z-index: 20;
+}
+.search-nav{
+	background: rgba(0, 0, 0, 0.1);
+}
+.search-nav .searchbar{
+	width: 12rem;
+	margin-left: 2.4rem;
+	background:none;
+}
+@media screen and (min-width: 300px) and (max-width: 340px){
+	.search-nav .searchbar {
+		width: 10.2rem;
+	}
+}
+@media screen and (min-width: 340px) and (max-width: 370px){
+	.search-nav .searchbar {
+		width: 11.5rem;
+	}
+}
+@media screen and (min-width: 375px) and (max-width: 510px){
+	.search-nav .searchbar {
+		width: 12.5rem;
+	}
+}
+@media screen and (min-width: 510px) and (max-width: 580px){
+	.search-nav .searchbar {
+		width: 14rem;
+	}
+}
+@media screen and (min-width: 580px) {
+	.search-nav .searchbar {
+		width: 17rem;
+	}
+}
+/*--车主端-首页-end--------------*/
+/*--车主端-问大家-列表页--------------*/
+.qa-card .card-header {
+  display: block;
+  padding: 0.5rem;
+}
+.qa-card .qa-avatar {
+  float: left;
+}
+.qa-card .qa-name {
+  margin-left: 2.2rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+.qa-card .qa-date {
+  margin-left: 2.2rem;
+  font-size: 0.65rem;
+  color: #5f646e;
+}
+.qa-card .card-footer {
+  background: #fafafa;
+}
+.qa-card .card-footer a {
+  color: #5f646e;
+  font-weight: 500;
+}
+.qa-card .card-content img {
+  display: block;
+}
+.qa-card .card-content-inner {
+  padding: 0.75rem 0.5rem;
+}
+/*--车主端-问大家-列表页-end-------------*/
 .my .my_btn {
 	padding-left: 10px;
 }
@@ -46,6 +141,8 @@
 	height: 1.5rem;
 	line-height: 1.5rem;
 	display: block;
+	font-size: 80%;
+	font-family: "microsoft yahei";
 }
 
 .profile .list-block {
@@ -65,7 +162,99 @@
 .profile .list-block .item-link .item-inner:after {
 	background: none;
 }
+.profile .list-block .item-after{
+	padding-right: 2rem;
+}
 
-.profile .icon-list .icon,.profile .icon-list .iconfont {
+.profile .list-block .item-input input{
+	text-align: right;
+	padding-right: 2.7rem;
+}
+
+.profile .list-block .item-title.label {
+	width: 3rem;
+}
+
+.profile .icon-list .icon, .profile .icon-list .iconfont {
 	color: #0894ec;
+}
+
+.profile .save_num_plates,.edit_profile .save_realname,.edit_profile .save_age {
+	background: #0894ec;
+	color: #fff;
+	min-height: 2.2rem;
+	line-height: 2.2rem;
+	position: absolute;
+	padding: 0 .4rem;
+	right: -5rem;
+	top: 0rem;
+	white-space: nowrap;
+    -webkit-flex-shrink: 0;
+    -ms-flex: 0 0 auto;
+    flex-shrink: 0;
+    margin-left: .25rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.edit_profile .list-block .item-content .item-media img{
+	padding-right: .2rem;
+	width: 3.6rem;
+}
+.edit_profile .list-block.media-list .item-inner{
+	line-height: 3rem;
+}
+.edit_profile .list-block .item-after{
+	min-height: 4rem;
+}
+.slide_in {
+	animation: kf_slide_in 1s;
+	-webkit-animation: kf_slide_in 1s;
+	-moz-animation: kf_slide_in 1s; /* Firefox */
+	-o-animation: kf_slide_in 1s;
+	animation-fill-mode: forwards;
+	-webkit-animation-fill-mode: forwards;
+}
+
+@keyframes kf_slide_in {
+	from {right: -5rem;}
+	to {right: 0rem;}
+}
+@-webkit-keyframes kf_slide_in {
+	from {right: -5rem;}
+	to {right: 0rem;}
+}
+@-moz-keyframes kf_slide_in { /* Firefox */
+	from {right: -5rem;}
+	to {right: 0rem;}
+}
+.car_brand .content-block-title, .car_models .content-block-title {
+	padding-bottom: .4rem;
+	margin-top: .2rem;
+	margin-left: .4rem;
+}
+
+.car_brand .content-block-title:after, .car_models .content-block-title:after
+	{
+	content: "";
+	display: block;
+	position: absolute;
+	left: -50%;
+	top: 1rem;
+	width: 200%;
+	height: 1px;
+	background: #0894ec;
+	-webkit-transform: scale(1);
+}
+
+.car_brand .models_btn, .car_models .models_btn {
+	display: inline-block;
+	padding: 0.2rem 0.3rem;
+	margin: 0.1rem;
+	border: 1px solid #0894ec;
+	border-radius: 5px;
+	background-color: #fff;
+	color: #333;
+	text-decoration: none;
 }

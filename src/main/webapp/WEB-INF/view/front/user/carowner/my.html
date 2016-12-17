@@ -6,7 +6,7 @@
 <link rel="shortcut icon" href="${res}/favicon.ico" type="image/x-icon" />
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>车在行 - 我的</title>
-<link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+<link rel="stylesheet" href="${res}/css/sm.css">
 <link rel="stylesheet" href="${res}/css/sm-extend.min.css">
 <link rel="stylesheet" href="${res}/css/iconfont.css">
 <link rel="stylesheet" href="${res}/css/global.css" />
@@ -26,7 +26,7 @@
           <div class="row profile a-link" href="${cp}/user/profile">
             <div class="col-50 pull-left">
               <div class="avatar">
-                <img src="${user.headImg!}" alt="" width="50">
+                <img src="[@url url=user.headImg default='' /]" alt="" width="50">
               </div>
               <div class="avatar_info">
                 <span>${user.nickname!}</span>
@@ -35,7 +35,7 @@
             </div>
             <div class="col-50 list-block pull-right">
               <div class="item-link">
-                <div class="item-inner a-link" href="${cp}/user/profile">完善个人信息<br>(完善度60%)</div>
+                <div class="item-inner a-link" href="${cp}/user/profile" data-no-cache="true">完善个人信息<br>(完善度60%)</div>
               </div>
             </div>
           </div>
@@ -98,21 +98,10 @@
   </script>
   <script type="text/javascript" src="${res}/js/global.js"></script>
   <script type="text/javascript">
-      $(function() {
-        FastClick.attach(document.body);
-        $(document).on("pageInit", function(e, id, $page) {
-          if (id == "my") {
-            console.log("my 页面展示出来了");
-          } else if (id == "cahnge_pwd") {
-            console.log("cahnge_pwd 页面展示出来了");
-          } else if (id == "cahnge_phone") {
-            console.log("cahnge_phone 页面展示出来了");
-          } else if (id == "config") {
-            console.log("config 页面展示出来了");
-          }
-        })
-        $.init();
-      })
-    </script>
+  function preInit(){
+  }
+  function afterInit(){
+  }
+  </script>
 </body>
 </html>

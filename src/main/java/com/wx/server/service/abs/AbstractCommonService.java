@@ -28,7 +28,7 @@ public abstract class AbstractCommonService<T> implements CommonService {
 
   private Class<?> mapperClazz = null;
 
-  private Map<String, Method> cacheMethod = new HashMap<String, Method>();
+  private static Map<String, Map<String, Method>> cacheMethodInClass = new HashMap<String, Map<String, Method>>();
 
   public AbstractCommonService(Class<T> clazz) {
     String example = clazz.getName() + "Example";
@@ -37,8 +37,13 @@ public abstract class AbstractCommonService<T> implements CommonService {
     try {
       exampleClazz = Class.forName(example);
       mapperClazz = Class.forName(fullClassName);
+      Map methodMap = cacheMethodInClass.get(mapperClazz.getName());
+      if (null == methodMap) {
+        methodMap = new HashMap();
+        cacheMethodInClass.put(mapperClazz.getName(), methodMap);
+      }
       for (Method method : mapperClazz.getMethods()) {
-        cacheMethod.put(method.getName(), method);
+        methodMap.put(method.getName(), method);
       }
       mapper = SpringBeanService.getBean(StringUtils.toLowerCaseFirstOne(className));
     }
@@ -113,7 +118,8 @@ public abstract class AbstractCommonService<T> implements CommonService {
    */
   private Object invoke(String methodName, Object... args) {
     try {
-      Method m = cacheMethod.get(methodName);
+      Map<String, Method> methodMap = cacheMethodInClass.get(mapperClazz.getName());
+      Method m = methodMap.get(methodName);
       Object obj = m.invoke(mapper, args);
       log.info("invoke 【{}】 in mapper", m.getName());
       return obj;
@@ -142,7 +148,8 @@ public abstract class AbstractCommonService<T> implements CommonService {
   @SuppressWarnings("unused")
   private Object invoke(String methodName) {
     try {
-      Method m = cacheMethod.get(methodName);
+      Map<String, Method> methodMap = cacheMethodInClass.get(mapperClazz.getName());
+      Method m = methodMap.get(methodName);
       Object obj = m.invoke(mapper);
       log.info("invoke 【{}】 in mapper", m.getName());
       return obj;

@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.wx.server.base.BaseConstans;
 import com.wx.server.service.UserService;
 import com.wx.server.service.WxService;
 import com.wx.server.utils.TplPathUtils;
@@ -34,12 +35,13 @@ public class IndexController extends WxKaptchaExtend {
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String root(HttpServletRequest request, HttpSession session, ModelMap model) {
-    model.put("index", "html");
+    model.put(BaseConstans.POSITION, "index");
     return TplPathUtils.getFrontTpl("/index");
   }
 
   @RequestMapping(value = "/index.html", method = RequestMethod.GET)
   public String index(HttpServletRequest request, HttpSession session, ModelMap model) {
+    model.put(BaseConstans.POSITION, "index");
     return root(request, session, model);
   }
 

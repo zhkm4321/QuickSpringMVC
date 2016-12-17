@@ -118,6 +118,7 @@
 		<property name="filterChainDefinitions">
 			<value>
 				<!-- 前台 -->
+				/upload/**=user
 				/user/**=user
 				/service/**=user
 				/topic/publish=user

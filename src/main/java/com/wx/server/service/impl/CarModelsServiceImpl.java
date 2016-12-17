@@ -56,7 +56,9 @@ public class CarModelsServiceImpl extends AbstractCommonService<TbCarModels> imp
           subBrand = new ArrayList();
           brandCache.put(models.getFirstLetter(), subBrand);
         }
-        subBrand.add(models.getBrand());
+        if (!subBrand.contains(models.getBrand())) {
+          subBrand.add(models.getBrand());
+        }
       }
     }
     log.info("【缓存车型信息完成】");

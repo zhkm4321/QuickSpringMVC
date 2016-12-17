@@ -1,17 +1,31 @@
 <nav class="bar bar-tab">
-  <a class="tab-item external" href="${cp}/">
+  <a class="tab-item external[#if position??&&position='index'] active[/#if]" href="${cp}/">
     <span class="icon icon-home"></span>
     <span class="tab-label">首页</span>
   </a>
-  <a class="tab-item external" href="${cp}/ask">
+  <a class="tab-item external[#if position??&&position='ask'] active[/#if]" href="${cp}/qa/list">
     <span class="icon icon-message"></span>
     <span class="tab-label">问大家</span>
   </a>
+  [#if user??]
   [@user_type code=user.type type='carowner']
-  <a class="tab-item external active" href="${cp}/user/carowner/my">
+  <a class="tab-item external[#if position??&&position='my'] active[/#if]" href="${cp}/user/carowner/my">
     <span class="icon icon-me"></span>
     <span class="tab-label">我的</span>
     <!-- <span class="badge">2</span>  -->
   </a>
   [/@user_type]
+  [@user_type code=user.type type='technician']
+  <a class="tab-item external[#if position??&&position='my'] active[/#if]" href="${cp}/user/technician/my">
+    <span class="icon icon-me"></span>
+    <span class="tab-label">我的</span>
+    <!-- <span class="badge">2</span>  -->
+  </a>
+  [/@user_type]
+  [#else]
+  <a class="tab-item external[#if position??&&position='my'] active[/#if]" href="${cp}/loginForWx?state=carowner">
+    <span class="icon icon-me"></span>
+    <span class="tab-label">我的</span>
+  </a>
+  [/#if]
 </nav>

@@ -18,6 +18,8 @@ public interface ConfigService extends CommonService {
 
   public static String GROUP_SMSCONFIG = "smsconfig";
 
+  public static String GROUP_SYSCONFIG = "sysconfig";
+
   public static String GROUP_JSAPI = "jsapi";
 
   public static String WXCONFIG_TOKEN = "token";
@@ -72,6 +74,11 @@ public interface ConfigService extends CommonService {
    * 湖获取jsapi_ticket的地址
    */
   public static String WXCONFIG_GET_JSAPI_TICKET_URL = "get_jsapi_ticket_url";
+
+  /**
+   * 上传文件路径
+   */
+  public static String SYSCONFIG_UPLOAD_PATH = "upload_path";
 
   /**
    * 时间戳

@@ -1,52 +1,55 @@
 <div class="page-group">
   <div class="page page-current profile" id="profile">
     <header class="bar bar-nav">
-      <a class="button button-link button-nav pull-left" href="javascript:back();">
+      <a class="button button-link button-nav pull-left" href="${cp}/user/carowner/my" data-no-cache="true">
         <span class="icon icon-left"></span>返回
       </a>
       <h1 class="title">编辑</h1>
     </header>
     <div class="content">
-        <div class="content-padded">
-          <div class="row a-link" href="#edit_profile">
-            <div class="col-50">
-              <div class="avatar">
-                <img src="${user.headImg!}" alt="" width="50">
-              </div>
-              <div class="avatar_info">
-                <span>${user.nickname!}&nbsp;|&nbsp;[#if user.sex??][#if user.sex=1]男[#else]女[/#if][/#if]</span>
-                <span>编辑个人信息</span>
-              </div>
+      <div class="content-padded">
+        <div class="row a-link" href="#edit_profile">
+          <div class="col-50">
+            <div class="avatar">
+              <img class="a-link" href="#edit_profile" src="[@url url=user.headImg default='' /]" alt="" width="50">
             </div>
-            <div class="list-block pull-right">
-              <div class="item-link">
-                <span class="item-inner a-link" href="#edit_profile">待完善</span>
-              </div>
+            <div class="avatar_info">
+              <span class="a-link" href="#edit_profile">${user.nickname!}&nbsp;|&nbsp;[#if user.sex??][#if user.sex=1]男[#else]女[/#if][/#if]</span>
+              <span class="a-link" href="#edit_profile">编辑个人信息</span>
             </div>
           </div>
+          <div class="list-block pull-right">
+            <div class="item-link">
+              <span class="item-inner a-link" href="#edit_profile">[#if incomplete]待完善[/#if]</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="list-block icon-list">
         <ul>
-          <li class="item-content item-link a-link" href="#car_brand">
-            <div class="item-media">
-              <i class="iconfont icon-svg12"></i>
+          <li class="item-content item-link">
+            <div class="item-media"><i class="iconfont icon-svg12"></i></div>
+            <div class="item-inner a-link" href="#car_brand">
+              <div class="item-title label">车型</div>
+              <div class="item-after a-link" href="#car_brand">${user.carModels!}</div>
             </div>
-            <div class="item-title txt-align-left">车型</div>
-            <div class="item-after">${user.carModels!}</div>
           </li>
-          <li class="item-content item-link a-link" href="#num_plates">
-            <div class="item-media">
-              <i class="iconfont icon-wxbpinpaibao"></i>
+          <li class="item-content">
+            <div class="item-media"><i class="iconfont icon-wxbpinpaibao"></i></div>
+            <div class="item-inner">
+              <div class="item-title label">车牌号</div>
+              <div class="item-input">
+                <input type="text" name="numPlates" placeholder="请输真实车牌号" value="${user.numPlates!}" onkeyup="showSaveBtn(this,'.save_num_plates')">
+              </div>
             </div>
-            <div class="item-title txt-align-left">车牌号</div>
-            <div class="item-after">${user.numPlates!}</div>
+            <div class="save_num_plates">保存</div>
           </li>
         </ul>
       </div>
     </div>
     [#include '../../common/bottom.html' /]
   </div>
-  <div class="page" id="edit_profile">
+  <div class="page edit_profile" id="edit_profile">
     <header class="bar bar-nav">
       <a class="button button-link button-nav pull-left" href="#profile">
         <span class="icon icon-left"></span>返回
@@ -54,24 +57,81 @@
       <h1 class="title">个人信息</h1>
     </header>
     <div class="content">
-        <div class="content-padded">
-          <div class="row">
-            <div class="col-50">
-              <div class="avator">
-                <img src="${user.headImg!}" alt="" width="50">
-              </div>
-              <span>${user.nickname!}</span>
-              <span> [@user_type code=user.type type='carowner']车主[/@user_type] [@user_type code=user.type type='technician']技师[/@user_type] [@perm key='vip']VIP[/@perm]</span>
-            </div>
-            <div class="col-50">
-              <a href="#editProfile" >待完善</a>
-            </div>
+      <div class="card">
+        <div class="card-content">
+          <div class="list-block media-list">
+            <ul>
+              <li class="item-content upload_btn">
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title upload_btn">点击修改头像</div>
+                  </div>
+                </div>
+                <div class="item-media item-after avatar">
+                  <img src="[@url url=user.headImg default='' /]" class="upload_btn">
+                </div>
+                <progress id="progressBar" class="progressBar" value="0" max="100">
+                  <span id="percentage" class="percentage"></span>
+                </progress>
+              </li>
+            </ul>
           </div>
+          <div style="display: none;">
+            <input type="file" name="file" accept="image/png,image/jpeg" id="file_input" onchange="uplodFile('/upload/headImg')"/>
+          </div>
+        </div>
+      </div>
+      <div class="list-block icon-list">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">姓名</div>
+              <div class="item-input">
+                <input type="text" name="realname" placeholder="请输真实姓名" value="${user.realname!}" maxlength="11" onkeyup="showSaveBtn(this,'.save_realname')">
+              </div>
+            </div>
+            <div class="save_realname">保存</div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">性别</div>
+              <div class="item-input">
+                <select name="sex" onchange="sexOnChange()">
+                [#if user.sex??]
+                  [#if user.sex==1]
+                  <option value="1" selected="selected">男</option>
+                  [#else]
+                  <option value="1">男</option>
+                  [/#if]
+                  [#if user.sex==2]
+                  <option value="2" selected="selected">女</option>
+                  [#else]
+                  <option value="2">女</option>
+                  [/#if]
+                [#else]
+                  <option value="">--请选择性别--</option>
+                  <option value="1">男</option>
+                  <option value="2">女</option>
+                [/#if]
+                </select>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">年龄</div>
+              <div class="item-input">
+                <input type="text" name="age" placeholder="请输年龄" value="${user.age!}" maxlength="3"  onkeyup="showSaveBtn(this,'.save_age')">
+              </div>
+            </div>
+            <div class="save_age">保存</div>
+          </li>
+        </ul>
       </div>
     </div>
     [#include '../../common/bottom.html' /]
   </div>
-  <div class="page car_models" id="car_brand">
+  <div class="page car_brand" id="car_brand">
     <header class="bar bar-nav">
       <a class="button button-link button-nav pull-left" href="#profile">
         <span class="icon icon-left"></span>返回
@@ -81,24 +141,14 @@
     <div class="content">
       [@car_brand]
         [#list tag_list.keySet() as mKey]
-          <h2>${mKey}</h2>
-          [#assign item = tag_list[mKey] /]
-          [#list item as brand]
-            <span>${brand}</span>
+          <div class="content-block-title">${mKey}</div>
+          <div class="content-block">
+          [#list tag_list[mKey] as brand]
+            <button class="models_btn">${brand}</button>
           [/#list]
+          </div>
         [/#list]
       [/@car_brand]
-    </div>
-    [#include '../../common/bottom.html' /]
-  </div>
-  <div class="page num_plates" id="num_plates">
-    <header class="bar bar-nav">
-      <a class="button button-link button-nav pull-left" href="${cp}/user/carowner/my">
-        <span class="icon icon-left"></span>返回
-      </a>
-      <h1 class="title">车牌号</h1>
-    </header>
-    <div class="content">
     </div>
     [#include '../../common/bottom.html' /]
   </div>

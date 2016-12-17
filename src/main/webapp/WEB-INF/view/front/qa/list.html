@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="${res}/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="${res}/favicon.ico" type="image/x-icon" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>车在行 - 首页</title>
+<link rel="stylesheet" href="${res}/css/sm.css">
+<link rel="stylesheet" href="${res}/css/sm-extend.min.css">
+<link rel="stylesheet" href="${res}/css/iconfont.css">
+<link rel="stylesheet" href="${res}/css/global.css" />
+<script type='text/javascript' src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type="text/javascript" src="${res}/js/sm.js"></script>
+</head>
+<body ontouchstart>
+  <div class="page-group">
+    <div class="page page-current my" id='my'>
+      <header class="bar bar-nav search-nav">
+          <div class="location pull-left"><i class="iconfont icon-wxbdingwei"></i>北京</div>
+          <div class="middle"></div>
+          <a href="${cp}/user/message/list" class="button pull-right">消息</a>
+          <div class="searchbar title">
+            <a class="searchbar-cancel">取消</a>
+            <div class="search-input">
+              <label class="icon icon-search" for="search"></label>
+              <input type="search" id='search' placeholder='输入关键字...'/>
+            </div>
+          </div>
+      </header>
+      <div class="content">
+        <div class="card qa-card">
+          <div class="card-header no-border">
+            <div class="qa-avatar"><img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="34" height="34"></div>
+            <div class="qa-name">夜萧</div>
+            <div class="qa-date">星期一 3:47pm</div>
+          </div>
+          <div class="card-content"><img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="100%"></div>
+          <div class="card-footer no-border">
+            <a href="#" class="link">赞</a>
+            <a href="#" class="link">评论</a>
+            <a href="#" class="link">分享</a>
+          </div>
+        </div>
+      </div>
+      [#include '../common/bottom.html' /]
+    </div>
+  </div>
+
+  <script type="text/javascript" src="${res}/js/fastclick.js"></script>
+  <script type="text/javascript">
+  var BASE = "${cp}";
+  $.config = {
+      // 路由功能开关过滤器，返回 false 表示当前点击链接不使用路由
+      routerFilter: function($link) {
+        // 某个区域的 a 链接不想使用路由功能
+        if ($link.is('.disable-router a')) {
+            return false;
+        }
+
+        return true;
+    }
+  }
+  </script>
+  <script type="text/javascript" src="${res}/js/global.js"></script>
+  <script type="text/javascript">
+  function preInit(){
+  }
+  function afterInit(){
+  }
+  </script>
+</body>
+</html>

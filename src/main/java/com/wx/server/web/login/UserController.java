@@ -1,5 +1,6 @@
 package com.wx.server.web.login;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wx.server.base.BaseConstans;
 import com.wx.server.conf.EnumUserType;
+import com.wx.server.entity.TbCarModels;
 import com.wx.server.entity.TbUser;
+import com.wx.server.service.CarModelsService;
 import com.wx.server.service.SMSService;
 import com.wx.server.service.UserService;
 import com.wx.server.shiro.utils.TbUserUtils;
@@ -40,10 +43,33 @@ public class UserController extends WxKaptchaExtend {
   @Autowired
   private SMSService smsSvc;
 
+  @Autowired
+  private CarModelsService carModelsSvc;
+
+  /**
+   * 车主-我的
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/carowner/my", method = RequestMethod.GET)
+  public String carownerMy(ModelMap model) {
+    model.put(BaseConstans.POSITION, "my");
+    return TplPathUtils.getFrontTpl("/user/carowner/my");
+  }
+
   @RequestMapping(value = "/user/profile", method = RequestMethod.GET)
   public String profile(ModelMap model) {
-    int type = TbUserUtils.currentUser().getType();
+    model.put(BaseConstans.POSITION, "my");
+    TbUser user = TbUserUtils.currentUser();
+    int type = user.getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
+      if (user.getSex() == null || user.getAge() == null || StringUtils.isBlank(user.getRealname())) {
+        model.put("incomplete", true);
+      }
+      else {
+        model.put("incomplete", false);
+      }
       return TplPathUtils.getFrontTpl("/user/carowner/profile");
     }
     // else if (type == EnumUserType.TECHNICIAN.getCode()) {
@@ -54,16 +80,27 @@ public class UserController extends WxKaptchaExtend {
     }
   }
 
-  /**
-   * 车主-我的
-   * 
-   * @param model
-   * @return
-   */
-  @RequestMapping(value = "/user/carowner/my", method = RequestMethod.GET)
-  public String carownerMy(ModelMap model) {
+  @RequestMapping(value = "/user/profile/carModels", method = RequestMethod.GET)
+  public String carModels(String brand, ModelMap model) {
+    model.put(BaseConstans.POSITION, "my");
+    try {
+      String brandUTF8 = new String(brand.getBytes("ISO-8859-1"), "UTF-8");
 
-    return TplPathUtils.getFrontTpl("/user/carowner/my");
+      int type = TbUserUtils.currentUser().getType();
+      if (type == EnumUserType.CAROWNER.getCode()) {
+        model.put("brand", brandUTF8);
+        return TplPathUtils.getFrontTpl("/user/carowner/profile_car_models");
+      }
+      // else if (type == EnumUserType.TECHNICIAN.getCode()) {
+      // return TplPathUtils.getFrontTpl("/user/technician/profile");
+      // }
+      else {
+        return "error";
+      }
+    }
+    catch (UnsupportedEncodingException e) {
+      return "error";
+    }
   }
 
   /**
@@ -74,6 +111,7 @@ public class UserController extends WxKaptchaExtend {
    */
   @RequestMapping(value = "/user/config", method = RequestMethod.GET)
   public String carownerConfig(ModelMap model) {
+    model.put(BaseConstans.POSITION, "my");
     int type = TbUserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       return TplPathUtils.getFrontTpl("/user/carowner/config");
@@ -94,7 +132,7 @@ public class UserController extends WxKaptchaExtend {
    */
   @RequestMapping(value = "/user/technician/my", method = RequestMethod.GET)
   public String technicianMy(ModelMap model) {
-
+    model.put(BaseConstans.POSITION, "my");
     return TplPathUtils.getFrontTpl("/user/technician/my");
   }
 
@@ -106,10 +144,14 @@ public class UserController extends WxKaptchaExtend {
    */
   @RequestMapping(value = "/user/profile/carModels", method = RequestMethod.POST)
   @ResponseBody
-  public String postCarModels(String carModels, ModelMap model) {
+  public String postCarModels(Integer modelsId, ModelMap model) {
     int type = TbUserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
-      return AjaxRespUtils.renderSuccess();
+      TbCarModels models = carModelsSvc.getById(modelsId);
+      TbUser user = TbUserUtils.currentUser();
+      user.setCarModels(models.getCarsLine());
+      userSvc.update(user);
+      return AjaxRespUtils.renderSuccess("车型修改成功");
     }
     // else if (type == EnumUserType.TECHNICIAN.getCode()) {
     // return TplPathUtils.getFrontTpl("/user/technician/edit_user_info");
@@ -130,7 +172,102 @@ public class UserController extends WxKaptchaExtend {
   public String postNumPlates(String numPlates, ModelMap model) {
     int type = TbUserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
-      return AjaxRespUtils.renderSuccess();
+      try {
+        TbUser user = TbUserUtils.currentUser();
+        user.setNumPlates(numPlates);
+        userSvc.update(user);
+      }
+      catch (Exception e) {
+        log.error(e.getMessage());
+      }
+      return AjaxRespUtils.renderSuccess("车牌号修改成功");
+    }
+    // else if (type == EnumUserType.TECHNICIAN.getCode()) {
+    // return TplPathUtils.getFrontTpl("/user/technician/edit_user_info");
+    // }
+    else {
+      return AjaxRespUtils.renderErrors("用户类型不正确");
+    }
+  }
+
+  /**
+   * 编辑车主资料——车型
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/profile/realname", method = RequestMethod.POST)
+  @ResponseBody
+  public String postRealname(String realname, ModelMap model) {
+    int type = TbUserUtils.currentUser().getType();
+    if (type == EnumUserType.CAROWNER.getCode()) {
+      try {
+        TbUser user = TbUserUtils.currentUser();
+        user.setRealname(realname);
+        userSvc.update(user);
+      }
+      catch (Exception e) {
+        log.error(e.getMessage());
+      }
+      return AjaxRespUtils.renderSuccess("姓名修改成功");
+    }
+    // else if (type == EnumUserType.TECHNICIAN.getCode()) {
+    // return TplPathUtils.getFrontTpl("/user/technician/edit_user_info");
+    // }
+    else {
+      return AjaxRespUtils.renderErrors("用户类型不正确");
+    }
+  }
+
+  /**
+   * 编辑车主资料——车型
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/profile/age", method = RequestMethod.POST)
+  @ResponseBody
+  public String postAge(Integer age, ModelMap model) {
+    int type = TbUserUtils.currentUser().getType();
+    if (type == EnumUserType.CAROWNER.getCode()) {
+      try {
+        TbUser user = TbUserUtils.currentUser();
+        user.setAge(age);
+        userSvc.update(user);
+      }
+      catch (Exception e) {
+        log.error(e.getMessage());
+      }
+      return AjaxRespUtils.renderSuccess("年龄修改成功");
+    }
+    // else if (type == EnumUserType.TECHNICIAN.getCode()) {
+    // return TplPathUtils.getFrontTpl("/user/technician/edit_user_info");
+    // }
+    else {
+      return AjaxRespUtils.renderErrors("用户类型不正确");
+    }
+  }
+
+  /**
+   * 编辑车主资料——车型
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/user/profile/sex", method = RequestMethod.POST)
+  @ResponseBody
+  public String postSex(Integer sex, ModelMap model) {
+    int type = TbUserUtils.currentUser().getType();
+    if (type == EnumUserType.CAROWNER.getCode()) {
+      try {
+        TbUser user = TbUserUtils.currentUser();
+        user.setSex(sex);
+        userSvc.update(user);
+      }
+      catch (Exception e) {
+        log.error(e.getMessage());
+      }
+      return AjaxRespUtils.renderSuccess("性别修改成功");
     }
     // else if (type == EnumUserType.TECHNICIAN.getCode()) {
     // return TplPathUtils.getFrontTpl("/user/technician/edit_user_info");

@@ -1,0 +1,21 @@
+<div class="page-group">
+  <div class="page page-current car_models" id="car_models">
+    <header class="bar bar-nav">
+      <a class="button button-link button-nav pull-left" href="${cp}/user/profile">
+        <span class="icon icon-left"></span>返回
+      </a>
+      <h1 class="title">选择车型</h1>
+    </header>
+    <div class="content">
+      <div class="content-block-title">${brand} 下所有车型</div>
+      <div class="content-block">
+      [@car_models brand=brand]
+        [#list tag_list as models]
+          <button class="models_btn" id="models_id_${models.id}">${models.carsLine}</button>
+        [/#list]
+      [/@car_models]
+      </div>
+    </div>
+    [#include '../../common/bottom.html' /]
+  </div>
+</div>
