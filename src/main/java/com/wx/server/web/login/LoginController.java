@@ -33,7 +33,7 @@ import com.wx.server.exception.IncorrectCaptchaException;
 import com.wx.server.service.UserService;
 import com.wx.server.service.WxService;
 import com.wx.server.shiro.token.UserIdToken;
-import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.shiro.utils.UserUtils;
 import com.wx.server.utils.CameTools;
 import com.wx.server.utils.SessionUtils;
 import com.wx.server.utils.StringUtils;
@@ -56,9 +56,9 @@ public class LoginController extends WxKaptchaExtend {
   public String login(HttpSession session, ModelMap mav) {
     addCaptcha(session, mav);
     // 注销后返回登录页
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     if (null != user) {
-      TbUserUtils.logout();
+      UserUtils.logout();
       return "redirect:/login";
     }
     return TplPathUtils.getFrontTpl("/login/login");
@@ -113,7 +113,7 @@ public class LoginController extends WxKaptchaExtend {
   @RequestMapping(value = "/cgi-bin/login", method = RequestMethod.GET)
   public String loginForTest(Integer id, HttpServletRequest request) {
     loginByUserId(id, request.getServerName());
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     if (user.getType().equals(EnumUserType.TECHNICIAN.getCode())) {
       return "redirect:/user/technician/my";
     }
@@ -130,7 +130,7 @@ public class LoginController extends WxKaptchaExtend {
   public String logout(HttpSession session, ModelMap mav) {
     Map<String, Object> result = new HashMap<String, Object>();
     try {
-      TbUserUtils.logout();
+      UserUtils.logout();
       BaseConstans.wrapSuccess("注销成功", result);
     }
     catch (Exception e) {
@@ -153,7 +153,7 @@ public class LoginController extends WxKaptchaExtend {
 
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   @ResponseBody
-  public String register(TbUser user, String password1, HttpServletRequest request, HttpSession session) {
+  public String register(UserVo user, String password1, HttpServletRequest request, HttpSession session) {
     Map<String, Object> result = new HashMap<String, Object>();
     try {
       if (validCaptcha(request)) {

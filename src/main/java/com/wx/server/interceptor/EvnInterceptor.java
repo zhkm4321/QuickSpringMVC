@@ -17,9 +17,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.wx.server.base.BaseConstans;
 import com.wx.server.entity.TbPermission;
-import com.wx.server.entity.TbUser;
 import com.wx.server.service.UserService;
-import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.shiro.utils.UserUtils;
+import com.wx.server.vo.UserVo;
 
 public class EvnInterceptor extends HandlerInterceptorAdapter {
 
@@ -41,7 +41,7 @@ public class EvnInterceptor extends HandlerInterceptorAdapter {
       ModelAndView modelAndView) throws Exception {
     String cp = request.getSession().getServletContext().getContextPath();
     if (null != modelAndView) {
-      TbUser curUser = TbUserUtils.currentUser();
+      UserVo curUser = UserUtils.currentUser();
       if (null != curUser) {
         modelAndView.addObject(BaseConstans.USER_KEY, curUser);
         modelAndView.addObject(BaseConstans.PERMISSION_KEY, getUserPermission(curUser));
@@ -54,7 +54,7 @@ public class EvnInterceptor extends HandlerInterceptorAdapter {
     super.postHandle(request, response, handler, modelAndView);
   }
 
-  private Set<String> getUserPermission(TbUser user) {
+  private Set<String> getUserPermission(UserVo user) {
     List<TbPermission> perms = userSvc.findUserPermission(user);
     Set<String> permSet = new HashSet<String>();
     if (!CollectionUtils.isEmpty(perms)) {

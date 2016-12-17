@@ -4,8 +4,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import com.wx.server.entity.TbUser;
+import com.wx.server.vo.UserVo;
 
-public class TbUserUtils {
+public class UserUtils {
   public static final int CAR_OWNER = 1;
 
   public static final int TECHNICIAN = 2;
@@ -21,12 +22,12 @@ public class TbUserUtils {
    * 
    * @return
    */
-  public static TbUser currentUser() {
+  public static UserVo currentUser() {
     Subject subject = SecurityUtils.getSubject();
     Object principal = subject.getPrincipal();
     if (principal != null) {
       if (principal instanceof TbUser)
-        return (TbUser) principal;
+        return (UserVo) principal;
       else
         return null;
     }
@@ -35,7 +36,7 @@ public class TbUserUtils {
     }
   }
 
-  public static boolean isTechnician(TbUser user) {
+  public static boolean isTechnician(UserVo user) {
     return user.getType().equals(TECHNICIAN);
   }
 

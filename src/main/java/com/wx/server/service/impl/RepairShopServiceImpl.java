@@ -3,6 +3,7 @@ package com.wx.server.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.wx.server.dao.TbRepairShopMapper;
@@ -14,6 +15,7 @@ import com.wx.server.service.abs.AbstractCommonService;
 import com.wx.server.vo.UserVo;
 import com.wx.server.vo.page.Pagination;
 
+@Service
 public class RepairShopServiceImpl extends AbstractCommonService<TbRepairShop> implements RepairShopService {
 
   public RepairShopServiceImpl() {

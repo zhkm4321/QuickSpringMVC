@@ -22,7 +22,7 @@ import com.wx.server.base.BaseConstans;
 import com.wx.server.entity.TbUser;
 import com.wx.server.exception.IncorrectCaptchaException;
 import com.wx.server.service.UserService;
-import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.shiro.utils.UserUtils;
 import com.wx.server.utils.TplPathUtils;
 import com.wx.server.web.base.WxKaptchaExtend;
 
@@ -39,9 +39,9 @@ public class AdminController extends WxKaptchaExtend {
   public String signup(HttpSession session, ModelMap mav) {
     addCaptcha(session, mav);
     // 注销后返回登录页
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     if (null != user) {
-      TbUserUtils.logout();
+      UserUtils.logout();
       return "redirect:/wxbackstage/signin";
     }
     return TplPathUtils.getBackstageTpl("/signin");
@@ -80,7 +80,7 @@ public class AdminController extends WxKaptchaExtend {
   @RequestMapping(value = "/logout", method = RequestMethod.GET)
   public String logoutAndRedirect(String returnUrl, HttpSession session, ModelMap mav) {
     try {
-      TbUserUtils.logout();
+      UserUtils.logout();
     }
     catch (Exception e) {
       BaseConstans.wrapError("注销失败", mav);

@@ -24,7 +24,7 @@ import org.springframework.web.util.WebUtils;
 import com.wx.server.entity.TbUser;
 import com.wx.server.service.ConfigService;
 import com.wx.server.service.UserService;
-import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.shiro.utils.UserUtils;
 import com.wx.server.utils.AjaxRespUtils;
 import com.wx.server.utils.ImageHelper;
 import com.wx.server.utils.RandomUtil;
@@ -100,7 +100,7 @@ public class UploadController {
   }
 
   private void updateUserAvatar(String headImg) {
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     user.setHeadImg(headImg);
     userSvc.update(user);
   }

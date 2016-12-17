@@ -4,26 +4,27 @@ import java.util.List;
 
 import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbRole;
-import com.wx.server.entity.TbUser;
 import com.wx.server.vo.UserVo;
 
 public interface UserService extends CommonService {
 
-  public TbUser findUserByUsername(String username);
+  public UserVo findUserById(Integer userId);
 
-  public TbUser findUserByPhone(String phone);
+  public UserVo findUserByUsername(String username);
 
-  public TbUser login(TbUser user) throws Exception;
+  public UserVo findUserByPhone(String phone);
 
-  public TbUser register(TbUser user) throws Exception;
+  public UserVo login(UserVo user) throws Exception;
 
-  public TbUser update(TbUser user);
+  public UserVo register(UserVo user) throws Exception;
+
+  public UserVo update(UserVo user);
 
   public UserVo saveOrupdateWxUserInfo(UserVo vo);
 
-  public List<TbPermission> findUserPermission(TbUser user);
+  public List<TbPermission> findUserPermission(UserVo user);
 
-  public List<TbRole> findUserRole(TbUser user);
+  public List<TbRole> findUserRole(UserVo user);
 
   public List<TbPermission> findUserPermissionByUsername(String username);
 

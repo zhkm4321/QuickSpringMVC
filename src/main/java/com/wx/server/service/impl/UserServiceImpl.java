@@ -13,18 +13,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.wx.server.conf.Constants;
+import com.wx.server.conf.EnumUserType;
 import com.wx.server.dao.TbPermissionMapper;
+import com.wx.server.dao.TbRepairShopMapper;
 import com.wx.server.dao.TbRoleMapper;
 import com.wx.server.dao.TbUserMapper;
 import com.wx.server.dao.TbUserRoleMapper;
+import com.wx.server.dao.custom.VTechCustomMapper;
 import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbPermissionExample;
+import com.wx.server.entity.TbRepairShop;
+import com.wx.server.entity.TbRepairShopExample;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbRoleExample;
 import com.wx.server.entity.TbUser;
 import com.wx.server.entity.TbUserExample;
 import com.wx.server.entity.TbUserRole;
 import com.wx.server.entity.TbUserRoleExample;
+import com.wx.server.entity.custom.VTechnician;
 import com.wx.server.exception.DuplicateException;
 import com.wx.server.service.UserService;
 import com.wx.server.service.abs.AbstractCommonService;
@@ -43,6 +49,12 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   TbUserMapper userMapper;
 
   @Autowired
+  VTechCustomMapper techMapper;
+
+  @Autowired
+  TbRepairShopMapper rSMapper;
+
+  @Autowired
   TbUserRoleMapper userRoleMapper;
 
   @Autowired
@@ -56,13 +68,36 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   HashedCredentialsMatcher credentialsMatcher;
 
   @Override
-  public TbUser findUserByUsername(String username) {
+  public UserVo findUserById(Integer id) {
+    TbUser user = getById(id);
+    UserVo userVo = new UserVo(user);
+    if (user.getType().equals(EnumUserType.CAROWNER.getCode())) {
+
+    }
+    else if (user.getType().equals(EnumUserType.TECHNICIAN.getCode())) {
+      VTechnician technician = techMapper.getByUserId(user.getUserId());
+      userVo.setTechnician(technician);
+    }
+    else if (user.getType().equals(EnumUserType.REPAIRSHOP.getCode())) {
+      TbRepairShopExample example = new TbRepairShopExample();
+      TbRepairShopExample.Criteria criteria = example.createCriteria();
+      criteria.andUserIdEqualTo(user.getUserId());
+      List<TbRepairShop> list = rSMapper.selectByExample(example);
+      if (null != list && list.size() == 1) {
+        userVo.setRepairShop(list.get(0));
+      }
+    }
+    return userVo;
+  }
+
+  @Override
+  public UserVo findUserByUsername(String username) {
     TbUserExample _userexample = new TbUserExample();
     TbUserExample.Criteria criteria = _userexample.createCriteria();
     criteria.andUsernameEqualTo(username);
     List<TbUser> users = userMapper.selectByExample(_userexample);
     if (users.size() == 1) {
-      return users.get(0);
+      return findUserById(users.get(0).getUserId());
     }
     else {
       new DuplicateException("用户名不唯一:" + _userexample);
@@ -71,13 +106,13 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   }
 
   @Override
-  public TbUser findUserByPhone(String phone) {
+  public UserVo findUserByPhone(String phone) {
     TbUserExample _userexample = new TbUserExample();
     TbUserExample.Criteria criteria = _userexample.createCriteria();
     criteria.andPhoneEqualTo(phone);
     List<TbUser> users = userMapper.selectByExample(_userexample);
     if (users.size() == 1) {
-      return users.get(0);
+      return findUserById(users.get(0).getUserId());
     }
     else {
       new DuplicateException("手机号不唯一:" + _userexample);
@@ -97,7 +132,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   }
 
   @Override
-  public TbUser login(TbUser user) throws Exception {
+  public UserVo login(UserVo user) throws Exception {
 
     TbUser _user = null;
     _user = userMapper.selectByPrimaryKey(user.getUserId());
@@ -110,12 +145,12 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
       throw new Exception("密码错误");
     }
 
-    return _user;
+    return new UserVo(user);
 
   }
 
   @Override
-  public TbUser register(TbUser user) throws Exception {
+  public UserVo register(UserVo user) throws Exception {
 
     if (StringUtils.isNullOrEmpty(user.getPassword()) || StringUtils.isNullOrEmpty(user.getUsername())) {
       throw new Exception("注册失败，用户名或密码不能为空");
@@ -136,14 +171,14 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     String passwordMd5 = new Md5Hash(paswd == null ? "" : paswd, user.getUserId().toString()).toString();
     user.setPassword(passwordMd5);
     userMapper.updateByPrimaryKey(user);
-    return user;
+    return new UserVo(user);
   }
 
   @Override
-  public TbUser update(TbUser user) {
+  public UserVo update(UserVo user) {
     user.setUpdateTime(new java.util.Date());
     userMapper.updateByPrimaryKey(user);
-    return user;
+    return new UserVo(user);
   }
 
   @Override
@@ -190,7 +225,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   }
 
   @Override
-  public List<TbPermission> findUserPermission(TbUser user) {
+  public List<TbPermission> findUserPermission(UserVo user) {
     List<TbRole> role = findUserRole(user);
     if (CollectionUtils.isEmpty(role)) {
       return null;
@@ -206,7 +241,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   }
 
   @Override
-  public List<TbRole> findUserRole(TbUser user) {
+  public List<TbRole> findUserRole(UserVo user) {
     // 先查询关系
     TbUserRoleExample userRoleExample = new TbUserRoleExample();
     TbUserRoleExample.Criteria userRoleCriteria = userRoleExample.createCriteria();
@@ -228,13 +263,13 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
 
   @Override
   public List<TbPermission> findUserPermissionByUsername(String username) {
-    TbUser user = findUserByUsername(username);
+    UserVo user = findUserByUsername(username);
     return findUserPermission(user);
   }
 
   @Override
   public List<TbRole> findUserRoleByUsername(String username) {
-    TbUser user = findUserByUsername(username);
+    UserVo user = findUserByUsername(username);
     return findUserRole(user);
   }
 

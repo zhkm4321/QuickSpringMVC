@@ -25,7 +25,7 @@ import com.wx.server.entity.TbUser;
 import com.wx.server.service.CarModelsService;
 import com.wx.server.service.SMSService;
 import com.wx.server.service.UserService;
-import com.wx.server.shiro.utils.TbUserUtils;
+import com.wx.server.shiro.utils.UserUtils;
 import com.wx.server.utils.AjaxRespUtils;
 import com.wx.server.utils.RandomUtil;
 import com.wx.server.utils.StringUtils;
@@ -61,7 +61,7 @@ public class UserController extends WxKaptchaExtend {
   @RequestMapping(value = "/user/profile", method = RequestMethod.GET)
   public String profile(ModelMap model) {
     model.put(BaseConstans.POSITION, "my");
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     int type = user.getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       if (user.getSex() == null || user.getAge() == null || StringUtils.isBlank(user.getRealname())) {
@@ -86,7 +86,7 @@ public class UserController extends WxKaptchaExtend {
     try {
       String brandUTF8 = new String(brand.getBytes("ISO-8859-1"), "UTF-8");
 
-      int type = TbUserUtils.currentUser().getType();
+      int type = UserUtils.currentUser().getType();
       if (type == EnumUserType.CAROWNER.getCode()) {
         model.put("brand", brandUTF8);
         return TplPathUtils.getFrontTpl("/user/carowner/profile_car_models");
@@ -112,7 +112,7 @@ public class UserController extends WxKaptchaExtend {
   @RequestMapping(value = "/user/config", method = RequestMethod.GET)
   public String carownerConfig(ModelMap model) {
     model.put(BaseConstans.POSITION, "my");
-    int type = TbUserUtils.currentUser().getType();
+    int type = UserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       return TplPathUtils.getFrontTpl("/user/carowner/config");
     }
@@ -145,10 +145,10 @@ public class UserController extends WxKaptchaExtend {
   @RequestMapping(value = "/user/profile/carModels", method = RequestMethod.POST)
   @ResponseBody
   public String postCarModels(Integer modelsId, ModelMap model) {
-    int type = TbUserUtils.currentUser().getType();
+    int type = UserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       TbCarModels models = carModelsSvc.getById(modelsId);
-      TbUser user = TbUserUtils.currentUser();
+      TbUser user = UserUtils.currentUser();
       user.setCarModels(models.getCarsLine());
       userSvc.update(user);
       return AjaxRespUtils.renderSuccess("车型修改成功");
@@ -170,10 +170,10 @@ public class UserController extends WxKaptchaExtend {
   @RequestMapping(value = "/user/profile/numPlates", method = RequestMethod.POST)
   @ResponseBody
   public String postNumPlates(String numPlates, ModelMap model) {
-    int type = TbUserUtils.currentUser().getType();
+    int type = UserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       try {
-        TbUser user = TbUserUtils.currentUser();
+        TbUser user = UserUtils.currentUser();
         user.setNumPlates(numPlates);
         userSvc.update(user);
       }
@@ -199,10 +199,10 @@ public class UserController extends WxKaptchaExtend {
   @RequestMapping(value = "/user/profile/realname", method = RequestMethod.POST)
   @ResponseBody
   public String postRealname(String realname, ModelMap model) {
-    int type = TbUserUtils.currentUser().getType();
+    int type = UserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       try {
-        TbUser user = TbUserUtils.currentUser();
+        TbUser user = UserUtils.currentUser();
         user.setRealname(realname);
         userSvc.update(user);
       }
@@ -228,10 +228,10 @@ public class UserController extends WxKaptchaExtend {
   @RequestMapping(value = "/user/profile/age", method = RequestMethod.POST)
   @ResponseBody
   public String postAge(Integer age, ModelMap model) {
-    int type = TbUserUtils.currentUser().getType();
+    int type = UserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       try {
-        TbUser user = TbUserUtils.currentUser();
+        TbUser user = UserUtils.currentUser();
         user.setAge(age);
         userSvc.update(user);
       }
@@ -257,10 +257,10 @@ public class UserController extends WxKaptchaExtend {
   @RequestMapping(value = "/user/profile/sex", method = RequestMethod.POST)
   @ResponseBody
   public String postSex(Integer sex, ModelMap model) {
-    int type = TbUserUtils.currentUser().getType();
+    int type = UserUtils.currentUser().getType();
     if (type == EnumUserType.CAROWNER.getCode()) {
       try {
-        TbUser user = TbUserUtils.currentUser();
+        TbUser user = UserUtils.currentUser();
         user.setSex(sex);
         userSvc.update(user);
       }
@@ -311,7 +311,7 @@ public class UserController extends WxKaptchaExtend {
       return AjaxRespUtils.renderErrors(error);
     }
 
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     String passwordMd5 = new Md5Hash(newpwd, user.getUserId().toString()).toString();
     user.setPassword(passwordMd5);
     try {
@@ -384,7 +384,7 @@ public class UserController extends WxKaptchaExtend {
         return AjaxRespUtils.renderErrors("验证码不正确");
       }
     }
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     user.setUsername(newphone);
     user.setPhone(newphone);
     try {
@@ -418,7 +418,7 @@ public class UserController extends WxKaptchaExtend {
    * @param response
    */
   private String checkOldPwd(String oldpwd) {
-    TbUser user = TbUserUtils.currentUser();
+    TbUser user = UserUtils.currentUser();
     boolean pass = false;
     if (StringUtils.isNotBlank(oldpwd)) {
       pass = userSvc.isPasswordValid(user.getUserId(), oldpwd);

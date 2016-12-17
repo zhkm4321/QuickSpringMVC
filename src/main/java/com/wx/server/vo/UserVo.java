@@ -1,8 +1,9 @@
 package com.wx.server.vo;
 
 import com.wx.server.entity.TbRepairShop;
-import com.wx.server.entity.TbTechnician;
 import com.wx.server.entity.TbUser;
+import com.wx.server.entity.custom.VTechnician;
+import com.wx.server.utils.ReflectionUtil;
 
 public class UserVo extends TbUser {
   /**
@@ -13,15 +14,19 @@ public class UserVo extends TbUser {
   public UserVo() {
   }
 
-  TbTechnician technician;
+  public UserVo(TbUser user) {
+    ReflectionUtil.fatherToChild(user, this);
+  }
+
+  VTechnician technician;
 
   TbRepairShop repairShop;
 
-  public TbTechnician getTechnician() {
+  public VTechnician getTechnician() {
     return technician;
   }
 
-  public void setTechnician(TbTechnician technician) {
+  public void setTechnician(VTechnician technician) {
     this.technician = technician;
   }
 

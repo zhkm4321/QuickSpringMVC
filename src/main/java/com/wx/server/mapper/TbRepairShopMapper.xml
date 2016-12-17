@@ -98,7 +98,7 @@
     <if test="distinct">
       distinct
     </if>
-    'false' as QUERYID,
+    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from tb_repair_shop
     <if test="_parameter != null">

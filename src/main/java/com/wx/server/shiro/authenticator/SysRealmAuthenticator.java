@@ -26,6 +26,7 @@ public class SysRealmAuthenticator extends ModularRealmAuthenticator {
         }
         catch (Throwable throwable) {
           t = throwable;
+          t.printStackTrace();
         }
         aggregate = strategy.afterAttempt(realm, token, info, aggregate, t);
         // dirty dirty hack

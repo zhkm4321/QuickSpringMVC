@@ -120,7 +120,7 @@
 		<table tableName="tb_repair_shop" domainObjectName="TbRepairShop"
 			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="false">
+			selectByExampleQueryId="true">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 			<columnOverride column="shop_description" jdbcType="VARCHAR" />
 		</table>
