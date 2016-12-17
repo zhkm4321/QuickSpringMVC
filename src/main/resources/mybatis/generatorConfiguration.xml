@@ -177,7 +177,7 @@
 		</table>
 		
 		<!-- 技师 擅长服务-->
-		<table tableName="tb_technician_service" domainObjectName="TbTechnicianService"
+		<table tableName="tb_tech_service" domainObjectName="TbTechService"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
@@ -185,7 +185,7 @@
 		</table>
 		
 		<!-- 技师 评论-->
-		<table tableName="tb_technician_comment" domainObjectName="TbTechnicianComment"
+		<table tableName="tb_tech_comment" domainObjectName="TbTechComment"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
@@ -193,7 +193,7 @@
 		</table>
 		
 		<!-- 资质 -->
-		<table tableName="tb_aptitude" domainObjectName="TbAptitude"
+		<table tableName="tb_tech_aptitude" domainObjectName="TbTechAptitude"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
@@ -201,7 +201,7 @@
 		</table>
 		
 		<!-- 身份证 -->
-		<table tableName="tb_identification" domainObjectName="TbIdentification"
+		<table tableName="tb_tech_identification" domainObjectName="TbTechIdentification"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
