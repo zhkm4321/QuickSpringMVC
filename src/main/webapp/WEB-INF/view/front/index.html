@@ -21,11 +21,13 @@
           <div class="middle"></div>
           <a href="${cp}/user/message/list" class="button pull-right">消息</a>
           <div class="searchbar title">
-            <a class="searchbar-cancel">取消</a>
-            <div class="search-input">
-              <label class="icon icon-search" for="search"></label>
-              <input type="search" id='search' placeholder='输入关键字...'/>
-            </div>
+            <form action="${cp}/service/search" method="POST">
+              <a class="searchbar-cancel">取消</a>
+              <div class="search-input">
+                <label class="icon icon-search" for="search"></label>
+                <input type="search" id='search' placeholder='输入关键字...'/>
+              </div>
+            </form>
           </div>
       </header>
       <div class="content"> 

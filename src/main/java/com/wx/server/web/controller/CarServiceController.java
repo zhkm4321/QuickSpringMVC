@@ -48,7 +48,7 @@ public class CarServiceController {
 
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   @ResponseBody
-  public String list(Integer categoryId) {
+  public String listPage(Integer categoryId) {
     Map<String, Object> result = new HashMap<String, Object>();
     if (null != categoryId) {
       result.put("data", carSvc.getByCategoryId(categoryId));
@@ -57,6 +57,18 @@ public class CarServiceController {
       result.put("data", carSvc.listAll());
     }
     return JSON.toJSONString(result);
+  }
+
+  @RequestMapping(value = "/search", method = RequestMethod.GET)
+  public String getSearchTechnicianPage(ModelMap model) {
+
+    return postSearchTechnicianPage(model);
+  }
+
+  @RequestMapping(value = "/search", method = RequestMethod.POST)
+  public String postSearchTechnicianPage(ModelMap model) {
+
+    return TplPathUtils.getFrontTpl("/service/search");
   }
 
   /**
