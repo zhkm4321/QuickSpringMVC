@@ -20,13 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.wx.server.entity.TbCategory;
 import com.wx.server.entity.TbService;
 import com.wx.server.entity.TbTechnician;
 import com.wx.server.service.CarServiceService;
+import com.wx.server.service.CategoryService;
+import com.wx.server.service.TechnicianService;
 import com.wx.server.utils.AjaxRespUtils;
 import com.wx.server.utils.SessionUtils;
 import com.wx.server.utils.TplPathUtils;
 import com.wx.server.vo.page.Page;
+import com.wx.server.vo.page.Pagination;
 
 @Controller
 @RequestMapping(value = "/service")
@@ -35,6 +39,12 @@ public class CarServiceController {
 
   @Autowired
   private CarServiceService carSvc;
+
+  @Autowired
+  private CategoryService categSvc;
+
+  @Autowired
+  private TechnicianService techSvc;
 
   /**
    * 服务标准静态页面
@@ -61,17 +71,35 @@ public class CarServiceController {
     return JSON.toJSONString(result);
   }
 
-  @RequestMapping(value = "/search", method = RequestMethod.GET)
-  public String getSearchTechPage(ModelMap model) {
+  @RequestMapping(value = "/searchPage", method = RequestMethod.GET)
+  public String getSearchTechPage(Integer categoryId, String keywords, String location, ModelMap model) {
+    return postSearchTechPage(categoryId, keywords, location, model);
+  }
 
-    return postSearchTechPage(null, null, null, null, model);
+  @RequestMapping(value = "/searchPage", method = RequestMethod.POST)
+  public String postSearchTechPage(Integer categoryId, String keywords, String location, ModelMap model) {
+    Integer[] categId = new Integer[] { 1, 2, 3 };
+    List<TbCategory> list = new ArrayList<TbCategory>();
+    for (int i = 0; i < categId.length; i++) {
+      TbCategory categ = categSvc.getById(categId[i]);
+      list.add(categ);
+    }
+    model.put("categoryList", list);
+    model.put("keywords", keywords);
+    model.put("categoryId", categoryId);
+    model.put("location", location);
+    return TplPathUtils.getFrontTpl("/service/search");
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public String postSearchTechPage(Integer categoryId, String keywords, String location, Page<TbTechnician> page,
+  @ResponseBody
+  public String postSearch(Integer categoryId, String keywords, String location, Page<TbTechnician> page,
       ModelMap model) {
+    Map data = new HashMap();
+    Pagination pagin = techSvc.search(categoryId, keywords, location);
+    data.put("page", pagin);
+    return AjaxRespUtils.renderSuccess(data, "获取数据成功");
 
-    return TplPathUtils.getFrontTpl("/service/search");
   }
 
   /**

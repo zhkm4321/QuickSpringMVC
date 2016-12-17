@@ -32,10 +32,10 @@
       </header>
       <div class="content">
         <div class="buttons-tab">
-          <a href="javascript:searchTech('',1,10)" class="tab-link active button">全部</a>
-          <a href="javascript:searchTech('',1,10)" class="tab-link button">保养护理</a>
-          <a href="javascript:searchTech('',1,10)" class="tab-link button">精品装饰</a>
-          <a href="javascript:searchTech('',1,10)" class="tab-link button">维修钣喷</a>
+        <a href="javascript:searchTech('',null,1,10)" class="tab-link[#if !categoryId??] active[/#if] button">全部</a>
+        [#list categoryList as categ]
+          <a href="javascript:searchTech('',${categ.id},1,10)" class="tab-link button[#if categoryId??&&categoryId=categ.id ] active[/#if]">${categ.ctgName!}</a>
+        [/#list]
         </div>
         <div class="card">
           <div class="card-header">124142</div>
@@ -67,5 +67,12 @@
   <script type='text/javascript' src="${res}/js/sm-extend.js" charset='utf-8'></script>
   <script type='text/javascript' src="${res}/js/sm-city-picker.js" charset='utf-8'></script>
   <script type='text/javascript' src="${res}/js/global.js" charset='utf-8'></script>
+  <script type="text/javascript">
+  var page = {
+      pageNo:1,
+      pageSize:10,
+      list:[]
+  }
+  </script>
 </body>
 </html>

@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wx.server.dao.TbCategoryMapper;
-import com.wx.server.dao.statistic.VCategoryTopicCountMapper;
+import com.wx.server.dao.custom.VCategoryTopicCountMapper;
 import com.wx.server.entity.TbCategory;
 import com.wx.server.entity.TbCategoryExample;
-import com.wx.server.entity.statistic.VCategoryTopicCount;
+import com.wx.server.entity.custom.VCategoryTopicCount;
 import com.wx.server.service.CategoryService;
 import com.wx.server.service.abs.AbstractCommonService;
 import com.wx.server.vo.CategoryVo;

@@ -176,6 +176,14 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		</table>
 		
+		<!-- 技师 擅长服务-->
+		<table tableName="tb_technician_service" domainObjectName="TbTechnicianService"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
 		<!-- 技师 评论-->
 		<table tableName="tb_technician_comment" domainObjectName="TbTechnicianComment"
 			enableCountByExample="false" enableUpdateByExample="true"

@@ -22,17 +22,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.wx.server.conf.EnumUserType;
 import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbUser;
+import com.wx.server.service.RepairShopService;
+import com.wx.server.service.TechnicianService;
 import com.wx.server.service.UserService;
+import com.wx.server.vo.UserVo;
 
 public class TbUserRealm extends AuthorizingRealm {
 
   private static Logger log = LoggerFactory.getLogger(TbUserRealm.class);
 
   @Autowired
-  private UserService userService;
+  private UserService userSvc;
+
+  @Autowired
+  private TechnicianService techSvc;
+
+  @Autowired
+  private RepairShopService rShopSvc;
 
   /**
    * 授权操作
@@ -42,7 +52,7 @@ public class TbUserRealm extends AuthorizingRealm {
     // 获取登录信息
     TbUser user = (TbUser) principals.getPrimaryPrincipal();
 
-    List<TbRole> roleList = userService.findUserRoleByUsername(user.getUsername());
+    List<TbRole> roleList = userSvc.findUserRoleByUsername(user.getUsername());
     // 角色字的集合
     Set<String> roles = new HashSet<String>();
     if (!CollectionUtils.isEmpty(roleList)) {
@@ -51,7 +61,7 @@ public class TbUserRealm extends AuthorizingRealm {
         roles.add(role.getValue());
       }
     }
-    List<TbPermission> permissionList = userService.findUserPermissionByUsername(user.getUsername());
+    List<TbPermission> permissionList = userSvc.findUserPermissionByUsername(user.getUsername());
     // 权限字的集合
     Set<String> permissions = new HashSet<String>();
     if (!CollectionUtils.isEmpty(permissionList)) {
@@ -76,11 +86,21 @@ public class TbUserRealm extends AuthorizingRealm {
   protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
     String username = (String) token.getPrincipal();
-    TbUser user = userService.findUserByUsername(username);
+    TbUser user = userSvc.findUserByUsername(username);
+    UserVo userVo = null;
     // 用户状态判断，返回不同的异常
     if (user == null) {
       // 木有找到用户
       throw new UnknownAccountException("没有找到该账号");
+    }
+    else if (user.getType().equals(EnumUserType.CAROWNER.getCode())) {
+      userVo = (UserVo) user;
+    }
+    else if (user.getType().equals(EnumUserType.TECHNICIAN.getCode())) {
+      userVo = techSvc.getById(user.getUserId());
+    }
+    else if (user.getType().equals(EnumUserType.REPAIRSHOP.getCode())) {
+      userVo = rShopSvc.getById(user.getUserId());
     }
     if (-1 == user.getStatus()) {// 帐号锁定
       throw new LockedAccountException();

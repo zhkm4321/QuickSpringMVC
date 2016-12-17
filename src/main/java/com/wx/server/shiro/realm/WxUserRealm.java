@@ -20,12 +20,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.wx.server.conf.EnumUserStatus;
+import com.wx.server.conf.EnumUserType;
 import com.wx.server.entity.TbPermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbUser;
+import com.wx.server.service.RepairShopService;
+import com.wx.server.service.TechnicianService;
 import com.wx.server.service.UserService;
 import com.wx.server.shiro.token.UserIdToken;
+import com.wx.server.vo.UserVo;
 
 public class WxUserRealm extends AuthorizingRealm {
 
@@ -33,6 +36,12 @@ public class WxUserRealm extends AuthorizingRealm {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private TechnicianService techSvc;
+
+  @Autowired
+  private RepairShopService rShopSvc;
 
   /**
    * 授权操作
@@ -77,12 +86,22 @@ public class WxUserRealm extends AuthorizingRealm {
 
     Integer userId = (Integer) token.getPrincipal();
     TbUser user = userService.getById(userId);
+    UserVo userVo = null;
     // 用户状态判断，返回不同的异常
     if (user == null) {
       // 木有找到用户
       throw new UnknownAccountException("没有找到该账号");
     }
-    if (EnumUserStatus.LOCKED.getCode() == user.getStatus()) {// 帐号锁定
+    else if (user.getType().equals(EnumUserType.CAROWNER.getCode())) {
+      userVo = (UserVo) user;
+    }
+    else if (user.getType().equals(EnumUserType.TECHNICIAN.getCode())) {
+      userVo = techSvc.getById(user.getUserId());
+    }
+    else if (user.getType().equals(EnumUserType.REPAIRSHOP.getCode())) {
+      userVo = rShopSvc.getById(user.getUserId());
+    }
+    if (-1 == user.getStatus()) {// 帐号锁定
       throw new LockedAccountException();
     }
 

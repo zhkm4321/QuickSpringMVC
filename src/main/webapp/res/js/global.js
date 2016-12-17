@@ -27,6 +27,11 @@ function showSaveBtn(_this, selector){
     $(selector).removeClass("slide_in");
   }
 }
+function searchTech(searchText, categId, pageNo, pageSize){
+  page.pageNo=pageNo;
+  page.pageSize = pageSize;
+  
+}
 $(function() {
   //并不是所有的标签都可以点击所以需要加这个兼容方法
   $(document).on("click",".a-link", function(e){

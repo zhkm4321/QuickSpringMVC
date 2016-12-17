@@ -1,8 +1,8 @@
-package com.wx.server.dao.statistic;
+package com.wx.server.dao.custom;
 
 import java.util.List;
 
-import com.wx.server.entity.statistic.VCategoryTopicCount;
+import com.wx.server.entity.custom.VCategoryTopicCount;
 
 public interface VCategoryTopicCountMapper {
   /**

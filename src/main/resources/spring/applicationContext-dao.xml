@@ -64,8 +64,8 @@
 		<property name="mapperLocations">  
             <list>  
                 <value>classpath:com/wx/server/mapper/**/*.xml</value>  
-            </list>  
-        </property>  
+            </list>
+        </property>
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

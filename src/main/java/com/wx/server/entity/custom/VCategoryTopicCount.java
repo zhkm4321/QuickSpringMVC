@@ -1,4 +1,4 @@
-package com.wx.server.entity.statistic;
+package com.wx.server.entity.custom;
 
 import java.io.Serializable;
 
