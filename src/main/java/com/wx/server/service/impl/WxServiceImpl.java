@@ -86,7 +86,7 @@ public class WxServiceImpl implements WxService {
     if (!checkAccessTokenValid()) {
       String reqATUrl = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_GET_ACCESS_TOKEN_URL);
       String appID = getAppID();
-      String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPSECRET);
+      String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_SECRET);
       reqATUrl = StringUtils.replace(reqATUrl, "APPID", appID);
       reqATUrl = StringUtils.replace(reqATUrl, "SECRET", appsecret);
       String jsonStr = HttpClientUtils.sendGetRequest(reqATUrl, null);
@@ -197,7 +197,7 @@ public class WxServiceImpl implements WxService {
     // https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
     String apiUrl = cfgSvc.getValue(ConfigService.GROUP_USERCONFIG, ConfigService.USERCONFIG_GET_TOKEN_URL);
     String appID = getAppID();
-    String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPSECRET);
+    String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_SECRET);
     apiUrl = StringUtils.replace(apiUrl, "APPID", appID);
     apiUrl = StringUtils.replace(apiUrl, "SECRET", appsecret);
     apiUrl = StringUtils.replace(apiUrl, "CODE", code);
@@ -276,7 +276,7 @@ public class WxServiceImpl implements WxService {
 
   private String handlePlaceholder(String reqUrl) {
     String appID = getAppID();
-    String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_APPSECRET);
+    String appsecret = cfgSvc.getValue(ConfigService.GROUP_WXCONFIG, ConfigService.WXCONFIG_SECRET);
     String accessToken = getAccessToken();
     reqUrl = StringUtils.replace(reqUrl, "APPID", appID);
     reqUrl = StringUtils.replace(reqUrl, "SECRET", appsecret);

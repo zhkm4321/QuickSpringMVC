@@ -26,7 +26,16 @@ public interface ConfigService extends CommonService {
 
   public static String WXCONFIG_APPID = "appID";
 
-  public static String WXCONFIG_APPSECRET = "appsecret";
+  public static String WXCONFIG_SECRET = "secret";
+
+  public static String WXCONFIG_AES_KEY = "aesKey";
+
+  /**
+   * 用于支付接口的
+   */
+  public static String WXCONFIG_PARTNER_KEY = "partnerKey";
+
+  public static String WXCONFIG_PARTNER_ID = "partnerId";
 
   public static String WXCONFIG_WXSERVER_DOMAIN = "wxserver_domain";
 

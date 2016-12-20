@@ -1,4 +1,4 @@
-package com.wx.server.web.login;
+package com.wx.server.web.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;

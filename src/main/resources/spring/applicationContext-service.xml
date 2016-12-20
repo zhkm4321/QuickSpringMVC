@@ -17,5 +17,22 @@
 
 	<context:component-scan base-package="com.wx.server.service" />
 
-	<!-- <bean id="springBeanUtils" class="com.wx.server.utils.SpringBeanUtils" /> -->
+	<bean id="configService" class="com.wx.server.service.impl.ConfigServiceImpl"
+		init-method="initCache">
+		<property name="configMapper" ref="tbConfigMapper"></property>
+	</bean>
+
+	<!-- weixinmp模块的配置 -->
+	<bean id="wxMpConfigStorage" class="com.wx.server.service.impl.WxConfigServiceImpl"
+		init-method="init">
+		<property name="configSvc" ref="configService"></property>
+	</bean>
+
+	<!-- weixinmp模块api服务 -->
+	<bean id="wxMpService" class="me.chanjar.weixin.mp.api.impl.WxMpServiceImpl">
+		<property name="wxMpConfigStorage" ref="wxMpConfigStorage"></property>
+	</bean>
+
+	<bean id="alipayService" class="com.wx.server.service.impl.AlipayServiceImpl"
+		init-method="init"></bean>
 </beans>

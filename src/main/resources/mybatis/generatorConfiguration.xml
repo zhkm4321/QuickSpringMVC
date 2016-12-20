@@ -185,23 +185,7 @@
 		</table>
 		
 		<!-- 技师 评论-->
-		<table tableName="tb_tech_comment" domainObjectName="TbTechComment"
-			enableCountByExample="false" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
-		</table>
-		
-		<!-- 资质 -->
-		<table tableName="tb_tech_aptitude" domainObjectName="TbTechAptitude"
-			enableCountByExample="false" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
-		</table>
-		
-		<!-- 身份证 -->
-		<table tableName="tb_tech_identification" domainObjectName="TbTechIdentification"
+		<table tableName="tb_user_comment" domainObjectName="TbUserComment"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
@@ -241,7 +225,7 @@
 		</table>
 		
 		<!-- 角色对应权限 -->
-		<table tableName="tb_permission" domainObjectName="TbPermission"
+		<table tableName="tb_role_permission" domainObjectName="TbRolePermission"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="false">
@@ -260,9 +244,17 @@
 		<table tableName="tb_config" domainObjectName="TbConfig"
 			enableCountByExample="false" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true">
+			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 			<columnOverride column="config_value" jdbcType="VARCHAR" />
+		</table>
+		
+		<!-- 公众号底部菜单配置 -->
+		<table tableName="tb_menu" domainObjectName="TbMenu"
+			enableCountByExample="false" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		</table>
 		
 	</context>

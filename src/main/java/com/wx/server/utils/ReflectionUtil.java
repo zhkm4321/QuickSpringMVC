@@ -120,11 +120,11 @@ public abstract class ReflectionUtil {
     if (!(child.getClass().getSuperclass() == father.getClass())) {
       System.err.println("child不是father的子类");
     }
-    Class fatherClass = father.getClass();
+    Class<?> fatherClass = father.getClass();
     Field ff[] = fatherClass.getDeclaredFields();
     for (int i = 0; i < ff.length; i++) {
       Field f = ff[i];// 取出每一个属性，如deleteDate
-      Class type = f.getType();
+      Class<?> type = f.getType();
       try {
         if (f.getName().equals("serialVersionUID"))
           continue;

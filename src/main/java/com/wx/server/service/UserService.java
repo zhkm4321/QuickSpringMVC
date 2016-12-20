@@ -2,7 +2,7 @@ package com.wx.server.service;
 
 import java.util.List;
 
-import com.wx.server.entity.TbPermission;
+import com.wx.server.entity.TbRolePermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.vo.UserVo;
 
@@ -22,11 +22,11 @@ public interface UserService extends CommonService {
 
   public UserVo saveOrupdateWxUserInfo(UserVo vo);
 
-  public List<TbPermission> findUserPermission(UserVo user);
+  public List<TbRolePermission> findUserPermission(UserVo user);
 
   public List<TbRole> findUserRole(UserVo user);
 
-  public List<TbPermission> findUserPermissionByUsername(String username);
+  public List<TbRolePermission> findUserPermissionByUsername(String username);
 
   public List<TbRole> findUserRoleByUsername(String username);
 

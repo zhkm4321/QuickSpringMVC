@@ -414,6 +414,76 @@ public class TbFileExample {
             return (Criteria) this;
         }
 
+        public Criteria andAbsPathIsNull() {
+            addCriterion("abs_path is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathIsNotNull() {
+            addCriterion("abs_path is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathEqualTo(String value) {
+            addCriterion("abs_path =", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotEqualTo(String value) {
+            addCriterion("abs_path <>", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathGreaterThan(String value) {
+            addCriterion("abs_path >", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathGreaterThanOrEqualTo(String value) {
+            addCriterion("abs_path >=", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathLessThan(String value) {
+            addCriterion("abs_path <", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathLessThanOrEqualTo(String value) {
+            addCriterion("abs_path <=", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathLike(String value) {
+            addCriterion("abs_path like", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotLike(String value) {
+            addCriterion("abs_path not like", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathIn(List<String> values) {
+            addCriterion("abs_path in", values, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotIn(List<String> values) {
+            addCriterion("abs_path not in", values, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathBetween(String value1, String value2) {
+            addCriterion("abs_path between", value1, value2, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotBetween(String value1, String value2) {
+            addCriterion("abs_path not between", value1, value2, "absPath");
+            return (Criteria) this;
+        }
+
         public Criteria andValidIsNull() {
             addCriterion("valid is null");
             return (Criteria) this;

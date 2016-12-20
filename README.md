@@ -10,6 +10,7 @@
 + Druid 1.0.23
 + Shiro 1.2.4
 + freemarker 2.3.23
++ alipay
 
 >记住密码一周时间设置位置
 >```xml

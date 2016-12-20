@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.wx.server.entity.TbPermission;
+import com.wx.server.entity.TbRolePermission;
 import com.wx.server.entity.TbRole;
 import com.wx.server.service.RepairShopService;
 import com.wx.server.service.TechnicianService;
@@ -58,12 +58,12 @@ public class WxUserRealm extends AuthorizingRealm {
         roles.add(role.getValue());
       }
     }
-    List<TbPermission> permissionList = userService.findUserPermission(user);
+    List<TbRolePermission> permissionList = userService.findUserPermission(user);
     // 权限字的集合
     Set<String> permissions = new HashSet<String>();
     if (!CollectionUtils.isEmpty(permissionList)) {
-      for (Iterator<TbPermission> it = permissionList.iterator(); it.hasNext();) {
-        TbPermission per = (TbPermission) it.next();
+      for (Iterator<TbRolePermission> it = permissionList.iterator(); it.hasNext();) {
+        TbRolePermission per = (TbRolePermission) it.next();
         permissions.add(per.getValue());
       }
     }

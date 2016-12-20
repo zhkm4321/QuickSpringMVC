@@ -5,12 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.wx.server.dao.TbConfigMapper;
@@ -20,7 +16,6 @@ import com.wx.server.service.ConfigService;
 import com.wx.server.service.abs.AbstractCommonService;
 import com.wx.server.utils.StringUtils;
 
-@Service
 public class ConfigServiceImpl extends AbstractCommonService<TbConfig> implements ConfigService {
 
   private static Logger log = LoggerFactory.getLogger(ConfigServiceImpl.class);
@@ -29,12 +24,14 @@ public class ConfigServiceImpl extends AbstractCommonService<TbConfig> implement
     super(TbConfig.class);
   }
 
-  @Autowired
   private TbConfigMapper configMapper;
+
+  public void setConfigMapper(TbConfigMapper configMapper) {
+    this.configMapper = configMapper;
+  }
 
   private Map<String, Map<String, String>> cache = new HashMap<String, Map<String, String>>();
 
-  @PostConstruct
   public void initCache() {
     log.info("【缓存服务器配置开始】");
     List<TbConfig> list = listAll();

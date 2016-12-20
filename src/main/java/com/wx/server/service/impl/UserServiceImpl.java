@@ -14,18 +14,18 @@ import org.springframework.util.CollectionUtils;
 
 import com.wx.server.conf.Constants;
 import com.wx.server.conf.EnumUserType;
-import com.wx.server.dao.TbPermissionMapper;
 import com.wx.server.dao.TbRepairShopMapper;
 import com.wx.server.dao.TbRoleMapper;
+import com.wx.server.dao.TbRolePermissionMapper;
 import com.wx.server.dao.TbUserMapper;
 import com.wx.server.dao.TbUserRoleMapper;
 import com.wx.server.dao.custom.VTechCustomMapper;
-import com.wx.server.entity.TbPermission;
-import com.wx.server.entity.TbPermissionExample;
 import com.wx.server.entity.TbRepairShop;
 import com.wx.server.entity.TbRepairShopExample;
 import com.wx.server.entity.TbRole;
 import com.wx.server.entity.TbRoleExample;
+import com.wx.server.entity.TbRolePermission;
+import com.wx.server.entity.TbRolePermissionExample;
 import com.wx.server.entity.TbUser;
 import com.wx.server.entity.TbUserExample;
 import com.wx.server.entity.TbUserRole;
@@ -61,7 +61,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   TbRoleMapper roleMapper;
 
   @Autowired
-  TbPermissionMapper permissionMapper;
+  TbRolePermissionMapper permissionMapper;
 
   @Autowired
   @Qualifier("credentialsMatcher")
@@ -225,7 +225,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   }
 
   @Override
-  public List<TbPermission> findUserPermission(UserVo user) {
+  public List<TbRolePermission> findUserPermission(UserVo user) {
     List<TbRole> role = findUserRole(user);
     if (CollectionUtils.isEmpty(role)) {
       return null;
@@ -234,8 +234,8 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
     for (TbRole tbRole : role) {
       roleIds.add(tbRole.getId());
     }
-    TbPermissionExample example = new TbPermissionExample();
-    TbPermissionExample.Criteria criteria = example.createCriteria();
+    TbRolePermissionExample example = new TbRolePermissionExample();
+    TbRolePermissionExample.Criteria criteria = example.createCriteria();
     criteria.andRoleIdIn(roleIds);
     return permissionMapper.selectByExample(example);
   }
@@ -262,7 +262,7 @@ public class UserServiceImpl extends AbstractCommonService<TbUser> implements Us
   }
 
   @Override
-  public List<TbPermission> findUserPermissionByUsername(String username) {
+  public List<TbRolePermission> findUserPermissionByUsername(String username) {
     UserVo user = findUserByUsername(username);
     return findUserPermission(user);
   }

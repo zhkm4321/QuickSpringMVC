@@ -46,14 +46,14 @@ public class CarModelsServiceImpl extends AbstractCommonService<TbCarModels> imp
         // 车型缓存
         subCache = modelsCache.get(models.getBrand());
         if (null == subCache) {
-          subCache = new ArrayList();
+          subCache = new ArrayList<TbCarModels>();
           modelsCache.put(models.getBrand(), subCache);
         }
         subCache.add(models);
         // 品牌缓存
         subBrand = brandCache.get(models.getFirstLetter());
         if (null == subBrand) {
-          subBrand = new ArrayList();
+          subBrand = new ArrayList<String>();
           brandCache.put(models.getFirstLetter(), subBrand);
         }
         if (!subBrand.contains(models.getBrand())) {

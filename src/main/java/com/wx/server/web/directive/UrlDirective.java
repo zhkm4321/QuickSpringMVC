@@ -31,8 +31,10 @@ public class UrlDirective implements TemplateDirectiveModel {
     }
     TemplateModel cpModel = env.getDataModel().get("cp");
     String contextPath = cpModel.toString();
-    if (!url.startsWith(contextPath)) {
-      url = contextPath + url;
+    if (!url.startsWith("http://")) {
+      if (!url.startsWith(contextPath)) {
+        url = contextPath + url;
+      }
     }
     Writer out = env.getOut();
     out.append(url);

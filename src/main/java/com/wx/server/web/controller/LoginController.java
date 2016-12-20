@@ -1,4 +1,4 @@
-package com.wx.server.web.login;
+package com.wx.server.web.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class LoginController extends WxKaptchaExtend {
     Map<String, Object> result = new HashMap<String, Object>();
 
     Object errorClassName = request.getAttribute("shiroLoginFailure");
-    Class errorClass = null;
+    Class<?> errorClass = null;
     String authticationError = null;
     if (null != errorClassName) {
       try {

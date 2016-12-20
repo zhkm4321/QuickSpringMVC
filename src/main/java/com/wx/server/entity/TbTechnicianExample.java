@@ -732,6 +732,276 @@ public class TbTechnicianExample {
             addCriterion("score not between", value1, value2, "score");
             return (Criteria) this;
         }
+
+        public Criteria andCredentialsIsNull() {
+            addCriterion("credentials is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsIsNotNull() {
+            addCriterion("credentials is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsEqualTo(String value) {
+            addCriterion("credentials =", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsNotEqualTo(String value) {
+            addCriterion("credentials <>", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsGreaterThan(String value) {
+            addCriterion("credentials >", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsGreaterThanOrEqualTo(String value) {
+            addCriterion("credentials >=", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsLessThan(String value) {
+            addCriterion("credentials <", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsLessThanOrEqualTo(String value) {
+            addCriterion("credentials <=", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsLike(String value) {
+            addCriterion("credentials like", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsNotLike(String value) {
+            addCriterion("credentials not like", value, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsIn(List<String> values) {
+            addCriterion("credentials in", values, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsNotIn(List<String> values) {
+            addCriterion("credentials not in", values, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsBetween(String value1, String value2) {
+            addCriterion("credentials between", value1, value2, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andCredentialsNotBetween(String value1, String value2) {
+            addCriterion("credentials not between", value1, value2, "credentials");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationIsNull() {
+            addCriterion("identification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationIsNotNull() {
+            addCriterion("identification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationEqualTo(String value) {
+            addCriterion("identification =", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationNotEqualTo(String value) {
+            addCriterion("identification <>", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationGreaterThan(String value) {
+            addCriterion("identification >", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationGreaterThanOrEqualTo(String value) {
+            addCriterion("identification >=", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationLessThan(String value) {
+            addCriterion("identification <", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationLessThanOrEqualTo(String value) {
+            addCriterion("identification <=", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationLike(String value) {
+            addCriterion("identification like", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationNotLike(String value) {
+            addCriterion("identification not like", value, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationIn(List<String> values) {
+            addCriterion("identification in", values, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationNotIn(List<String> values) {
+            addCriterion("identification not in", values, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBetween(String value1, String value2) {
+            addCriterion("identification between", value1, value2, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationNotBetween(String value1, String value2) {
+            addCriterion("identification not between", value1, value2, "identification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackIsNull() {
+            addCriterion("identification_back is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackIsNotNull() {
+            addCriterion("identification_back is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackEqualTo(String value) {
+            addCriterion("identification_back =", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackNotEqualTo(String value) {
+            addCriterion("identification_back <>", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackGreaterThan(String value) {
+            addCriterion("identification_back >", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackGreaterThanOrEqualTo(String value) {
+            addCriterion("identification_back >=", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackLessThan(String value) {
+            addCriterion("identification_back <", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackLessThanOrEqualTo(String value) {
+            addCriterion("identification_back <=", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackLike(String value) {
+            addCriterion("identification_back like", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackNotLike(String value) {
+            addCriterion("identification_back not like", value, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackIn(List<String> values) {
+            addCriterion("identification_back in", values, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackNotIn(List<String> values) {
+            addCriterion("identification_back not in", values, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackBetween(String value1, String value2) {
+            addCriterion("identification_back between", value1, value2, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentificationBackNotBetween(String value1, String value2) {
+            addCriterion("identification_back not between", value1, value2, "identificationBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedIsNull() {
+            addCriterion("checked is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedIsNotNull() {
+            addCriterion("checked is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedEqualTo(Integer value) {
+            addCriterion("checked =", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedNotEqualTo(Integer value) {
+            addCriterion("checked <>", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedGreaterThan(Integer value) {
+            addCriterion("checked >", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedGreaterThanOrEqualTo(Integer value) {
+            addCriterion("checked >=", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedLessThan(Integer value) {
+            addCriterion("checked <", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedLessThanOrEqualTo(Integer value) {
+            addCriterion("checked <=", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedIn(List<Integer> values) {
+            addCriterion("checked in", values, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedNotIn(List<Integer> values) {
+            addCriterion("checked not in", values, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedBetween(Integer value1, Integer value2) {
+            addCriterion("checked between", value1, value2, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedNotBetween(Integer value1, Integer value2) {
+            addCriterion("checked not between", value1, value2, "checked");
+            return (Criteria) this;
+        }
     }
 
     /**

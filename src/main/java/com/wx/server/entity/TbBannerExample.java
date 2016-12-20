@@ -423,6 +423,76 @@ public class TbBannerExample {
             return (Criteria) this;
         }
 
+        public Criteria andAbsPathIsNull() {
+            addCriterion("abs_path is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathIsNotNull() {
+            addCriterion("abs_path is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathEqualTo(String value) {
+            addCriterion("abs_path =", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotEqualTo(String value) {
+            addCriterion("abs_path <>", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathGreaterThan(String value) {
+            addCriterion("abs_path >", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathGreaterThanOrEqualTo(String value) {
+            addCriterion("abs_path >=", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathLessThan(String value) {
+            addCriterion("abs_path <", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathLessThanOrEqualTo(String value) {
+            addCriterion("abs_path <=", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathLike(String value) {
+            addCriterion("abs_path like", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotLike(String value) {
+            addCriterion("abs_path not like", value, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathIn(List<String> values) {
+            addCriterion("abs_path in", values, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotIn(List<String> values) {
+            addCriterion("abs_path not in", values, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathBetween(String value1, String value2) {
+            addCriterion("abs_path between", value1, value2, "absPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsPathNotBetween(String value1, String value2) {
+            addCriterion("abs_path not between", value1, value2, "absPath");
+            return (Criteria) this;
+        }
+
         public Criteria andSortIsNull() {
             addCriterion("sort is null");
             return (Criteria) this;
@@ -543,63 +613,63 @@ public class TbBannerExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
+        public Criteria andValidIsNull() {
+            addCriterion("valid is null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
+        public Criteria andValidIsNotNull() {
+            addCriterion("valid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Integer value) {
-            addCriterion("status =", value, "status");
+        public Criteria andValidEqualTo(Integer value) {
+            addCriterion("valid =", value, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Integer value) {
-            addCriterion("status <>", value, "status");
+        public Criteria andValidNotEqualTo(Integer value) {
+            addCriterion("valid <>", value, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Integer value) {
-            addCriterion("status >", value, "status");
+        public Criteria andValidGreaterThan(Integer value) {
+            addCriterion("valid >", value, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("status >=", value, "status");
+        public Criteria andValidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("valid >=", value, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Integer value) {
-            addCriterion("status <", value, "status");
+        public Criteria andValidLessThan(Integer value) {
+            addCriterion("valid <", value, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("status <=", value, "status");
+        public Criteria andValidLessThanOrEqualTo(Integer value) {
+            addCriterion("valid <=", value, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Integer> values) {
-            addCriterion("status in", values, "status");
+        public Criteria andValidIn(List<Integer> values) {
+            addCriterion("valid in", values, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Integer> values) {
-            addCriterion("status not in", values, "status");
+        public Criteria andValidNotIn(List<Integer> values) {
+            addCriterion("valid not in", values, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            addCriterion("status between", value1, value2, "status");
+        public Criteria andValidBetween(Integer value1, Integer value2) {
+            addCriterion("valid between", value1, value2, "valid");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("status not between", value1, value2, "status");
+        public Criteria andValidNotBetween(Integer value1, Integer value2) {
+            addCriterion("valid not between", value1, value2, "valid");
             return (Criteria) this;
         }
     }

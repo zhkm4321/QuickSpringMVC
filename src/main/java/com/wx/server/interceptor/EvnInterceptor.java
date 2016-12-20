@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.wx.server.base.BaseConstans;
-import com.wx.server.entity.TbPermission;
+import com.wx.server.entity.TbRolePermission;
 import com.wx.server.service.UserService;
 import com.wx.server.shiro.utils.UserUtils;
 import com.wx.server.vo.UserVo;
@@ -55,10 +55,10 @@ public class EvnInterceptor extends HandlerInterceptorAdapter {
   }
 
   private Set<String> getUserPermission(UserVo user) {
-    List<TbPermission> perms = userSvc.findUserPermission(user);
+    List<TbRolePermission> perms = userSvc.findUserPermission(user);
     Set<String> permSet = new HashSet<String>();
     if (!CollectionUtils.isEmpty(perms)) {
-      for (TbPermission permi : perms) {
+      for (TbRolePermission permi : perms) {
         permSet.add(permi.getValue());
       }
       log.debug("用户权限 {}", Arrays.toString(permSet.toArray()));
